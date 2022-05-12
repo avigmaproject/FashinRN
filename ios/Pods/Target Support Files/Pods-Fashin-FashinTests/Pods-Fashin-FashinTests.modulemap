@@ -1,0 +1,6 @@
+module Pods_Fashin_FashinTests {
+  umbrella header "Pods-Fashin-FashinTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+module Pods_Fashin {
+  umbrella header "Pods-Fashin-umbrella.h"
+
+  export *
+  module * { export * }
+}
