@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "467243516590",
+    "project_id": "fashin-4cb70",
+    "storage_bucket": "fashin-4cb70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467243516590:android:76a0a17608daa3e107e33f",
+        "android_client_info": {
+          "package_name": "com.fashin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467243516590-i8m87p5g07jhv3060f4gsb7sdgnqqqhm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fashin",
+            "certificate_hash": "9200e4ef2a64ce4bb56fc457488e9710d0ca3ac6"
+          }
+        },
+        {
+          "client_id": "467243516590-tegq5pssuasme450fg0opiv2iq75q9b6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUMNk3FnaaESPMOqk9He2KwgR5WIsyTUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467243516590-tegq5pssuasme450fg0opiv2iq75q9b6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

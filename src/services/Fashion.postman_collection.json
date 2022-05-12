@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "95174ac2-aa7d-4f2e-93f2-bc2052c65d7d",
+		"name": "Fashion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AddUserMasterData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    \r\n\r\n{\r\n     \"User_PkeyID\":1,\r\n     \"User_PkeyID_Master\":1,\r\n    \"User_Name\":\"sejal12456\",\r\n    \"User_Email\":\"sejal123@gmail.com\",\r\n    \"User_Password\":12334,\r\n    \"User_Phone\":\"987546788\",\r\n    \"User_Address\":\"malad\",\r\n    \"User_City\":\"mumbai\",\r\n    \"User_Country\":\"india\",\r\n    \"User_Zip\":40088,\r\n    \"User_DOB\":\"11/08/1998\",\r\n    \"User_Type\":1,\r\n    \"User_Gender\":1,\r\n    \"User_Image_Path\":\"http://cssellapi.ikaart.org//Images/9c313518-096b-4d95-8b46-5fbd76df978a.png\",\r\n    \"User_Image_Base\":\"work\",\r\n    \"User_MacID\":21,\r\n    \"User_IsVerified\":1,\r\n    \"User_latitude\":18.3456,\r\n    \"User_longitude\":18.34526,\r\n    \"User_IsActive\":1,\r\n    \"User_IsDelete\":0,\r\n    \"Type\":1,\r\n     \"User_LastName\":\"panchal\",\r\n     \"User_Company\":\"avigma\",\r\n    \"User_Token_val\":234,\r\n    \"User_Login_Type\":2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/AddUserMasterData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"AddUserMasterData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserMasterData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n    \"User_PkeyID\":1,\r\n    \"Type\":1\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/GetUserMasterData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"GetUserMasterData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUpdateUserAdminMaster",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Ad_User_PkeyID\":4,\r\n    \"Ad_User_First_Name\":\"poonam\",\r\n    \"Ad_User_Last_Name\":\"sawant\",\r\n    \"Ad_User_Address\":\"sion\",\r\n    \"Ad_User_City\":\"Mumbai\",\r\n    \"Ad_User_State\":\"Maharashtra\",\r\n    \"Ad_User_Mobile\":\"999999999\",\r\n    \"Ad_User_Login_Name\":\"poonam\",\r\n    \"Ad_User_Password\":\"poonam123\",\r\n    \"Ad_User_UserVal\":\"poonam12\",\r\n    \"Ad_User_Email\":\"poonam@gmail.com\",\r\n    \"Ad_User_Type\":1,\r\n    \"Ad_User_IsActive\":1,\r\n    \"Ad_User_IsDelete\":0,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/CreateUpdateUserAdminMaster",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"CreateUpdateUserAdminMaster"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserAdminMaster",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Ad_User_PkeyID\":1,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/GetUserAdminMaster",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"GetUserAdminMaster"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUpdateCollectionMaster",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"COLL_PKeyID\":1,\r\n    \"COLL_Name\":\"Sugar Clothes\",\r\n    \"COLL_Description\":\"xyz\",\r\n    \"COLL_IsActive\":1,\r\n    \"COLL_IsDelete\":0,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/CreateUpdateCollectionMaster",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"CreateUpdateCollectionMaster"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCollectionMaster",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"COLL_PKeyID\":1,\r\n     \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/GetCollectionMaster",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"GetCollectionMaster"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUpdateUserCollection",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UC_PKeyID\":1,\r\n    \"UC_Name\":\"nicky\",\r\n    \"UC_Description\":\"xyz\",\r\n    \"UC_UserID\":1,\r\n    \"UC_COLL_PKeyID\":1,\r\n    \"UC_IsActive\":1,\r\n    \"UC_IsDelete\":0,\r\n    \"UP_Show\":1,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/CreateUpdateUserCollection",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"CreateUpdateUserCollection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserCollection",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UC_PKeyID\":1,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/GetUserCollection",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"GetUserCollection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUpdateUserPost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UP_PKeyID\":1,\r\n    \"UP_ImageName\":\"flower\",\r\n    \"UP_Size\":2,\r\n    \"UP_ImagePath\":\"xyz\",\r\n    \"UP_IsFirst\":1,\r\n    \"UP_Number\":1,\r\n    \"UP_UserID\":1,\r\n    \"UP_UC_PKeyID\":1,\r\n    \"UP_COLL_PKeyID\":1,\r\n    \"UP_IsActive\":1,\r\n    \"UP_IsDelete\":0,\r\n    \"UP_Show\":1,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/CreateUpdateUserPost",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"CreateUpdateUserPost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserPost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UP_PKeyID\":1,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/GetUserPost",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"GetUserPost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUpdateUserFollowers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"FLL_PKeyID\":1,\r\n    \"FLL_My_UserID\":1,\r\n    \"FLL_UserID\":1,\r\n    \"FLL_IsAccepted\":2,\r\n    \"FLL_IsActive\":1,\r\n    \"FLL_IsDelete\":0,\r\n    \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/CreateUpdateUserFollowers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"CreateUpdateUserFollowers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserFollowers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"FLL_PKeyID\":1,\r\n      \"Type\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://apifashion.ikaart.org/api/Fashion/GetUserFollowers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "49937",
+					"path": [
+						"api",
+						"Fashion",
+						"GetUserFollowers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
