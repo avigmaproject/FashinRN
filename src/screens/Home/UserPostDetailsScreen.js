@@ -1,24 +1,27 @@
 import React from 'react'
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image ,SafeAreaView,Linking} from 'react-native'
 import UserCard from '../../components/UserCard'
 import Button from '../../components/UI/Button'
-const UserPostDetailsScreen = (props) => {
-  console.log(props.route)
-  return (
-    <View style={{ flex: 1, backgroundColor: '#593714' }}>
-      <View>
-        <Text
-          style={{
-            color: 'white',
-            alignSelf: 'center',
-            fontSize: 20,
-            marginVertical: 15
-          }}
-        >
-          Title Heading
-        </Text>
-      </View>
+const UserPostDetailsScreen = (props,{navigation}) => {
+  console.log("UserPostDetailsScreen",props.route.params)
+  React.useLayoutEffect(() => {
+    props.navigation.setOptions({
+      title:props.route.params.name.toUpperCase(),
+    });
+  }, []);
+const OpenURLButton = async( url ) => {
+Linking.canOpenURL(url).then(supported => {
+  if (!supported) {
+    alert("Check url")
+    console.log('Can\'t handle url: ' + url);
+  } else {
+    return Linking.openURL(url);
+  }
+}).catch(err => console.error('An error occurred', err));
+  }
 
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#593714' }}>
       <ScrollView
         contentContainerStyle={{
           alignSelf: 'center',
@@ -27,7 +30,7 @@ const UserPostDetailsScreen = (props) => {
           justifyContent: 'center'
         }}
       >
-        <View style={{ width: 340, alignSelf: 'center', borderRadius: 10 }}>
+        <View style={{ width: 340, alignSelf: 'center', borderRadius: 10 ,marginTop:10}}>
           <Image
             style={{
               width: 340,
@@ -49,10 +52,10 @@ const UserPostDetailsScreen = (props) => {
               alignItems: 'center'
             }}
           >
-            <Text style={{ color: 'black', fontSize: 20 }}>Name is here</Text>
+            <Text style={{ color: 'black', fontSize: 20,textTransform:"capitalize" }}> {props.route.params.description}</Text>
           </View>
         </View>
-        <View
+        {/* <View
           style={{
             marginTop: 20,
             backgroundColor: '#EBD4BD',
@@ -66,17 +69,20 @@ const UserPostDetailsScreen = (props) => {
           <Text style={{ color: 'black', fontSize: 15 }}>
             {props.route.params.productUrl}
           </Text>
-        </View>
-        <View>
+        </View> */}
+
+{props.route.params.productUrl &&(<View>
           <Button
+          onPress={()=>OpenURLButton(props.route.params.productUrl )}
             text='Go to product'
             textColor='black'
             backgroundColor='white'
             style={{ width: 340, marginTop: 20, marginBottom: 150, height: 60 }}
           />
-        </View>
+        </View>)}
+        
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 

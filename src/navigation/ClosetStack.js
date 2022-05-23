@@ -8,17 +8,11 @@ function ClosetStack() {
   return (
     <Closet.Navigator
       screenOptions={{
-        headerShadowVisible: false,
-        headerStyle: {backgroundColor: 'white'},
+        headerShown:false,
       }}>
       <Closet.Screen
         name="ClosetScreen"
         component={ClosetScreen}
-        options={({navigation}) => ({
-          headerTitle: props => <AppLogo />,
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
-        })}
       />
     </Closet.Navigator>
   );

@@ -7,7 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Platform
+  Platform,
+SafeAreaView
 } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { Toast } from "native-base"
@@ -25,25 +26,24 @@ import Button from "../../components/UI/Button"
 import { listToMatrix } from "../../shared/collectionColors"
 import { setUserCollectionItems } from "../../store/actions/profileActions"
 import { BubblesLoader } from "react-native-indicator"
-
+import FashionLogoDark from "../../assets/svgs/FashionLogoLight.svg"
 const HomeScreen = (props) => {
   const [userCollections, setUserCollections] = useState([])
+  const [searchtext, setsearchtext] = useState(null)
+  const [initaldata, setinitaldata] = useState([])
+  const [filterdata, setfilterdata] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [addItemValue, setAddItemValue] = useState("")
   const [audienceValue, setAudienceValue] = useState("public")
-  const [isLoading, setIsLoading] = useState(false)
   const [showErrorMsg, setShowErrorMsg] = useState(null)
   const dispatch = useDispatch()
   const token = useSelector((state) => state.auth.userToken)
-  const authData = useSelector((state) => state.auth)
-  // console.log(authData, 'AuthData is here');
-  // console.log(token, 'token is here');
-
   const getUserCollectionItems = useCallback(async () => {
     setIsLoading(true)
-    const data = JSON.stringify({
+    const data = {
       Type: 3
-    })
+    }
     await getUserCollection(data, token)
       .then((res) => {
         setIsLoading(false)
@@ -52,10 +52,9 @@ const HomeScreen = (props) => {
         const collectionItems = fetchedUserCollection?.map((item) => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
-        // collectionItems?.push({ label: "Add +", value: -1 })
-        console.log("getUsercollectionItems")
         setUserCollections(collectionItems)
-        dispatch(setUserCollectionItems(collectionItems))
+        setinitaldata(collectionItems)
+        setfilterdata(collectionItems)
       })
       .catch((error) => {
         setIsLoading(false)
@@ -63,66 +62,77 @@ const HomeScreen = (props) => {
       })
   })
 
-  const validation = () => {
-    let cancel = false
-    if (addItemValue.length === 0) {
-      cancel = true
-    }
+  // const validation = () => {
+  //   let cancel = false
+  //   if (addItemValue.length === 0) {
+  //     cancel = true
+  //   }
 
-    if (cancel) {
-      setShowErrorMsg("Fields can not be empty")
-      return false
-    } else {
-      return true
+  //   if (cancel) {
+  //     setShowErrorMsg("Fields can not be empty")
+  //     return false
+  //   } else {
+  //     return true
+  //   }
+  // }
+
+  // const addToUserCollection = (itemName) => {
+  //   if (validation()) {
+  //     const data = JSON.stringify({
+  //       UC_PKeyID: 0,
+  //       UC_Name: itemName,
+  //       UP_Show: audienceValue === "public" ? true : false,
+  //       Type: 1
+  //     })
+  //     console.log(data, "AddUserData")
+  //     if (addItemValue.trim() != "") {
+  //       addUserCollection(data, token)
+  //         .then((res) => {
+  //           console.log(res.data, "response is here")
+  //           setShowModal(false)
+  //           const newCollection = { label: itemName, value: res.data[0] }
+  //           console.log(newCollection)
+  //           let oldUserCollections = userCollections
+  //           oldUserCollections.pop()
+  //           const newUserCollections = oldUserCollections.concat(
+  //             newCollection,
+  //             {
+  //               label: "Add +",
+  //               value: -1
+  //             }
+  //           )
+  //           setUserCollections([...newUserCollections])
+  //           // dispatch(addUserCollectionItem({label: value, id: res.data[0]}));
+  //           setAddItemValue("")
+  //         })
+  //         .catch((err) => {
+  //           setShowModal(false)
+  //           console.log(err)
+  //           setAddItemValue("")
+  //         })
+  //     }
+  //   }
+  // }
+const searchText = (e) => {
+  setsearchtext(e)
+    let text = e.toLowerCase()
+    let trucks = filterdata
+    let inital = initaldata
+    console.log(userCollections)
+    let filteredName = trucks.filter((item) => {
+      return item.label.toLowerCase().match(text)
+    })
+    console.log("filteredName",filteredName)
+    if (!text || text === '') {
+    setUserCollections(inital)
+    } else if (Array.isArray(filteredName)) {
+          setUserCollections(filteredName)
     }
   }
-
-  const addToUserCollection = (itemName) => {
-    if (validation()) {
-      const data = JSON.stringify({
-        UC_PKeyID: 0,
-        UC_Name: itemName,
-        UP_Show: audienceValue === "public" ? true : false,
-        Type: 1
-      })
-      console.log(data, "AddUserData")
-      if (addItemValue.trim() != "") {
-        addUserCollection(data, token)
-          .then((res) => {
-            console.log(res.data, "response is here")
-            setShowModal(false)
-            const newCollection = { label: itemName, value: res.data[0] }
-            console.log(newCollection)
-            let oldUserCollections = userCollections
-            oldUserCollections.pop()
-            const newUserCollections = oldUserCollections.concat(
-              newCollection,
-              {
-                label: "Add +",
-                value: -1
-              }
-            )
-            setUserCollections([...newUserCollections])
-            // dispatch(addUserCollectionItem({label: value, id: res.data[0]}));
-            setAddItemValue("")
-          })
-          .catch((err) => {
-            setShowModal(false)
-            console.log(err)
-            setAddItemValue("")
-          })
-      }
-    }
-  }
-
-  const itemValueInputChangeHandler = (text) => {
-    setShowErrorMsg(null)
-    setAddItemValue(text)
-  }
-
   useEffect(() => {
     getUserCollectionItems()
   }, [])
+
   const onCollectionItemPressHandler = (item) => {
     console.log("presses234234")
     console.log(item)
@@ -134,13 +144,6 @@ const HomeScreen = (props) => {
       })
     }
   }
-
-  const goToUserPosts = (collectionName) => {
-    props.navigation.navigate("UserPostsScreen", {
-      collectionItem: collectionName
-    })
-  }
-
   const mapCollectionsToColors = (userCollections) => {
     if (userCollections.length > 0) {
       let colors = ["#99795B", "#AB8560", "#593714"]
@@ -169,103 +172,109 @@ const HomeScreen = (props) => {
       return []
     }
   }
+// const RenderModal = () => {return(
+//   <Modal isVisible={showModal}>
+//         <View
+//           style={{
+//             backgroundColor: "#ffffff",
+//             width: "92%",
+//             borderRadius: 10,
+//             minHeight: 220
+//           }}
+//         >
+//           <View style={{ height: 20, alignSelf: "center", marginTop: 18 }}>
+//             <Text style={{ color: "black", fontWeight: "bold" }}>
+//               Add Collection
+//             </Text>
+//           </View>
+//           <View style={{ alignSelf: "center", width: "90%" }}>
+//             <InputText
+//               style={{ marginBottom: 10, width: "100%" }}
+//               label="Add Collection"
+//               value={addItemValue}
+//               onChangeText={(text) => itemValueInputChangeHandler(text)}
+//               errorMsg={showErrorMsg}
+//             />
+//           </View>
 
+//           <View style={{ width: "100%" }}>
+//             <View
+//               style={{
+//                 width: "90%",
+//                 alignSelf: "center",
+//                 margin: 10
+//               }}
+//             >
+//               <Text style={{ color: "black" }}>Select Audience</Text>
+//             </View>
+//             <View
+//               style={{
+//                 width: "90%",
+//                 alignSelf: "center"
+//               }}
+//             >
+//               <RadioButton.Group
+//                 onValueChange={(newValue) => setAudienceValue(newValue)}
+//                 value={audienceValue}
+//               >
+//                 <View style={{ display: "flex", flexDirection: "row" }}>
+//                   <RadioButton color="#5B4025" value="followers" />
+//                   <Text style={{ color: "#5B4025", marginTop: 5 }}>
+//                     Followers
+//                   </Text>
+//                 </View>
+//                 <View
+//                   style={{
+//                     display: "flex",
+//                     flexDirection: "row",
+//                     color: "red"
+//                   }}
+//                 >
+//                   <RadioButton color="#5B4025" value="public" />
+//                   <Text style={{ color: "#5B4025", marginTop: 5 }}>Public</Text>
+//                 </View>
+//               </RadioButton.Group>
+//             </View>
+//           </View>
+
+//           <View
+//             style={{
+//               display: "flex",
+//               flexDirection: "row",
+//               justifyContent: "flex-end",
+//               margin: 15
+//             }}
+//           >
+//             <Button
+//               style={{ width: 75, height: 50 }}
+//               text="Cancel"
+//               textColor="#593714"
+//               onPress={() => setShowModal(false)}
+//             />
+//             <Button
+//               style={{ width: 75, height: 50 }}
+//               text="Add"
+//               backgroundColor="#5B4025"
+//               onPress={() => addToUserCollection(addItemValue)}
+//             />
+//           </View>
+//         </View>
+//       </Modal>
+// )}
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         alignItems: "center",
         backgroundColor: "white",
-        paddingTop: Platform.OS === "ios" ? 20 : 0
       }}
     >
-      <Modal isVisible={showModal}>
-        <View
-          style={{
-            backgroundColor: "#ffffff",
-            width: "92%",
-            borderRadius: 10,
-            minHeight: 220
-          }}
-        >
-          <View style={{ height: 20, alignSelf: "center", marginTop: 18 }}>
-            <Text style={{ color: "black", fontWeight: "bold" }}>
-              Add Collection
-            </Text>
-          </View>
-          <View style={{ alignSelf: "center", width: "90%" }}>
-            <InputText
-              style={{ marginBottom: 10, width: "100%" }}
-              label="Add Collection"
-              value={addItemValue}
-              onChangeText={(text) => itemValueInputChangeHandler(text)}
-              errorMsg={showErrorMsg}
-            />
-          </View>
-
-          <View style={{ width: "100%" }}>
-            <View
-              style={{
-                width: "90%",
-                alignSelf: "center",
-                margin: 10
-              }}
-            >
-              <Text style={{ color: "black" }}>Select Audience</Text>
-            </View>
-            <View
-              style={{
-                width: "90%",
-                alignSelf: "center"
-              }}
-            >
-              <RadioButton.Group
-                onValueChange={(newValue) => setAudienceValue(newValue)}
-                value={audienceValue}
-              >
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <RadioButton color="#5B4025" value="followers" />
-                  <Text style={{ color: "#5B4025", marginTop: 5 }}>
-                    Followers
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    color: "red"
-                  }}
-                >
-                  <RadioButton color="#5B4025" value="public" />
-                  <Text style={{ color: "#5B4025", marginTop: 5 }}>Public</Text>
-                </View>
-              </RadioButton.Group>
-            </View>
-          </View>
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              margin: 15
-            }}
-          >
-            <Button
-              style={{ width: 75, height: 50 }}
-              text="Cancel"
-              textColor="#593714"
-              onPress={() => setShowModal(false)}
-            />
-            <Button
-              style={{ width: 75, height: 50 }}
-              text="Add"
-              backgroundColor="#5B4025"
-              onPress={() => addToUserCollection(addItemValue)}
-            />
-          </View>
-        </View>
-      </Modal>
+      <Image
+        style={{width: 350, height: 100,marginTop:10}}
+        resizeMode="cover"
+        source={require('../../assets/users/fashINLogoLIght.png')}
+        alt="logo"
+      />
       <View style={styles.sectionStyle}>
         <TextInput
           style={{
@@ -280,6 +289,8 @@ const HomeScreen = (props) => {
           placeholder="Search Here"
           placeholderTextColor="#5B4025"
           underlineColorAndroid="transparent"
+          onChangeText={(search)=>searchText(search)}
+          value={searchtext}
         />
         <View style={{ backgroundColor: "#CDAF90", marginRight: 10 }}>
           <Ionicons name="search" size={25} color="#593714" />
@@ -308,7 +319,7 @@ const HomeScreen = (props) => {
             flexWrap: "wrap"
           }}
         >
-          {!isLoading ? (
+          {!isLoading && userCollections? (
             mapCollectionsToColors(userCollections)
           ) : (
             <View
@@ -326,8 +337,9 @@ const HomeScreen = (props) => {
             <Logout />
           </View>
         </View>
+        {/* {RenderModal()} */}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 

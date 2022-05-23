@@ -25,18 +25,16 @@ const { store, persistor } = reduxStore()
 
 const App = () => {
   let isSignOut = useSelector((state) => state.auth.isSignout)
-  // isSignOut = false;
-
   useEffect(() => {
     SplashScreen.hide()
   }, [])
 
   return (
     <NavigationContainer>
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#593714' }}>
+      {/* <SafeAreaView> */}
         <NativeBaseProvider>
           <StatusBar animated={true} backgroundColor='#593714' />
-          <View
+          {/* <View
             style={{
               alignSelf: 'center',
               backgroundColor: 'white',
@@ -46,12 +44,12 @@ const App = () => {
             }}
           >
             {isSignOut && <AppLogo />}
-          </View>
+          </View> */}
 
           {!isSignOut ? <MyTabs /> : <AuthNavigation />}
           {/* <AuthNavigation /> */}
         </NativeBaseProvider>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
     </NavigationContainer>
   )
 }

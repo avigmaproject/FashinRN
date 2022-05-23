@@ -10,7 +10,7 @@ const profileReducer = (state = initialState, action) => {
       const items = action.dropdownItems
       return {
         ...state,
-        dropdownData: items.reverse()
+        dropdownData: items
       }
     }
     case "ADD_COLLECTION_ITEM": {
@@ -39,7 +39,7 @@ const profileReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        dropdownData: newUserCollections.reverse()
+        dropdownData: newUserCollections
       }
     }
 

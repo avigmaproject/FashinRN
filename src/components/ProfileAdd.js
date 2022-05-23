@@ -4,55 +4,51 @@ import Icon from './UI/Icon';
 import User from '../assets/svgs/user.svg';
 const ProfileAdd = props => {
   return (
+<>
     <View
       style={{
-        display: 'flex',
+        // display: 'flex',
         flexDirection: 'row',
-        width: '86%',
-        borderColor: '#D7C7B6',
-        borderWidth: 1,
+        width: '90%',
+        // borderColor: '#D7C7B6',
+        // borderWidth: 1,
         height: 70,
-        borderRadius: 8,
+        // borderRadius: 8,
         alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: '#593714',
+        justifyContent: "flex-start",
+        // backgroundColor: '#593714',
       }}>
       <View
         style={{
-          width: '85%',
+          width: '20%',
           height: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          borderRadius: 10,
-          backgroundColor: '#593714',
+          backgroundColor: '#593714',justifyContent:"center",alignItems:"center"
         }}>
         <Image
           style={{
-            width: '20%',
-            height: '92%',
-            alignSelf: 'center',
-            marginLeft: 3,
-            marginVertical: 5,
+            width: '80%',
+            height: '80%',            
             borderRadius: 3,
           }}
-          resizeMode="contain"
-          source={require('../assets/profile/dp.jpg')}
+          source={{uri :props.photo}}
           alt="logo"
         />
-        <Text style={{alignSelf: 'center', color: 'white', margin: 10}}>
-          {' '}
-          Loreal Mekondata{' '}
-        </Text>
+       
       </View>
-      <View
+ <View style={{backgroundColor:"#AB8560", width: '60%',justifyContent:"center",alignItems:"center",
+          height: '60%',}}><Text style={{alignSelf: 'center', color: '#D7C7B6',textTransform:"capitalize",fontSize:25}}>
+          {"Profile"}
+        </Text></View>
+
+      {/* <View
         style={{
           width: '12%',
           backgroundColor: '#EBD4BD',
           height: '60%',
           borderRadius: 5,
           marginRight: 5,
-        }}>
-        <View
+        }}> */}
+        {/* <View
           style={{
             marginTop: 8,
             alignItems: 'center',
@@ -61,9 +57,14 @@ const ProfileAdd = props => {
           <Icon style={{margin: 0}}>
             <User />
           </Icon>
-        </View>
-      </View>
+        </View> */}
+      {/* </View> */}
     </View>
+<View style={{justifyContent:"center",alignItems:"center",
+         }}><Text style={{alignSelf: 'center', color: '#AB8560',textTransform:"capitalize",fontSize:25}}>
+          {props.name}
+        </Text></View>
+</>
   );
 };
 

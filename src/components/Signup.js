@@ -17,6 +17,7 @@ import SpinnerBackdrop from './UI/SpinnerBackdrop';
 import {checkValidity} from '../shared/utility';
 import {register} from '../services/api.fuctions';
 import SocialMedia from './SocialMedia';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Signup = props => {
   // const isLoading = useSelector(state => {
@@ -173,6 +174,7 @@ const Signup = props => {
   };
 
   return (
+<SafeAreaView>
     <ScrollView contentContainerStyle={styles.container}>
       <SpinnerBackdrop showModal={showModal} />
       <View style={styles.form_container}>
@@ -273,6 +275,7 @@ const Signup = props => {
         <SocialMedia containerStyle={{...props.containerStyle}} />
       </View>
     </ScrollView>
+</SafeAreaView>
   );
 };
 

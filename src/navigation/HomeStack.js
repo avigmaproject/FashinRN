@@ -11,8 +11,9 @@ import HomeScreen from '../screens/Home/HomeScreen';
 import UserPostsScreen from '../screens/Home/UserPostsScreen';
 import UserPostDetailsScreen from '../screens/Home/UserPostDetailsScreen';
 import AppLogo from '../components/AppLogo';
-// import FashionLogoLight from '../assets/svgs/FashionLogoLight.svg';
+import FashionLogoLight from '../assets/svgs/FashionLogoLight.svg';
 const Home = createNativeStackNavigator();
+import BackButton from '../components/UI/BackButton';
 
 function HomeStack() {
   return (
@@ -26,32 +27,63 @@ function HomeStack() {
         name="Home"
         component={HomeScreen}
         options={({navigation}) => ({
-          headerTitle: props => <AppLogo />,
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
+          // headerTitle: props => <FashionLogoLight height={100} width={100} />,
+          // headerTitleAlign: 'center',
+          // headerShadowVisible: false,
+          headerShown: false,
         })}
       />
-      <Home.Screen
+  <Home.Screen
         name="UserPostsScreen"
         component={UserPostsScreen}
-        options={({navigation}) => ({
-          headerTitle: props => <AppLogo />,
-          headerTitleAlign: 'center',
+        options={({navigation,props}) => ({
+           headerTitle: null,
+          headerTitleAlign: 'center',  
+          headerTitleStyle:{color:"#593714",fontSize:20,fontWeight:"bold"},
+          headerTitleAlign: 'center',  
           headerShadowVisible: false,
+          headerLeft: () => (
+            <BackButton {...props} onPress={() => navigation.goBack()} />
+          ),
         })}
       />
       <Home.Screen
         name="UserPostDetailsScreen"
         component={UserPostDetailsScreen}
-        options={({navigation}) => ({
-          headerTitle: props => <AppLogo />,
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
+        options={({navigation,props}) => ({
           headerStyle: {backgroundColor: '#593714'},
+          headerTitle: null,
+          headerTitleAlign: 'center',  
+          headerShadowVisible: false,
+          headerTitleStyle:{color:"#AB8560",fontSize:20,fontWeight:"bold"},
+          headerLeft: () => (
+            <BackButton {...props} backgroundColor={"#AB8560"} onPress={() => navigation.goBack()} />
+          ),
         })}
       />
+    
     </Home.Navigator>
   );
 }
 
 export default HomeStack;
+  // <Home.Screen
+  //       name="UserPostsScreen"
+  //       component={UserPostsScreen}
+  //       options={({navigation}) => ({
+  //         headerTitle: props => <AppLogo />,
+  //         headerTitleAlign: 'center',
+  //         headerShadowVisible: false,
+  //       })}
+  //     />
+  //     <Home.Screen
+  //       name="UserPostDetailsScreen"
+  //       component={UserPostDetailsScreen}
+  //       options={props => ({
+  //         headerTitleAlign: 'center',
+  //         headerShadowVisible: false,
+  //         headerLeft: () => (
+  //           <BackButton {...props} onPress={() => props.navigation.goBack()} />
+  //         ),
+  //       })}
+  //     />

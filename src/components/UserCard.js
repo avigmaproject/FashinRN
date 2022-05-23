@@ -6,16 +6,18 @@ const UserCard = (props) => {
   // console.log(props.source);
   return (
     <View style={{ marginBottom: 20 }}>
-      <View style={styles.imageContainer}>
+      <TouchableOpacity
+      onPress={props.onpress1}
+      style={styles.imageContainer}>
         <Image
           style={{ width: 340, height: 340, borderRadius: 5 }}
           source={props.source}
           resizeMode="cover"
         />
-      </View>
+      </TouchableOpacity>
       <View style={styles.cardFooter}>
-        <Text style={{ color: "black", margin: 15, fontSize: 16 }}>
-          {props.label ? props.label : "Hello"}
+        <Text style={{ color: "black", margin: 15, fontSize: 16,textTransform:"capitalize" ,fontWeight:"400"}}>
+          {props.label }
         </Text>
       </View>
 

@@ -14,9 +14,8 @@ const BackButton = props => {
           ? props.backgroundColor
           : '#523D1C',
         borderRadius: 5,
-        display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         ...props.style,
       }}>
       <View style={{marginBottom: 1}}>

@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 #import <Firebase.h>
 #import "RNSplashScreen.h"  // for splash screen
+#import <React/RCTLinkingManager.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -32,6 +33,7 @@ static void InitializeFlipper(UIApplication *application) {
   if ([FIRApp defaultApp] == nil) {
      [FIRApp configure];
    }
+  
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
@@ -55,7 +57,12 @@ static void InitializeFlipper(UIApplication *application) {
   [RNSplashScreen show];  // for splash screen
   return YES;
 }
-
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG

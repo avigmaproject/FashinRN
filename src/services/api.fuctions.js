@@ -59,16 +59,16 @@ export const resetpassword = async (data) => {
 }
 
 export const getUserPost = async (data, access_token) => {
+console.log("getUserPost,data, access_token",data, access_token)
   return axios(`${API.GET_USER_POST}`, {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + access_token
     },
-    data: data
+    data
   })
     .then((response) => {
-      // console.log(response);
       return response
     })
     .catch((error) => {
@@ -94,7 +94,7 @@ export const getUserCollection = async (data, access_token) => {
 }
 
 export const addUserCollection = async (data, access_token) => {
-  return axios(`${API.ADD_USER_COLLECTION}`, {
+  return axios(`${API.CREATE_UPDATE_USER_FAVORITE}`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -179,6 +179,21 @@ export const createUpdateUserFavorite = async (data, access_token) => {
     data: data
   })
     .then((response) => response.data)
+    .catch((error) => {
+      throw error
+    })
+}
+export const getuserfavorite = async (data, access_token) => {
+  console.log("GET_USER_FAVORITE", data, access_token)
+  return axios(API.GET_USER_FAVORITE, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + access_token
+    },
+    data
+  })
+    .then((response) => response)
     .catch((error) => {
       throw error
     })

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Platform } from 'react-native'
+
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Login from '../screens/Auth/LoginScreen';
 import Signup from '../components/Signup';
@@ -17,12 +19,14 @@ const LoginNavigation = () => {
         tabBarStyle: {
           backgroundColor: '#CDAF90',
           elevation: 0,
+          marginTop:Platform.OS === "ios" ?  50 :0
         },
         tabBarActiveTintColor: '#ffffff',
         tabBarInactiveTintColor: '#5B4025',
         tabBarContentContainerStyle: {
           justifyContent: 'center',
           alignItems: 'center',
+// marginTop:40
         },
         tabBarIndicatorStyle: {
           backgroundColor: '#5B4025',

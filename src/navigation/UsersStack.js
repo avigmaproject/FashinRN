@@ -8,17 +8,11 @@ function UsersStack() {
   return (
     <Users.Navigator
       screenOptions={{
-        headerShadowVisible: false,
-        headerStyle: {backgroundColor: '#593714'},
+        headerShown:false,
       }}>
       <Users.Screen
         name="Users"
         component={UsersScreen}
-        options={({navigation}) => ({
-          headerTitle: props => <AppLogo />,
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
-        })}
       />
     </Users.Navigator>
   );

@@ -8,11 +8,12 @@ import {
   StyleSheet,
   ScrollView,
   FlatList,
+  Touchable,
+  TouchableOpacity,
 } from 'react-native';
 
 const ProfileImages = props => {
   // const imagesPaths = useSelector(state => state.profile.imagesPath);
-  // console.log(allImages, 'images');
   // console.log(props.allImages);
   return (
     <ScrollView
@@ -37,7 +38,13 @@ const ProfileImages = props => {
         })} */}
         {props.allImages?.map(item => {
           return (
-            <View style={styles.imageStyle} key={item.id}>
+            <TouchableOpacity
+           onPress={()=>{ props.navigation.navigate("UserPostDetailsScreen", {
+            imageUri: item.url,
+            productUrl:item.product_url,description:item.description,
+            name:item.description
+             })}}
+              style={styles.imageStyle} key={item.id}>
               <Image
                 style={styles.imageStyles}
                 resizeMode="cover"
@@ -46,7 +53,7 @@ const ProfileImages = props => {
                 }}
                 alt="logo"
               />
-            </View>
+            </TouchableOpacity>
           );
         })}
       </View>

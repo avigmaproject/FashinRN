@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text,SafeAreaView} from 'react-native';
 import Signup from '../../components/Signup';
 import AddProfile from './AddProfile';
 
 function SettingScreen(props) {
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <AddProfile {...props} />
-    </View>
+    </SafeAreaView>
   );
 }
 

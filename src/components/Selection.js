@@ -17,12 +17,8 @@ const Selection = (props) => {
   const [addItemValue, setAddItemValue] = useState("")
   const [showErrorMsg, setShowErrorMsg] = useState(null)
 
-  const dropDownData = useSelector((state) => state.profile.dropdownData)
-  // console.log(dropDownData.reverse(), 'reverse........');
+  // const dropDownData = useSelector((state) => state.profile.dropdownData)
   const token = useSelector((state) => state.auth.userToken)
-  // console.log(token, 'token is here selection');
-
-  // console.log(dropDownData, 'Selection');
   const dispatch = useDispatch()
   const itemValueInputChangeHandler = (text) => {
     setShowErrorMsg(null)
@@ -36,7 +32,6 @@ const Selection = (props) => {
     }
 
     if (cancel) {
-      // showerrorMessage('Fields can not be empty');
       setShowErrorMsg("Fields can not be empty")
       return false
     } else {
@@ -44,12 +39,16 @@ const Selection = (props) => {
     }
   }
 
-  const addToUserCollection = (itemName) => {
-    console.log("addToUserCollection", itemName)
+  const addToUserFav = (itemName) => {
+    console.log("addToUserFav", itemName, props.sid)
     if (validation()) {
       const data = {
+        UF_UC_PKeyID: 0,
+        UF_UP_PKeyID: props.sid,
+        Type: 1,
         UC_Name: itemName,
-        Type: 1
+        UF_IsDelete: 0,
+        UF_Closet_Spotlight: props.spotlight ? 2 : 1
       }
       console.log("data", data)
       if (addItemValue.trim() != "") {
@@ -57,11 +56,6 @@ const Selection = (props) => {
           .then((res) => {
             console.log(res.data)
             setShowModal(false)
-            dispatch(
-              addUserCollectionItem({ label: itemName, value: res.data[0] })
-            )
-            setValue(res.data[0])
-            setAddItemValue("")
           })
           .catch((err) => {
             setShowModal(false)
@@ -136,7 +130,7 @@ const Selection = (props) => {
               style={{ width: 75, height: 50 }}
               text="Add"
               backgroundColor="#5B4025"
-              onPress={() => addToUserCollection(addItemValue)}
+              onPress={() => addToUserFav(addItemValue)}
             />
           </View>
         </View>
@@ -151,7 +145,7 @@ const Selection = (props) => {
         activeColor="#AB8560"
         showsVerticalScrollIndicator={false}
         iconColor="#593714"
-        data={dropDownData.reverse()}
+        data={props.data}
         autoScroll
         dropdownPosition="bottom"
         search

@@ -46,54 +46,7 @@ export function ButtonAdd(props) {
     </View>
   );
 }
-
-const TabButton = props => {
-  return (
-    <TouchableOpacity
-      {...props}
-      style={{
-        width: 60,
-        height: 60,
-        borderRadius: 45,
-        backgroundColor: 'red',
-        // borderWidth: 1,
-        elevation: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 5,
-        marginHorizontal: 10,
-        ...props.style,
-      }}>
-      <View>{props.children}</View>
-    </TouchableOpacity>
-  );
-};
-
-const TabButtonUser = props => {
-  return (
-    <TouchableOpacity
-      {...props}
-      style={{
-        width: 65,
-        height: 60,
-        borderRadius: 45,
-        backgroundColor: '#CDAF90',
-        // borderWidth: 1,
-        elevation: 0,
-        alignItems: 'center',
-        alignSelf: 'center',
-        marginBottom: 5,
-        marginHorizontal: 10,
-        ...props.style,
-      }}>
-      <View>{props.children}</View>
-    </TouchableOpacity>
-  );
-};
-
 const Tab = createBottomTabNavigator();
-
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -106,7 +59,6 @@ function MyTabs() {
           position: 'absolute',
           elevation: 0,
         },
-
         tabBarShowLabel: false,
         headerShown: false,
         tabBarHideOnKeyboard: true,
@@ -118,13 +70,12 @@ function MyTabs() {
           tabBarItemStyle: {borderRadius: 40},
           tabBarIcon: ({focused}) =>
             focused ? (
-              <Ionicons name="home" size={25} color="#593714" />
+              <Ionicons name="home" size={25} color="#593714"  style={{  paddingTop:15}}/>
             ) : (
-              <Ionicons name="home-outline" size={25} color="#593714" />
+              <Ionicons name="home-outline" size={25} color="#593714" style={{  paddingTop:15}} />
             ),
         }}
       />
-
       <Tab.Screen
         name="UsersStack"
         component={UsersStack}
@@ -133,9 +84,9 @@ function MyTabs() {
           tabBarIconStyle: {width: 35},
           tabBarIcon: ({focused}) =>
             focused ? (
-              <Ionicons name="people" size={28} color="#593714" />
+              <Ionicons name="people" size={28} color="#593714" style={{  paddingTop:15}} />
             ) : (
-              <Ionicons name="people-outline" size={28} color="#593714" />
+              <Ionicons name="people-outline" size={28} color="#593714"  style={{  paddingTop:15}}/>
             ),
         }}
       />
@@ -161,7 +112,7 @@ function MyTabs() {
         name="ClosetStack"
         component={ClosetStack}
         options={{
-          tabBarItemStyle: {borderRadius: 40, width: 40},
+          tabBarItemStyle: {borderRadius: 40, width: 40, paddingTop:15},
           tabBarIcon: ({focused}) =>
             focused ? <HangerDark width="27" /> : <Hanger width="30" />,
         }}
@@ -172,9 +123,9 @@ function MyTabs() {
         options={{
           tabBarIcon: ({focused}) =>
             focused ? (
-              <FontAwesome name="user" size={30} color="#593714" />
+              <FontAwesome name="user" size={30} color="#593714" style={{  paddingTop:15}} />
             ) : (
-              <FontAwesome name="user-o" size={25} color="#593714" />
+              <FontAwesome name="user-o" size={25} color="#593714"  style={{  paddingTop:15}}/>
             ),
         }}
       />

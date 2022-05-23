@@ -9,7 +9,8 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Platform
+  Platform,
+SafeAreaView
 } from "react-native"
 import { FAB } from "react-native-paper"
 import { Select, Toast, Box } from "native-base"
@@ -23,11 +24,12 @@ import { verifyEmail } from "../../shared/miscellaneous"
 import HeaderBack from "../../components/UI/BackButton"
 import InputText from "../../components/UI/InputText"
 import Button from "../../components/UI/Button"
-import { uploadimage, createUpdateUserPost } from "../../services/api.fuctions"
+import { uploadimage, createUpdateUserPost,getUserCollection } from "../../services/api.fuctions"
 import { checkValidity } from "../../shared/utility"
 // import DropDown from '../../../../components/DropDown';
 import Selection from "../../components/Selection"
 import CheckBox from "@react-native-community/checkbox"
+import { setUserCollectionItems } from "../../store/actions/profileActions"
 
 const options = [
   "Cancel",
@@ -67,7 +69,15 @@ class AddCollectionSpotlight extends Component {
       validationErrorMsg: ""
     },
     isSpotlight: false,
-    isClosetFalse: false
+    isClosetFalse: false,
+    userCollections:[],
+    selectedItem:{},
+    value:null,
+    isFocus:false,
+    showModal:false,
+    addItemValue:"",
+    showErrorMsg:null,
+    isLoading:false,
   }
 
   inputChangeHandler = (inputName, text) => {
@@ -80,11 +90,32 @@ class AddCollectionSpotlight extends Component {
   }
 
   dropDownSelectHandler = (item) => {
+const {token} =this.props
     this.setState({
       targetCollectionItem: item
     })
   }
-
+  getUserCollectionItems = async () => {
+    const {token} =this.props
+    const data = {
+      Type: 3
+    }
+    console.log(data, token)
+    await getUserCollection(data, token)
+      .then((res) => {
+        console.log("getUserCollection with type 444", res)
+        const fetchedUserCollection = res
+        console.log(res, token, "ProfileScreen getUserCollection")
+        const collectionItems = fetchedUserCollection?.map((item) => {
+          return { label: item.UC_Name, value: item.UC_PKeyID }
+        })
+        this.setState({userCollections:collectionItems})
+        console.log("getUsercollectionItems", collectionItems)
+      })
+      .catch((error) => {
+        console.log(error, "getUserCollection")
+      })
+  }
   checkValidityHandler = (value, rules, inputName) => {
     let { isValid, errorMsg } = checkValidity(value, rules)
     if (!isValid) {
@@ -113,31 +144,30 @@ class AddCollectionSpotlight extends Component {
 
   componentDidMount() {
     const { navigation } = this.props
-
-    console.log(this.props.auth.userToken, "in Did Mount")
+    this.getUserCollectionItems()
   }
 
   componentWillUnmount() {
     console.log("in WillUnmount")
   }
 
-  Validation = () => {
-    let cancel = false
-    const { name, email, imagepath } = this.state
-    if (name.length === 0) {
-      cancel = true
-    }
-    if (email.length === 0) {
-      cancel = true
-    }
+  // Validation = () => {
+  //   let cancel = false
+  //   const { name, email, imagepath } = this.state
+  //   if (name.length === 0) {
+  //     cancel = true
+  //   }
+  //   if (email.length === 0) {
+  //     cancel = true
+  //   }
 
-    if (cancel) {
-      this.showerrorMessage("Fields can not be empty")
-      return false
-    } else {
-      return true
-    }
-  }
+  //   if (cancel) {
+  //     this.showerrorMessage("Fields can not be empty")
+  //     return false
+  //   } else {
+  //     return true
+  //   }
+  // }
 
   ImageValidation = () => {
     let cancel = false
@@ -167,26 +197,36 @@ class AddCollectionSpotlight extends Component {
 
   checkOverallFormValidity = () => {
     let invalid = false
-    if (
-      this.state.collectionName.value.trim() === "" &&
-      this.state.link.value.trim() === ""
-    ) {
+    if (this.state.link.value.trim() === "" ) {
       invalid = true
+
     }
+
     if (invalid) {
-      this.showerrorMessage("Please provide both colletion name and link")
+      this.showerrorMessage("Please provide purchase link.")
       return false
     } else {
       return true
     }
   }
-
+checkUrlformate = () => {
+ let invalid = false
+let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
+  invalid = regex.test(this.state.link.value)
+    if (!invalid) {
+      this.showerrorMessage("Please check url formate.")
+      return false
+    } else {
+      return true
+    }
+  }
   createUserPost = async () => {
     const { imagepath } = this.state
+
     if (
       this.ImageValidation() &&
-      this.checkboxValidation() &&
-      this.checkOverallFormValidity()
+      this.checkboxValidation() 
+      // this.checkOverallFormValidity() && this.checkUrlformate()
     ) {
       this.setState({
         loading: true
@@ -210,7 +250,7 @@ class AddCollectionSpotlight extends Component {
       try {
         console.log(data, "profile")
 
-        const res = await createUpdateUserPost(data, this.props.auth.userToken)
+        const res = await createUpdateUserPost(data, this.props.token)
         console.log("ProfileRes:", res)
         if (!res) {
           this.showerrorMessage("Failed to add!")
@@ -359,8 +399,8 @@ class AddCollectionSpotlight extends Component {
     })
     console.log("base64" + base64)
     try {
-      console.log(this.props.auth.userToken, "in upload image")
-      const res = await uploadimage(data, this.props.auth.userToken)
+      console.log(this.props.token, "in upload image")
+      const res = await uploadimage(data, this.props.token)
       console.log(res[0].Image_Path, "resssss")
 
       this.setState({
@@ -379,10 +419,17 @@ class AddCollectionSpotlight extends Component {
   }
 
   render() {
-    console.log("in render")
     return (
-      <View style={{ flex: 1, backgroundColor: "#593714" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#593714",}}>
         <SpinnerBackdrop showModal={this.state.loading} />
+       <View style={{justifyContent:"center",alignItems:"center"}}>
+        <Image
+        style={{width: 250, height: 100,marginVertical:10}}
+        resizeMode="stretch"
+        source={require('../../assets/users/fashINLogoDark.png')}
+        alt="logo"
+      />
+      </View>
         <ScrollView
           style={{
             width: "100%",
@@ -417,7 +464,7 @@ class AddCollectionSpotlight extends Component {
                 left: Dimensions.get("window").width / 1.5,
                 backgroundColor: "white"
               }}
-              onPress={() => this.onOpenImage()}
+              onPress={() => this.onPress()}
             />
           </View>
 
@@ -431,7 +478,7 @@ class AddCollectionSpotlight extends Component {
             options={options}
             cancelButtonIndex={0}
             destructiveButtonIndex={4}
-            useNativeDriver={true}
+            // useNativeDriver={true}
             onPress={(index) => {
               if (index === 0) {
                 // cancel action
@@ -446,14 +493,16 @@ class AddCollectionSpotlight extends Component {
           <View style={styles.form_container}>
             <View style={styles.checkboxContainer}>
               <CheckBox
-                tintColors={{ true: "#CDAF90", false: "#CDAF90" }}
+                tintColors={{ true: "#CDAF90", false: "gray" }}
                 value={this.state.isSpotlight}
                 boxType="square"
                 onCheckColor="#CDAF90"
                 onTintColor="#CDAF90"
                 onValueChange={() => {
                   this.setState((prev) => ({
-                    isSpotlight: !prev.isSpotlight
+                    isSpotlight: !prev.isSpotlight,
+                    isCloset: false,
+
                   }))
                 }}
                 style={styles.checkbox}
@@ -469,7 +518,8 @@ class AddCollectionSpotlight extends Component {
                 boxType="square"
                 onValueChange={() =>
                   this.setState((prev) => ({
-                    isCloset: !prev.isCloset
+                    isCloset: !prev.isCloset,
+                  isSpotlight:false,
                   }))
                 }
                 style={styles.checkbox}
@@ -478,16 +528,17 @@ class AddCollectionSpotlight extends Component {
             </View>
             {this.state.isCloset ? (
               <Selection
+                data={this.state.userCollections}
                 changeHandler={this.dropDownSelectHandler}
                 style={{ width: "100%", alignSelf: "center" }}
               />
             ) : null}
             <InputText
-              label="Collection Name"
+              label="Post name"
               onChangeText={(text) =>
                 this.inputChangeHandler("collectionName", text)
               }
-              placeholder="Enter your collection name"
+              placeholder="Enter your post name"
               value={this.state.collectionName.value}
               errorMsg={this.state.collectionName.validationErrorMsg}
               onBlur={() => {
@@ -498,7 +549,7 @@ class AddCollectionSpotlight extends Component {
                 )
               }}
             />
-            {!this.state.isCloset && (
+            {this.state.isSpotlight ? (
               <InputText
                 label="From Where to Purchase"
                 onChangeText={(text) => this.inputChangeHandler("link", text)}
@@ -513,7 +564,7 @@ class AddCollectionSpotlight extends Component {
                   )
                 }}
               />
-            )}
+            ):null}
 
             <View
               style={{
@@ -531,7 +582,7 @@ class AddCollectionSpotlight extends Component {
             </View>
           </View>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -573,8 +624,11 @@ const styles = StyleSheet.create({
   }
 })
 
-function mapStateToProps(state) {
-  return { auth: state.auth }
-}
+const mapStateToProps = (state, ownProps) => ({
+  token: state.auth.userToken,
+});
 
-export default connect(mapStateToProps, {})(AddCollectionSpotlight)
+const mapDispatchToProps = {
+  setUserCollectionItems
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AddCollectionSpotlight);

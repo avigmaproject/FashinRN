@@ -15,17 +15,12 @@ const NewCollection = createNativeStackNavigator();
 
 function NewCollectionStack() {
   return (
-    <NewCollection.Navigator>
+    <NewCollection.Navigator  screenOptions={{
+        headerShown:false,
+      }}>
       <NewCollection.Screen
         name="AddCollectionsSpotlight"
         component={AddCollectionsSpotlightScreen}
-        options={props => ({
-          headerTitleAlign: 'center',
-          headerStyle: {backgroundColor: '#593714', color: 'white'},
-          headerTintColor: 'white',
-          headerShadowVisible: false,
-          headerTitle: props => <AppLogo {...props} />,
-        })}
       />
     </NewCollection.Navigator>
   );

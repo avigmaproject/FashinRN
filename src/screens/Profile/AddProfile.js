@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from "react"
+import { connect } from "react-redux"
 import {
   ScrollView,
   StatusBar,
@@ -7,368 +7,374 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
-} from 'react-native';
-import {FAB} from 'react-native-paper';
-import {Select, Toast} from 'native-base';
-import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
-import {ActionSheetCustom as ActionSheet} from 'react-native-actionsheet';
-import ImagePicker from 'react-native-image-crop-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {verifyEmail} from '../../shared/miscellaneous';
+  TouchableOpacity
+} from "react-native"
+import { FAB } from "react-native-paper"
+import { Select, Toast } from "native-base"
+import SpinnerBackdrop from "../../components/UI/SpinnerBackdrop"
+import { ActionSheetCustom as ActionSheet } from "react-native-actionsheet"
+import ImagePicker from "react-native-image-crop-picker"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
+import { verifyEmail } from "../../shared/miscellaneous"
 // import HeaderBack from '../../../../components/HeaderBack';
-import HeaderBack from '../../components/UI/BackButton';
-import InputText from '../../components/UI/InputText';
-import Button from '../../components/UI/Button';
+import HeaderBack from "../../components/UI/BackButton"
+import InputText from "../../components/UI/InputText"
+import Button from "../../components/UI/Button"
 import {
   uploadimage,
   addprofile,
-  userprofile,
-} from '../../services/api.fuctions';
-import {checkValidity} from '../../shared/utility';
+  userprofile
+} from "../../services/api.fuctions"
+import { checkValidity } from "../../shared/utility"
+import { SafeAreaView } from "react-native-safe-area-context"
 // import DropDown from '../../../../components/DropDown';
 
 const options = [
-  'Cancel',
+  "Cancel",
   <View>
-    <Text style={{color: 'black'}}>Gallery</Text>
+    <Text style={{ color: "black" }}>Gallery</Text>
   </View>,
   <View>
-    <Text style={{color: 'black'}}>Camera</Text>
-  </View>,
-];
+    <Text style={{ color: "black" }}>Camera</Text>
+  </View>
+]
 
 class AddProfilePage extends Component {
   state = {
     data: [],
-    photo: '',
+    photo: "",
     loading: false,
-    base64: '',
-    filename: 'image',
-    imagepath: '',
+    base64: "",
+    filename: "image",
+    imagepath: "",
     value: null,
     items: [],
     firstName: {
-      value: '',
+      value: "",
       isItValid: false,
       rules: {
-        required: true,
+        required: true
       },
-      validationErrorMsg: '',
+      validationErrorMsg: ""
     },
     lastName: {
-      value: '',
+      value: "",
       isItValid: false,
       rules: {
-        required: true,
+        required: true
       },
-      validationErrorMsg: '',
+      validationErrorMsg: ""
     },
     email: {
-      value: '',
+      value: "",
       isItValid: false,
       rules: {
         required: true,
-        isEmail: true,
+        isEmail: true
       },
-      validationErrorMsg: '',
+      validationErrorMsg: ""
     },
     password: {
-      value: '',
+      value: "",
       isItValid: false,
       rules: {
         required: true,
-        minLength: 8,
+        minLength: 8
       },
-      validationErrorMsg: '',
+      validationErrorMsg: ""
     },
     confirmPassword: {
-      value: '',
+      value: "",
       isItValid: false,
       rules: {
-        required: true,
+        required: true
       },
-      validationErrorMsg: '',
+      validationErrorMsg: ""
     },
-    isFormValid: true,
-  };
+    isFormValid: true
+  }
 
-  capitalize = s => {
-    return s[0].toUpperCase() + s.slice(1);
-  };
+  capitalize = (s) => {
+    return s[0].toUpperCase() + s.slice(1)
+  }
 
   inputChangeHandler = (inputName, text) => {
-    this.setState(previousState => ({
+    this.setState((previousState) => ({
       [inputName]: {
         ...previousState[inputName],
-        value: text,
-      },
-    }));
-    if (inputName === 'password') {
-      this.checkValidityHandler(text, this.state[inputName].rules, inputName);
+        value: text
+      }
+    }))
+    if (inputName === "password") {
+      this.checkValidityHandler(text, this.state[inputName].rules, inputName)
     }
-    if (inputName === 'confirmPassword') {
-      console.log('Here.....');
-      if (this.state[inputName].value != this.state.password.value) {
-        this.setState(previousState => ({
-          [inputName]: {
-            ...previousState[inputName],
-            validationErrorMsg: 'Password do not match',
-            isItValid: false,
-          },
-        }));
-        this.checkOverallFormValidity();
-        // value.trim() !== ''
-        if (this.state[inputName].value.trim() === '') {
-          this.setState(previousState => ({
+    if (inputName === "confirmPassword") {
+ if (this.state[inputName].value === "") {
+          this.setState((previousState) => ({
             [inputName]: {
               ...previousState[inputName],
-              validationErrorMsg: 'Confirm password',
-              isItValid: false,
-            },
-          }));
-          this.checkOverallFormValidity();
-        }
+              validationErrorMsg: "Confirm password",
+              isItValid: false
+            }
+          }))
+
+          this.checkOverallFormValidity()
+
+        }else{
+      console.log("Here.....")
+      if (this.state.confirmPassword.value != this.state.password.value) {
+        // this.setState((previousState) => ({
+        //   [inputName]: {
+        //     ...previousState[inputName],
+        //     validationErrorMsg: "Password do not match",
+        //     isItValid: false
+        //   }
+        // }))
+        // this.checkOverallFormValidity()
+        // value.trim() !== ''
+       
       } else {
-        this.setState(previousState => ({
+        this.setState((previousState) => ({
           [inputName]: {
             ...previousState[inputName],
-            validationErrorMsg: '',
-            isItValid: true,
-          },
-        }));
-        this.checkOverallFormValidity();
+            validationErrorMsg: "",
+            isItValid: true
+          }
+        }))
+        this.checkOverallFormValidity()
       }
-    }
-    console.log(this.state, 'insideHandler');
-  };
+    }}
+    console.log(this.state.firstName.value, "insideHandler")
+  }
 
   checkOverallFormValidity = () => {
     const inputKeys = [
-      'firstName',
-      'lastName',
-      'email',
-      'password',
-      'confirmPassword',
-    ];
-    let overAllFormValidity = true;
-    inputKeys.forEach(key => {
-      overAllFormValidity = overAllFormValidity && this.state[key].isItValid;
-    });
-    this.setState(prevState => ({
+      "firstName",
+      "lastName",
+      "email",
+      "password",
+      "confirmPassword"
+    ]
+    let overAllFormValidity = true
+    inputKeys.forEach((key) => {
+      overAllFormValidity = overAllFormValidity && this.state[key].isItValid
+    })
+    this.setState((prevState) => ({
       ...prevState,
-      isFormValid: overAllFormValidity,
-    }));
-  };
+      isFormValid: overAllFormValidity
+    }))
+  }
 
   checkValidityHandler = (value, rules, inputName) => {
-    let {isValid, errorMsg} = checkValidity(value, rules);
+    let { isValid, errorMsg } = checkValidity(value, rules)
     if (!isValid) {
-      this.setState(previousState => ({
+      this.setState((previousState) => ({
         [inputName]: {
           ...previousState[inputName],
           isItValid: false,
           validationErrorMsg: `${
-            inputName === 'firstName'
-              ? 'First name'
-              : inputName === 'lastName'
-              ? 'Last name'
+            inputName === "firstName"
+              ? "First name"
+              : inputName === "lastName"
+              ? "Last name"
               : this.capitalize(inputName)
-          } is ${errorMsg}`,
-        },
-      }));
+          } is ${errorMsg}`
+        }
+      }))
     } else {
-      this.setState(previousState => ({
+      this.setState((previousState) => ({
         [inputName]: {
           ...previousState[inputName],
           isItValid: true,
-          validationErrorMsg: '',
-        },
-      }));
+          validationErrorMsg: ""
+        }
+      }))
     }
-    this.checkOverallFormValidity();
-    console.log(this.state, 'Inside Validaton');
-  };
+    this.checkOverallFormValidity()
+    console.log(this.state, "Inside Validaton")
+  }
 
   componentDidMount() {
-    const {navigation} = this.props;
-    // console.log(navigation);
-    // this._unsubscribe = navigation.addListener('focus', async () => {
-    //   this.GetImage();
-    // });
-    console.log(this.props.auth.userToken, 'in Did Mount');
-    this.getUserData(this.props.auth.userToken);
+    const { navigation } = this.props
+    this._unsubscribe = navigation.addListener('focus', async () => {
+    this.getUserData()
+    });
   }
 
   componentWillUnmount() {
-    console.log('in WillUnmount');
-    // this._unsubscribe;
+    console.log("in WillUnmount")
   }
 
-  getUserData = async token => {
+  getUserData = async () => {
     // setData({loading: true});
-    let data = JSON.stringify({
-      // User_PkeyId: 1,
-      User_PkeyID_Master: 0,
-      Type: 2,
-    });
-    try {
-      const res = await userprofile(data, token);
-      console.log(res, 'userdata is here .........');
-      const userData = res[0][0];
-      console.log(userData, 'Userdata');
-      this.setState(previousState => ({
-        ...previousState,
-        imagepath: userData.User_Image_Path,
-        email: {
-          ...previousState.email,
-          value: userData.User_Email,
-        },
-        firstName: {
-          ...previousState.firstName,
-          value: userData.User_Name.split(' ')[0],
-        },
-        lastName: {
-          ...previousState.lastName,
-          value: userData.User_Name.split(' ')[1],
-        },
-        password: {
-          ...previousState.password,
-          value: userData.User_Password,
-        },
-        confirmPassword: {
-          ...previousState.password,
-          value: userData.User_Password,
-        },
-      }));
-      console.log(this.state, 'Setting State');
-      // console.log(res[0][0].User_Email, ' res[0][0].User_Name');
-    } catch (error) {
-      console.log(error);
-      console.log('hihihihihihih', {e: error.response.data.error});
+    let data = {
+      Type: 2
     }
-  };
-
-  // GetImage = async () => {
-  //   this.setState({
-  //     photo: await AsyncStorage.getItem('imagepath'),
-  //   });
-  // };
+    console.log(data, this.props.token)
+    try {
+      const res = await userprofile(data, this.props.token)
+      const userData = res[0][0]
+      console.log( "Userdata ===>",userData)
+      if (userData) {
+        this.setState((previousState) => ({
+          ...previousState,
+          imagepath: userData.User_Image_Path,
+          email: {
+            ...previousState.email,
+            value: userData.User_Email
+          },
+          firstName: {
+            ...previousState.firstName,
+            value: userData.User_Name.split(" ")[0]
+          },
+          lastName: {
+            ...previousState.lastName,
+            value: userData.User_Name.split(" ")[1]
+          },
+          password: {
+            ...previousState.password,
+            value: userData.User_Password
+          },
+          confirmPassword: {
+            ...previousState.password,
+            value: userData.User_Password
+          }
+        }))
+      }
+    } catch (error) {
+      console.log(error)
+      console.log("hihihihihihih", { e: error.response.data.error })
+    }
+  }
 
   Validation = () => {
-    let cancel = false;
-    const {name, email, imagepath} = this.state;
+    let cancel = false
+    const { name, email } = this.state
     if (name.length === 0) {
-      cancel = true;
+      cancel = true
     }
     if (email.length === 0) {
-      cancel = true;
+      cancel = true
     }
 
     if (cancel) {
-      this.showerrorMessage('Fields can not be empty');
-      return false;
+      this.showerrorMessage("Fields can not be empty.")
+      return false
     } else {
-      return true;
+      return true
     }
-  };
+  }
 
-  checkEmail = email => {
-    let cancel = false;
+  checkEmail = (email) => {
+    let cancel = false
     if (verifyEmail(email)) {
-      cancel = true;
-      this.warningMessage('Please enter valid email');
+      cancel = true
+      this.warningMessage("Please enter valid email.")
     }
     if (cancel) {
-      return false;
+      return false
     } else {
-      return true;
+      return true
     }
-  };
+  }
 
   ImageValidation = () => {
-    let cancel = false;
+    let cancel = false
     if (!this.state.imagepath) {
-      cancel = true;
+      cancel = true
     }
     if (cancel) {
-      this.showerrorMessage('Upload Image');
-      return false;
+      this.showerrorMessage("Upload Image")
+      return false
     } else {
-      return true;
+      return true
     }
-  };
-
+  }
+  showerrorMessage = (message) => {
+    if (message !== "" && message !== null && message !== undefined) {
+      Toast.show({
+        title: message,
+        placement: "bottom",
+        status: "error",
+        duration: 5000,
+        backgroundColor: "#EBD4BD"
+      })
+    }
+  }
   AddProfile = async () => {
-    const {imagepath} = this.state;
+    if(this.state.confirmPassword.value != this.state.password.value){
+      this.showerrorMessage("Password do not match")
+      return 0
+    }
+    const { imagepath } = this.state
     if (this.checkEmail(this.state.email.value) && this.ImageValidation()) {
       this.setState({
-        loading: true,
-      });
-      let data = {
+        loading: true
+      })
+      let data = { 
+        User_IsActive: 1,
         User_Email: this.state.email.value,
         User_Name: `${this.state.firstName.value} ${this.state.lastName.value}`,
         User_Image_Path: imagepath,
-        User_PkeyID: 0,
+        User_Password:this.state.password.value,
         Type: 2,
-      };
+        User_Type:1
+      }
       try {
-        console.log(data, 'profile');
-
-        const res = await addprofile(data, this.props.auth.userToken);
-        console.log('ProfileRes:', res[0][0]);
+        const res = await addprofile(data, this.props.token)
+        console.log("ProfileRes:", res[0][0])
         if (res[0][0] === -99) {
-          this.showerrorMessage('Email has already taken');
+          this.showerrorMessage("Email has already taken")
         } else {
-          this.showMessage('Profile updated successfully!');
-          this.props.navigation.navigate('Profiles');
+          this.showMessage("Profile updated successfully!")
+          this.props.navigation.navigate("Profiles")
         }
         this.setState({
-          loading: false,
-        });
+          loading: false
+        })
       } catch (error) {
-        this.showerrorMessage(error.response.data.error_description);
+        this.showerrorMessage(error.response.data.error_description)
       }
     }
-  };
+  }
 
-  showerrorMessage = message => {
-    if (message !== '' && message !== null && message !== undefined) {
+  showerrorMessage = (message) => {
+    if (message !== "" && message !== null && message !== undefined) {
       Toast.show({
         title: message,
-        placement: 'bottom',
-        status: 'error',
-        duration: 5000,
+        placement: "bottom",
+        status: "error",
+        duration: 5000
         // backgroundColor: 'red.500',
-      });
+      })
     }
-  };
+  }
 
-  showMessage = message => {
-    if (message !== '' && message !== null && message !== undefined) {
+  showMessage = (message) => {
+    if (message !== "" && message !== null && message !== undefined) {
       Toast.show({
         title: message,
-        placement: 'bottom',
-        status: 'success',
-        duration: 5000,
+        placement: "bottom",
+        status: "success",
+        duration: 5000
         // backgroundColor: 'red.500',
-      });
+      })
     }
-  };
+  }
 
-  warningMessage = message => {
-    if (message !== '' && message !== null && message !== undefined) {
+  warningMessage = (message) => {
+    if (message !== "" && message !== null && message !== undefined) {
       Toast.show({
         title: message,
-        placement: 'bottom',
-        status: 'warning',
-        duration: 5000,
-      });
+        placement: "bottom",
+        status: "warning",
+        duration: 5000
+      })
     }
-  };
+  }
 
-  onOpenImage = () => this.ActionSheet.show();
+  onOpenImage = () => this.ActionSheet.show()
 
   ImageGallery = async () => {
     setTimeout(() => {
@@ -378,25 +384,25 @@ class AddProfilePage extends Component {
         cropping: true,
         includeBase64: true,
         multiple: false,
-        compressImageQuality: 0.5,
-      }).then(image => {
-        console.log(image);
+        compressImageQuality: 0.5
+      }).then((image) => {
+        console.log(image)
         if (image.data) {
           this.setState(
             {
               base64: image.data,
               filename:
-                Platform.OS === 'ios' ? image.filename : 'image' + new Date(),
+                Platform.OS === "ios" ? image.filename : "image" + new Date()
               // imagepath: image.path,
             },
             () => {
-              this.uploadImage();
-            },
-          );
+              this.uploadImage()
+            }
+          )
         }
-      });
-    }, 700);
-  };
+      })
+    }, 1000)
+  }
 
   ImageCamera = async () => {
     setTimeout(() => {
@@ -406,84 +412,81 @@ class AddProfilePage extends Component {
         cropping: true,
         includeBase64: true,
         multiple: false,
-        compressImageQuality: 0.5,
-      }).then(image => {
-        console.log(image);
+        compressImageQuality: 0.5
+      }).then((image) => {
+        console.log(image)
         if (image.data) {
           this.setState(
             {
               base64: image.data,
               filename:
-                Platform.OS === 'ios' ? image.filename : 'image' + new Date(),
+                Platform.OS === "ios" ? image.filename : "image" + new Date()
               // imagepath: image.path,
             },
             () => {
-              this.uploadImage();
-            },
-          );
+              this.uploadImage()
+            }
+          )
         }
-      });
-    }, 700);
-  };
+      })
+    }, 1000)
+  }
 
   uploadImage = async () => {
-    this.setState({loading: true});
-    const {base64} = this.state;
+    this.setState({ loading: true })
+    const { base64 } = this.state
     let data = JSON.stringify({
       Type: 2,
-      Image_Base: 'data:image/png;base64, ' + base64,
-    });
+      Image_Base: "data:image/png;base64, " + base64
+    })
     try {
-      console.log(this.props.auth.userToken, 'in upload image');
-      const res = await uploadimage(data, this.props.auth.userToken);
-      console.log(res[0].Image_Path, 'resssss');
-
+      const res = await uploadimage(data, this.props.token)
+      console.log(res[0].Image_Path, "resssss")
       this.setState({
-        imagepath: res[0].Image_Path,
-      });
-      this.setState({loading: false});
+        ...this.state,
+        imagepath: res[0].Image_Path
+      })
+      this.setState({ loading: false })
     } catch (error) {
       if (error.request) {
-        console.log(error.request);
+        console.log(error.request)
       } else if (error.responce) {
-        console.log(error.responce);
+        console.log(error.responce)
       } else {
-        console.log(error);
+        console.log(error)
       }
     }
-  };
+  }
 
   render() {
-    console.log('in render');
     return (
-      <View style={{flex: 1, backgroundColor: 'white'}}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <SpinnerBackdrop showModal={this.state.loading} />
         <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
-          <View style={{width: '90%', alignSelf: 'center', paddingBottom: 140}}>
+          <View
+            style={{ width: "90%", alignSelf: "center", paddingBottom: 140 }}
+          >
             <View
               style={{
                 width: 200,
                 height: 200,
-                backgroundColor: 'black',
+                backgroundColor: "black",
                 borderRadius: 100,
-                alignSelf: 'center',
-              }}>
+                alignSelf: "center"
+              }}
+            >
               <Image
                 style={{
                   height: 200,
                   width: 200,
-                  borderRadius: 100,
-
-                  // borderRadius: 1,
-                  // borderColor: '#BDBDBD',
-                  // borderWidth: 1,
+                  borderRadius: 100
                 }}
                 resizeMode="cover"
                 source={{
                   //   uri: this.state.imagepath ? this.state.imagepath : null,
                   uri: this.state.imagepath
                     ? this.state.imagepath
-                    : 'https://www.unigreet.com/wp-content/uploads/2020/04/Dp-pic-download-833x1024.jpg',
+                    : "https://www.unigreet.com/wp-content/uploads/2020/04/Dp-pic-download-833x1024.jpg"
                 }}
               />
 
@@ -491,34 +494,20 @@ class AddProfilePage extends Component {
                 small
                 icon="camera"
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   left: 150,
                   top: 140,
-                  backgroundColor: '#BDBDBD',
+                  backgroundColor: "#BDBDBD"
                 }}
                 onPress={() => this.onOpenImage()}
               />
             </View>
-            {/* <View style={{marginTop: 30}}>
-              <InputText
-                label="Name"
-                onChangeText={name => this.setState({name: name})}
-                value={this.state.name}
-                placeholder="Enter your Name"
-              />
-            </View>
-            <View style={{marginTop: 20}}>
-              <InputText
-                label="Email"
-                onChangeText={email => this.setState({email: email})}
-                value={this.state.email}
-                placeholder="Enter your Emal ID"
-              />
-            </View> */}
             <ActionSheet
-              ref={o => (this.ActionSheet = o)}
+              ref={(o) => (this.ActionSheet = o)}
               title={
-                <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
+                <Text
+                  style={{ color: "#000", fontSize: 18, fontWeight: "bold" }}
+                >
                   Profile Photo
                 </Text>
               }
@@ -526,13 +515,13 @@ class AddProfilePage extends Component {
               cancelButtonIndex={0}
               destructiveButtonIndex={4}
               useNativeDriver={true}
-              onPress={index => {
+              onPress={(index) => {
                 if (index === 0) {
                   // cancel action
                 } else if (index === 1) {
-                  this.ImageGallery();
+                  this.ImageGallery()
                 } else if (index === 2) {
-                  this.ImageCamera();
+                  this.ImageCamera()
                 }
               }}
             />
@@ -540,8 +529,8 @@ class AddProfilePage extends Component {
             <View style={styles.form_container}>
               <InputText
                 label="First Name"
-                onChangeText={text =>
-                  this.inputChangeHandler('firstName', text)
+                onChangeText={(text) =>
+                  this.inputChangeHandler("firstName", text)
                 }
                 value={this.state.firstName.value}
                 errorMsg={this.state.firstName.validationErrorMsg}
@@ -550,13 +539,15 @@ class AddProfilePage extends Component {
                   this.checkValidityHandler(
                     this.state.firstName.value,
                     this.state.firstName.rules,
-                    'firstName',
-                  );
+                    "firstName"
+                  )
                 }}
               />
               <InputText
                 label="Last Name"
-                onChangeText={text => this.inputChangeHandler('lastName', text)}
+                onChangeText={(text) =>
+                  this.inputChangeHandler("lastName", text)
+                }
                 value={this.state.lastName.value}
                 errorMsg={this.state.lastName.validationErrorMsg}
                 placeholder="Enter your last name"
@@ -564,13 +555,13 @@ class AddProfilePage extends Component {
                   this.checkValidityHandler(
                     this.state.lastName.value,
                     this.state.lastName.rules,
-                    'lastName',
-                  );
+                    "lastName"
+                  )
                 }}
               />
               <InputText
                 label="Email Address"
-                onChangeText={text => this.inputChangeHandler('email', text)}
+                onChangeText={(text) => this.inputChangeHandler("email", text)}
                 value={this.state.email.value}
                 errorMsg={this.state.email.validationErrorMsg}
                 placeholder="Enter your email"
@@ -579,30 +570,32 @@ class AddProfilePage extends Component {
                   this.checkValidityHandler(
                     this.state.email.value,
                     this.state.email.rules,
-                    'email',
-                  );
+                    "email"
+                  )
                 }}
               />
 
               <InputText
                 label="Password"
-                onChangeText={text => this.inputChangeHandler('password', text)}
+                onChangeText={(text) =>
+                  this.inputChangeHandler("password", text)
+                }
                 value={this.state.password.value}
                 placeholder="Enter Your Password"
                 onBlur={() => {
                   this.checkValidityHandler(
                     this.state.password.value,
                     this.state.password.rules,
-                    'password',
-                  );
+                    "password"
+                  )
                 }}
                 secureTextEntry={true}
                 errorMsg={this.state.password.validationErrorMsg}
               />
               <InputText
                 label="Confirm Password"
-                onChangeText={text =>
-                  this.inputChangeHandler('confirmPassword', text)
+                onChangeText={(text) =>
+                  this.inputChangeHandler("confirmPassword", text)
                 }
                 value={this.state.confirmPassword.value}
                 placeholder="Confirm Your Password"
@@ -610,23 +603,23 @@ class AddProfilePage extends Component {
                 errorMsg={this.state.confirmPassword.validationErrorMsg}
                 onBlur={() => {
                   this.inputChangeHandler(
-                    'confirmPassword',
-                    this.state.confirmPassword.value,
-                  );
+                    "confirmPassword",
+                    this.state.confirmPassword.value
+                  )
                 }}
               />
-              {/* <Text style={{color: 'red'}}>{showMessage}</Text> */}
               <View
                 style={{
-                  marginTop: 30,
-                }}>
+                  marginTop: 30
+                }}
+              >
                 <Button
                   // onPress={registerUser}
                   onPress={() => this.AddProfile()}
                   text="Save"
-                  disabled={!this.state.isFormValid}
+                  // disabled={!this.state.isFormValid}
                   backgroundColor={
-                    this.state.isFormValid ? '#5B4025' : '#826549'
+                    this.state.isFormValid ? "#5B4025" : "#826549"
                   }
                   // disabled={!isFormValid}
                   // backgroundColor="#5B4025"
@@ -635,51 +628,52 @@ class AddProfilePage extends Component {
             </View>
           </View>
         </KeyboardAwareScrollView>
-      </View>
-    );
+      </SafeAreaView>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    width: '100%',
-    backgroundColor: 'white',
-    alignItems: 'center',
+    width: "100%",
+    backgroundColor: "white",
+    alignItems: "center"
   },
   form_container: {
     flex: 1,
-    marginHorizontal: 'auto',
-    width: '80%',
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
+    width: "80%",
+    marginHorizontal: "auto",
     marginTop: 20,
-    alignSelf: 'center',
+    alignSelf: "center"
   },
   login_header: {
-    color: 'black',
-    fontSize: 32,
+    color: "black",
+    fontSize: 32
   },
   bar_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 30
   },
   bar: {
     flex: 1,
     height: 1,
-    backgroundColor: '#989FAA',
+    backgroundColor: "#989FAA"
   },
   or: {
     width: 50,
-    textAlign: 'center',
-    color: '#B2AEAE',
-  },
+    textAlign: "center",
+    color: "#B2AEAE"
+  }
+})
+
+const mapStateToProps = (state, ownProps) => ({
+  token: state.auth.userToken,
 });
 
-function mapStateToProps(state) {
-  // const data = state;
-  console.log(state.auth, 'state');
-  return {auth: state.auth};
-}
-
-export default connect(mapStateToProps, {})(AddProfilePage);
+const mapDispatchToProps = {
+  
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AddProfilePage);
