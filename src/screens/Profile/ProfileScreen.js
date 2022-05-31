@@ -17,6 +17,7 @@ import Modal from "../../components/UI/Modal"
 import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import SpinnerBackdrop from "../../components/UI/SpinnerBackdrop"
+import { useFocusEffect } from "@react-navigation/native";
 
 const ProfileScreen = (props) => {
   const token = useSelector((state) => state.auth.userToken)
@@ -161,9 +162,15 @@ const addToUserCollection = (itemName) => {
 
   useEffect(() => {
     getUserCollectionItems()
-getUserData()
+    getUserData()
   }, [])
-
+useFocusEffect(
+    React.useCallback(() => {
+    getUserCollectionItems()
+    getUserData()
+      return () => console.log("close");
+    }, [])
+  );
 
   const getAllUserPost = useCallback(async (item) => {
      setIsLoading(true);
@@ -182,8 +189,7 @@ getUserData()
     console.log(data, "Data is here")
     await getuserfavorite(data, token)
       .then((res) => {
-        console.log("getUserPost",res.data[0])
-        console.log("getUserPost",res.data)
+       
         const posts = res.data[0]
       
         const postImages = posts.map((item) => {
@@ -303,8 +309,8 @@ return (<View>
         data={userCollections}
         autoScroll
         dropdownPosition="bottom"
-        search
-        maxHeight={250}
+        // search
+        maxHeight={150}
         labelField="label"
         valueField="value"
         placeholder={!isFocus ? "My Collection" : "My Collection"}
@@ -313,14 +319,6 @@ return (<View>
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => getAllUserPost(item)}
-        renderLeftIcon={() => (
-          <AntDesign
-            style={styles.icon}
-            color={isFocus ? "blue" : "black"}
-            name="Safety"
-            size={20}
-          />
-        )}
       />
       </View>
       {value !== -1 && (  <Text style={{ alignSelf: "center", color: "#264653", fontSize: 25 }}>
@@ -343,11 +341,11 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    borderColor: "#D7C7B6",
+    borderColor: "#CDAF90",
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: "#EBD4BD",
+    backgroundColor: "#CDAF90",
     width:"80%"
   },
   icon: {

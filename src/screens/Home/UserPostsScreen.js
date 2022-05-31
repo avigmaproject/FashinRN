@@ -8,13 +8,12 @@ import {
   ScrollView,
   Dimensions
 } from "react-native"
-import FeatherIcon from "react-native-vector-icons/Feather"
 import { useSelector, useDispatch } from "react-redux"
 import {
   createUpdateUserFavorite,
   getUserPost,
   getUserCollection,
-addUserCollection
+  addUserCollection
 } from "../../services/api.fuctions"
 import Selection from "../../components/Selection"
 import ProfileImages from "../../components/ProfileImages"
@@ -48,13 +47,19 @@ const UserPostsScreen = (props) => {
   const [showErrorMsg, setShowErrorMsg] = useState(null)
   const [Setbool, setSetbool] = useState(false)
   const [setId, setsetId] = useState(0)
-  useEffect(() => {
-    getAllUserPost()
-  }, [selectedItem])
+ 
 
   useEffect(() => {
     setSelectedItem(props.route.params.collectionItem)
-  }, [props.route.params.collectionItem])
+getAllUserPost(props.route.params.collectionIte)
+  }, [selectedItem])
+
+useFocusEffect(
+    React.useCallback(() => {
+    getUserCollectionItems()
+      return () => console.log("close");
+    }, [])
+  );
     const validation = () => {
       let cancel = false
         if (addItemValue.length === 0) {
@@ -111,23 +116,20 @@ const getUserCollectionItems = useCallback(async () => {
   }
   const getAllUserPost = useCallback(async () => {
     setIsLoading(true)
-    console.log(selectedItem.value, "Id is here")
     let data
     if (!!selectedItem.value === true) {
-      console.log("I am right here")
+    console.log("getAllUserPostid",selectedItem.value)
+
       data = {
         UP_COLL_PKeyID: selectedItem.value,
         Type: 5
       }
-    }
-
-    console.log(data, "userpost sent data is here")
+    console.log("getAllUserPostdata",data)
     await getUserPost(data, token)
       .then((res) => {
         if (res) {
           const posts = res.data[0]
-          console.log(res.data, "Hereeeee")
-          console.log(posts, " userpost is hereeee")
+          console.log("user post",posts)
           const postImages = posts.map((item) => {
             return {
               uri: item.UP_ImagePath,
@@ -148,6 +150,10 @@ const getUserCollectionItems = useCallback(async () => {
         setIsLoading(false)
         console.log(error, "getPost")
       })
+    }else{
+      console.log("id not founddddd")
+}
+   
   })
 
   const onPressImgHandler = (image, productUrl,description,name) => {
@@ -196,7 +202,8 @@ const getUserCollectionItems = useCallback(async () => {
       UF_UP_PKeyID: setId,
       Type: 1,
       UC_Name: props.route.params.collectionItem.label,
-      UF_IsDelete: 0
+      UF_IsDelete: 0,
+      UF_Closet_Spotlight:1
     }
     console.log(favData, "Data")
     // return 0
@@ -213,10 +220,7 @@ const getUserCollectionItems = useCallback(async () => {
         console.log(error, "createFav")
       })
   }
-  useEffect(() => {
-    getAllUserPost()
-    getUserCollectionItems()
-  }, [])
+ 
  useFocusEffect(
     React.useCallback(() => {
      getAllUserPost()
@@ -363,8 +367,8 @@ return( <Modal isVisible={showModal}>
                       data={userCollections}
                       autoScroll
                       dropdownPosition="bottom"
-                      search
-                      maxHeight={250}
+                      // search
+                      maxHeight={150}
                       labelField="label"
                       valueField="value"
                       placeholder={!isFocus ? "Collection" : "Collection"}
@@ -373,14 +377,6 @@ return( <Modal isVisible={showModal}>
                       onFocus={() => setIsFocus(true)}
                       onBlur={() => setIsFocus(false)}
                       onChange={(item) => dropDownSelectHandler(item)}
-                      renderLeftIcon={() => (
-                        <AntDesign
-                          style={styles.icon}
-                          color={isFocus ? "blue" : "black"}
-                          name="Safety"
-                          size={20}
-                        />
-                      )}
                     /></>
                     // <Selection
                     //   changeHandler={dropDownSelectHandler}

@@ -73,7 +73,9 @@ const addToUserCollection = (itemName) => {
     if (validation()) {
       const data = {
         UC_Name: itemName,
-        Type: 1
+        Type: 1,
+        UC_Closet_Spotlight:2,
+        UC_Show:true
       }
       console.log(data, "AddUserData")
       if (addItemValue.trim() != "") {
@@ -100,15 +102,18 @@ const addToUserCollection = (itemName) => {
     setIsFocus(false)
     if (item.value === -1) {
       setShowModal(true)
+      return 0
     }
-    setIsAddingFav(true)
+  else{
+  setIsAddingFav(true)
     console.log("Aded to favorite", item)
     const favData = {
       UF_UC_PKeyID: item.value,
       UF_UP_PKeyID: setId,
       Type: 1,
-      UC_Name: item.lable,
-      UF_IsDelete: 0
+      UC_Name: item.label,
+      UF_IsDelete: 0,
+      UF_Closet_Spotlight:  2
     }
     console.log(favData, "Data")
     // return 0
@@ -124,6 +129,8 @@ const addToUserCollection = (itemName) => {
         setIsAddingFav(false)
         console.log(error, "createFav")
       })
+}
+   
   }
   useEffect(() => {
     getAllUserPost()
@@ -368,15 +375,15 @@ return( <Modal isVisible={showModal}>
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
                       iconStyle={styles.iconStyle}
-                      containerStyle={{ backgroundColor: "#EBD4BD" }}
+                      containerStyle={{ backgroundColor: "#CDAF90" }}
                       activeColor="#AB8560"
                       showsVerticalScrollIndicator={false}
                       iconColor="#593714"
                       data={userCollections}
                       autoScroll
                       dropdownPosition="bottom"
-                      search
-                      maxHeight={250}
+                      // search
+                      maxHeight={150}
                       labelField="label"
                       valueField="value"
                       placeholder={!isFocus ? "My Collection" : "My Collection"}
@@ -385,14 +392,6 @@ return( <Modal isVisible={showModal}>
                       onFocus={() => setIsFocus(true)}
                       onBlur={() => setIsFocus(false)}
                       onChange={(item) => dropDownSelectHandler(item)}
-                      renderLeftIcon={() => (
-                        <AntDesign
-                          style={styles.icon}
-                          color={isFocus ? "blue" : "black"}
-                          name="Safety"
-                          size={20}
-                        />
-                      )}
                     /></>
                     // <Selection
                     //   changeHandler={dropDownSelectHandler}
@@ -470,11 +469,11 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    borderColor: "#D7C7B6",
+    borderColor: "#CDAF90",
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: "#EBD4BD"
+    backgroundColor: "#CDAF90"
   },
   icon: {
     marginRight: 5,

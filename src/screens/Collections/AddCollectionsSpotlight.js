@@ -20,16 +20,17 @@ import ImagePicker from "react-native-image-crop-picker"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import { verifyEmail } from "../../shared/miscellaneous"
-// import HeaderBack from '../../../../components/HeaderBack';
 import HeaderBack from "../../components/UI/BackButton"
 import InputText from "../../components/UI/InputText"
 import Button from "../../components/UI/Button"
-import { uploadimage, createUpdateUserPost,getUserCollection } from "../../services/api.fuctions"
+import { uploadimage, createUpdateUserPost,getUserCollection,addUserCollection } from "../../services/api.fuctions"
 import { checkValidity } from "../../shared/utility"
 // import DropDown from '../../../../components/DropDown';
 import Selection from "../../components/Selection"
 import CheckBox from "@react-native-community/checkbox"
 import { setUserCollectionItems } from "../../store/actions/profileActions"
+import Modal from "../../components/UI/Modal"
+import { Dropdown } from "react-native-element-dropdown"
 
 const options = [
   "Cancel",
@@ -78,6 +79,7 @@ class AddCollectionSpotlight extends Component {
     addItemValue:"",
     showErrorMsg:null,
     isLoading:false,
+    allPosts:[]
   }
 
   inputChangeHandler = (inputName, text) => {
@@ -88,17 +90,32 @@ class AddCollectionSpotlight extends Component {
       }
     }))
   }
-
-  dropDownSelectHandler = (item) => {
-const {token} =this.props
-    this.setState({
-      targetCollectionItem: item
-    })
+ validation = () => {
+    let cancel = false
+    if (this.state.addItemValue.length === 0) {
+      cancel = true
+    }
+    if (cancel) {
+      this.setState({showErrorMsg:"Fields can not be empty"})
+      return false
+    } else {
+      return true
+    }
+  }
+ renderLabel = () => {
+    if (this.state.value || this.state.isFocus) {
+      return (
+        <Text style={[styles.label1, this.state.isFocus && { color: "blue" }]}>
+          Dropdown label
+        </Text>
+      )
+    }
+    return null
   }
   getUserCollectionItems = async () => {
     const {token} =this.props
     const data = {
-      Type: 3
+      Type: 6
     }
     console.log(data, token)
     await getUserCollection(data, token)
@@ -109,6 +126,8 @@ const {token} =this.props
         const collectionItems = fetchedUserCollection?.map((item) => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
+        collectionItems?.push({ label: "Add +", value: -1 })
+
         this.setState({userCollections:collectionItems})
         console.log("getUsercollectionItems", collectionItems)
       })
@@ -209,11 +228,96 @@ const {token} =this.props
       return true
     }
   }
+  itemValueInputChangeHandler = (text) => {
+      this.setState({showErrorMsg:null,addItemValue:text})
+  }
+ getAllUserPost = async (item) => {
+        this.setState({showModal:false,value:item.value})
+    if (item.value === -1) {
+            this.setState({showModal:true})
+      return
+    }else{
+ this.setState({
+      targetCollectionItem: item
+    })}
+  
+  }
+ addToUserCollection = (itemName) => {
+    if (this.validation()) {
+      const data = {
+        UC_Name: itemName,
+        Type: 1,
+        UC_Closet_Spotlight:1,
+        UC_Show:true
+      }
+      console.log(data, "AddUserData")
+      if (this.state.addItemValue.trim() != "") {
+        addUserCollection(data, this.props.token)
+          .then((res) => {
+            console.log(res.data, "response is here")
+            this.setState({showModal:false,addItemValue:""})
+            this.getUserCollectionItems()
+          })
+          .catch((err) => {
+            this.setState({showModal:false,addItemValue:""})
+            console.log(err)
+          })
+      }
+    }
+  }
+
+ renderModal= () =>{
+return(
+ <Modal isVisible={this.state.showModal}>
+        <View
+          style={{
+            backgroundColor: "#ffffff",
+            width: "92%",
+            borderRadius: 10,
+            minHeight: 220
+          }}
+        >
+          <View style={{ height: 20, alignSelf: "center", marginTop: 18 }}>
+            <Text style={{ color: "black", fontWeight: "bold" }}>Add Item</Text>
+          </View>
+          <View style={{ alignSelf: "center", width: "90%" }}>
+            <InputText
+              style={{ marginBottom: 10, width: "100%" }}
+              label="Add Item"
+              value={this.state.addItemValue}
+              onChangeText={(text) => this.itemValueInputChangeHandler(text)}
+              errorMsg={this.state.showErrorMsg}
+            />
+          </View>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              margin: 15
+            }}
+          >
+            <Button
+              style={{ width: 75, height: 50 }}
+              text="Cancel"
+              textColor="#593714"
+              onPress={() => this.setState({showModal:false,addItemValue:""})}
+            />
+            <Button
+              style={{ width: 75, height: 50 }}
+              text="Add"
+              backgroundColor="#5B4025"
+              onPress={() => this.addToUserCollection(this.state.addItemValue)}
+            />
+          </View>
+        </View>
+      </Modal>
+)}
 checkUrlformate = () => {
  let invalid = false
 let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
   invalid = regex.test(this.state.link.value)
-    if (!invalid) {
+    if (!invalid &&  !this.state.isCloset) {
       this.showerrorMessage("Please check url formate.")
       return false
     } else {
@@ -225,14 +329,13 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
 
     if (
       this.ImageValidation() &&
-      this.checkboxValidation() 
-      // this.checkOverallFormValidity() && this.checkUrlformate()
+      this.checkboxValidation()  && this.checkUrlformate()
     ) {
       this.setState({
-        loading: true
+        // loading: true
       })
       console.log(this.state, "hereeeeee")
-      let data = JSON.stringify({
+      let data = {
         UP_ImageName: this.state.filename,
         UP_ImagePath: this.state.imagepath,
         UP_AddSpotlight: this.state.isSpotlight,
@@ -245,11 +348,11 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
         UP_IsActive: 1,
         UP_IsDelete: 0,
         UP_Show: 1,
-        Type: 1
-      })
+        Type: 1,
+        UP_IsAdmin:false,
+      }
       try {
-        console.log(data, "profile")
-
+        console.log("=====>",data,this.props.token)
         const res = await createUpdateUserPost(data, this.props.token)
         console.log("ProfileRes:", res)
         if (!res) {
@@ -527,13 +630,34 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
               <Text style={styles.label}>Closet</Text>
             </View>
             {this.state.isCloset ? (
-              <Selection
-                data={this.state.userCollections}
-                changeHandler={this.dropDownSelectHandler}
-                style={{ width: "100%", alignSelf: "center" }}
-              />
+            <>
+                 {this.renderLabel()}
+            <Dropdown
+              style={[styles.dropdown, this.state.isFocus && { borderColor: "#593714" }]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              containerStyle={{ backgroundColor: "#EBD4BD" }}
+              activeColor="#AB8560"
+              showsVerticalScrollIndicator={false}
+              iconColor="#593714"
+              data={this.state.userCollections}
+              autoScroll
+              dropdownPosition="bottom"
+              // search
+              maxHeight={150}
+              labelField="label"
+              valueField="value"
+              placeholder={!this.state.isFocus ? "My Collection" : "My Collection"}
+              searchPlaceholder="Search..."
+              value={this.state.value}
+              onFocus={() => this.setState({isFocus:true})}
+              onBlur={() => this.setState({isFocus:false})}
+              onChange={(item) => this.getAllUserPost(item)}
+            /></>
             ) : null}
-            <InputText
+            {/* <InputText
               label="Post name"
               onChangeText={(text) =>
                 this.inputChangeHandler("collectionName", text)
@@ -548,7 +672,7 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
                   "collectionName"
                 )
               }}
-            />
+            /> */}
             {this.state.isSpotlight ? (
               <InputText
                 label="From Where to Purchase"
@@ -581,6 +705,7 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
               />
             </View>
           </View>
+        {this.renderModal()}
         </ScrollView>
       </SafeAreaView>
     )
@@ -621,6 +746,47 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     color: "#264653",
     fontSize: 15
+  },
+  dropdown: {
+    height: 60,
+    borderColor: "#D7C7B6",
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    backgroundColor: "#EBD4BD",
+    width:"100%",marginTop: 20
+  },
+  icon: {
+    marginRight: 5,
+    color: "#593714"
+  },
+  label1: {
+    position: "absolute",
+    backgroundColor: "#D7C7B6",
+    left: 22,
+    top: -8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+    display: "none"
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: "#593714"
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: "#593714"
+  },
+  iconStyle: {
+    width: 20,
+    height: 20
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    borderColor: "#593714",
+    color: "#593714"
   }
 })
 
@@ -632,3 +798,4 @@ const mapDispatchToProps = {
   setUserCollectionItems
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddCollectionSpotlight);
+ 

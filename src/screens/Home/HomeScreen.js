@@ -27,6 +27,8 @@ import { listToMatrix } from "../../shared/collectionColors"
 import { setUserCollectionItems } from "../../store/actions/profileActions"
 import { BubblesLoader } from "react-native-indicator"
 import FashionLogoDark from "../../assets/svgs/FashionLogoLight.svg"
+import { useFocusEffect } from "@react-navigation/native";
+
 const HomeScreen = (props) => {
   const [userCollections, setUserCollections] = useState([])
   const [searchtext, setsearchtext] = useState(null)
@@ -132,7 +134,12 @@ const searchText = (e) => {
   useEffect(() => {
     getUserCollectionItems()
   }, [])
-
+useFocusEffect(
+    React.useCallback(() => {
+    getUserCollectionItems()
+      return () => console.log("close");
+    }, [])
+  );
   const onCollectionItemPressHandler = (item) => {
     console.log("presses234234")
     console.log(item)

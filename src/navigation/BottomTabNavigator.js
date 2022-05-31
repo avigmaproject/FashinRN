@@ -70,7 +70,7 @@ function MyTabs() {
           tabBarItemStyle: {borderRadius: 40},
           tabBarIcon: ({focused}) =>
             focused ? (
-              <Ionicons name="home" size={25} color="#593714"  style={{  paddingTop:15}}/>
+             <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><Ionicons name="home" size={25} color="#593714" /></View>
             ) : (
               <Ionicons name="home-outline" size={25} color="#593714" style={{  paddingTop:15}} />
             ),
@@ -84,7 +84,7 @@ function MyTabs() {
           tabBarIconStyle: {width: 35},
           tabBarIcon: ({focused}) =>
             focused ? (
-              <Ionicons name="people" size={28} color="#593714" style={{  paddingTop:15}} />
+              <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><Ionicons name="people" size={28} color="#593714"/></View>
             ) : (
               <Ionicons name="people-outline" size={28} color="#593714"  style={{  paddingTop:15}}/>
             ),
@@ -112,9 +112,9 @@ function MyTabs() {
         name="ClosetStack"
         component={ClosetStack}
         options={{
-          tabBarItemStyle: {borderRadius: 40, width: 40, paddingTop:15},
+          tabBarItemStyle: {borderRadius: 40, width: 40,},
           tabBarIcon: ({focused}) =>
-            focused ? <HangerDark width="27" /> : <Hanger width="30" />,
+            focused ? <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><HangerDark width="27" /></View>:<View style={{paddingTop:20}}><Hanger width="30" /></View>,
         }}
       />
       <Tab.Screen
@@ -123,9 +123,9 @@ function MyTabs() {
         options={{
           tabBarIcon: ({focused}) =>
             focused ? (
-              <FontAwesome name="user" size={30} color="#593714" style={{  paddingTop:15}} />
+               <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><FontAwesome name="user" size={30} color="#593714" /></View>
             ) : (
-              <FontAwesome name="user-o" size={25} color="#593714"  style={{  paddingTop:15}}/>
+            <FontAwesome name="user-o" size={25} color="#593714"  style={{ paddingTop:15}}/>
             ),
         }}
       />

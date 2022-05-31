@@ -15,7 +15,7 @@ const ProfileAdd = props => {
         height: 70,
         // borderRadius: 8,
         alignItems: 'center',
-        justifyContent: "flex-start",
+        justifyContent: "center",
         // backgroundColor: '#593714',
       }}>
       <View
@@ -30,12 +30,12 @@ const ProfileAdd = props => {
             height: '80%',            
             borderRadius: 3,
           }}
-          source={{uri :props.photo}}
+          source={{uri :props.photo ?props.photo:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/1200px-Unknown_person.jpg"}}
           alt="logo"
         />
        
       </View>
- <View style={{backgroundColor:"#AB8560", width: '60%',justifyContent:"center",alignItems:"center",
+       <View style={{backgroundColor:"#AB8560", width: '70%',justifyContent:"center",alignItems:"center",
           height: '60%',}}><Text style={{alignSelf: 'center', color: '#D7C7B6',textTransform:"capitalize",fontSize:25}}>
           {"Profile"}
         </Text></View>
@@ -60,10 +60,10 @@ const ProfileAdd = props => {
         </View> */}
       {/* </View> */}
     </View>
-<View style={{justifyContent:"center",alignItems:"center",
-         }}><Text style={{alignSelf: 'center', color: '#AB8560',textTransform:"capitalize",fontSize:25}}>
-          {props.name}
-        </Text></View>
+    <View style={{justifyContent:"center",alignItems:"center", marginLeft:"20%"}}>
+      <Text style={{alignSelf: 'center', color: '#AB8560',textTransform:"capitalize",fontSize:25}}>
+      {props.name}</Text>
+    </View>
 </>
   );
 };

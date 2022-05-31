@@ -10,6 +10,7 @@ import InputText from "../../components/UI/InputText"
 import Button from "../../components/UI/Button"
 import Modal from "../../components/UI/Modal"
 import SpinnerBackdrop from "../../components/UI/SpinnerBackdrop"
+import { useFocusEffect } from "@react-navigation/native";
 
 const ClosetScreen = (props) => {
   const token = useSelector((state) => state.auth.userToken)
@@ -25,7 +26,12 @@ const ClosetScreen = (props) => {
   useEffect(() => {
       getUserCollectionItems()
   }, [selectedItem])
-
+useFocusEffect(
+    React.useCallback(() => {
+    getUserCollectionItems()
+      return () => console.log("close");
+    }, [])
+  );
 const validation = () => {
     let cancel = false
     if (addItemValue.length === 0) {
@@ -84,16 +90,12 @@ const validation = () => {
     if (item.value === -1) {
       setShowModal(true)
       return
-    }
-    setSelectedItem(item)
-console.log("item.value,",item.value,)
+    } else {
+  setSelectedItem(item)
     const data = {
       UP_UC_PKeyID: parseInt(item.value),
-      Type: 12//4
+      Type: 12,
     }
-    console.log( "Data is here",data,token)
-    // await getuserfavorite(data, token)
-
     await getUserPost(data, token).then((res) => {
         const posts = res.data[0]
         console.log("setAllPostssetAllPosts",res)
@@ -108,6 +110,8 @@ console.log("item.value,",item.value,)
       .catch((error) => {
         console.log(error, "getPost")
       })
+}
+  
   })
  const itemValueInputChangeHandler = (text) => {
     setShowErrorMsg(null)
@@ -116,7 +120,7 @@ console.log("item.value,",item.value,)
 const getUserCollectionItems = useCallback(async () => {
     setIsLoading(true)
     const data = JSON.stringify({
-      Type: 3
+      Type: 6
     })
     await getUserCollection(data, token)
       .then((res) => {
@@ -138,10 +142,12 @@ const getUserCollectionItems = useCallback(async () => {
 
 const addToUserCollection = (itemName) => {
     if (validation()) {
-      const data = JSON.stringify({
+      const data = {
         UC_Name: itemName,
-        Type: 1
-      })
+        Type: 1,
+        UC_Closet_Spotlight:1,
+        UC_Show:true
+      }
       console.log(data, "AddUserData")
       if (addItemValue.trim() != "") {
         addUserCollection(data, token)
@@ -151,17 +157,6 @@ const addToUserCollection = (itemName) => {
             const newCollection = { label: itemName, value: res.data[0] }
             console.log(newCollection)
             getUserCollectionItems()
-            // let oldUserCollections = userCollections
-            // oldUserCollections.pop()
-            // const newUserCollections = oldUserCollections.concat(
-            //   newCollection,
-            //   {
-            //     label: "Add +",
-            //     value: -1
-            //   }
-            // )
-            // setUserCollections([...newUserCollections])
-            // dispatch(addUserCollectionItem({label: value, id: res.data[0]}));
             setAddItemValue("")
           })
           .catch((err) => {
@@ -172,13 +167,7 @@ const addToUserCollection = (itemName) => {
       }
     }
   }
- const onChangeHandler = (item) => {
-    setValue(item.value)
-    setIsFocus(false)
-    if (item.value === -1) {
-      setShowModal(true)
-    }
-  }
+
 const renderModal= () =>{
 return(
  <Modal isVisible={showModal}>
@@ -242,14 +231,12 @@ return(
         source={require('../../assets/users/fashINLogoLIght.png')}
         alt="logo"
       />
-     
-<View>
- <Text style={{ alignSelf: "center", color: "#264653", fontSize: 25,marginVertical:10 }}>
+      <View>
+      <Text style={{ alignSelf: "center", color: "#264653", fontSize: 25,marginVertical:10 }}>
         My Closet
       </Text>
-</View>
+      </View>
        {renderLabel()}
-     
       <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: "#593714" }]}
         placeholderStyle={styles.placeholderStyle}
@@ -263,8 +250,8 @@ return(
         data={userCollections}
         autoScroll
         dropdownPosition="bottom"
-        search
-        maxHeight={250}
+        // search
+        maxHeight={150}
         labelField="label"
         valueField="value"
         placeholder={!isFocus ? "My Collection" : "My Collection"}
@@ -273,14 +260,6 @@ return(
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => getAllUserPost(item)}
-        renderLeftIcon={() => (
-          <AntDesign
-            style={styles.icon}
-            color={isFocus ? "blue" : "black"}
-            name="Safety"
-            size={20}
-          />
-        )}
       />
       {!!selectedItem.value ? (
         <ProfileImages allImages={allPosts} />
@@ -309,7 +288,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: "#EBD4BD",
+    backgroundColor: "#CDAF90",
     width:"80%"
   },
   icon: {
