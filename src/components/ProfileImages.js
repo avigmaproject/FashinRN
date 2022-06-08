@@ -14,7 +14,7 @@ import {
 
 const ProfileImages = props => {
   // const imagesPaths = useSelector(state => state.profile.imagesPath);
-  // console.log(props.allImages);
+  console.log(props.allImages);
   return (
     <ScrollView
       contentContainerStyle={{
@@ -41,8 +41,8 @@ const ProfileImages = props => {
             <TouchableOpacity
            onPress={()=>{ props.navigation.navigate("UserPostDetailsScreen", {
             imageUri: item.url,
-            productUrl:item.product_url,description:item.description,
-            name:item.description
+            productUrl:item.product_url,
+            name:props.name ? props.name : item.name
              })}}
               style={styles.imageStyle} key={item.id}>
               <Image

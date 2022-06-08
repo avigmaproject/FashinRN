@@ -9,6 +9,7 @@ import InputText from "./UI/InputText"
 import Modal from "./UI/Modal"
 import { addUserCollectionItem } from "../store/actions/profileActions"
 import { Toast } from "native-base"
+import {basecolor,secondrycolor,creamcolor,creamcolor1,black,creamcolor2} from "../services/constant"
 
 const Selection = (props) => {
   const [value, setValue] = useState(null)
@@ -175,7 +176,7 @@ export default Selection
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#CDAF90",
+    backgroundColor: creamcolor,
     width: "86%",
     margin: 16,
     borderRadius: 8,

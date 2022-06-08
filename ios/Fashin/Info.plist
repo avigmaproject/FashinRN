@@ -26,8 +26,40 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb531932148626726</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.467243516590-935239746h9v891l94k7rfa1gvi3nr79</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>531932148626726</string>
+	<key>FacebookClientToken</key>
+	<string>50dd48d0a0676f14a15fc785418efdfd</string>
+	<key>FacebookDisplayName</key>
+	<string>Fashin</string>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://fashin.page.link</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

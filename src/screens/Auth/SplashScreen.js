@@ -106,7 +106,7 @@ export default class SplashScreen extends Component {
             alignItems: 'center',
             marginTop: 50,
           }}>
-          <BubblesLoader size={50} color="black" dotRadius={10} />
+          <BubblesLoader size={50} color="rgb(89, 55, 20)" dotRadius={10} />
         </View>
       </SafeAreaView>
     );

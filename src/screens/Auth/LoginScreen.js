@@ -13,20 +13,22 @@ import Button from '../../components/UI/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 import {setToken} from '../../store/actions/authActions';
-import {login} from '../../services/api.fuctions';
+import { login, requestUserPermission, getFcmToken }  from '../../services/api.fuctions';
 import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
 import {checkValidity} from '../../shared/utility';
 import SocialMedia from '../../components/SocialMedia';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {basecolor,secondrycolor,creamcolor,creamcolor1,black,white} from "../../services/constant"
+import { LoginManager, AccessToken, LoginButton } from "react-native-fbsdk";
+import {
+  GoogleSignin,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
+import { AppleButton ,appleAuth} from '@invertase/react-native-apple-authentication';
 
 const LoginScreen = props => {
-  // const isLoading = useSelector(state => {
-  //   console.log(state);
-  // });
-  // console.log(isLoading);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
-
   const [inputValues, setInputValues] = useState({
     email: {
       value: '',
@@ -47,9 +49,76 @@ const LoginScreen = props => {
       validationErrorMsg: '',
     },
   });
+const [fcmtoken, setfcmtoken] = useState("")
   const [showMessage, setShowMessage] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
+  useEffect(() => {
+FcmMessage()
+GoogleSignin.configure({
+        scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+        webClientId:
+          "467243516590-tegq5pssuasme450fg0opiv2iq75q9b6.apps.googleusercontent.com",
+        
+      });    return () => {
+      console.log("GoogleSignin",GoogleSignin)
+    }
+  }, [])
+  const  FcmMessage = async () => {
+    const authStatus = await requestUserPermission();
+    if (authStatus) {
+      const fcmtoken = await getFcmToken();
+      if (fcmtoken) {
+          setfcmtoken(fcmtoken)
+      } else { alert("Something went wrong!!!!")  }
+    } else {
+    alert("Something went wrong!!!!")  
+  };
+}
+ const _onhadleGoogle = async () => {
+    console.log("GoogleSignin", GoogleSignin);
+    // await GoogleSignin.signOut();
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log("userInfoGoogleSignin", userInfo);
+      console.log("idToken", userInfo.idToken);
+      // alert(userInfo.idToken);
+      let data = qs.stringify({
+        grant_type: "password",
+        username: userInfo.user.email,
+        password: "",
+        ClientId: 5,
+        FirstName: userInfo.user.givenName + userInfo.user.familyName,
+        Role: 2,
+        User_Login_Type: 2,
+        User_Token_val: userInfo.idToken,
+        IMEI: fcmtoken,
+      });
+      console.log("hiiiii", data);
+      login(data).then((res) => {
+        console.log("res: ", JSON.stringify(res));
+        if (res) {
+           setShowMessage('Login successfully');
+               setShowModal(false); //For Spinner Backdrop
+                console.log(res, 'LoginData is here');
+               dispatch(setToken(res.access_token));
+        }
+      });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        alert("SIGN_IN_CANCELLED");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert("IN_PROGRESS");
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert("PLAY_SERVICES_NOT_AVAILABLE");
+      } else {
+        alert("GOOGLE_ERROR");
+        alert(error);
+        console.log(JSON.stringify(error));
+      }
+    }
+  };
   const inputChangeHandler = (inputName, text) => {
     const newInputValues = inputValues;
     newInputValues[inputName].value = text;
@@ -86,6 +155,106 @@ const LoginScreen = props => {
     });
     setIsFormValid(overAllFormValidity);
   };
+const initUser = async (token) => {
+    console.log("initUser", token);
+               setShowModal(true); //For Spinner Backdrop
+
+    fetch(
+      "https://graph.facebook.com/v2.5/me?fields=email,name,picture&access_token=" +
+        token
+    )
+      .then((response) => response.json())
+      .then(async (json) => {
+        console.log("****json****", json);
+        let data = qs.stringify({
+          grant_type: "password",
+          username: json.email,
+          password: "",
+          ClientId: 5,
+          FirstName: json.name,
+          Role: 2,
+          User_Login_Type: 3,
+          User_Token_val: token,
+          IMEI: fcmtoken,
+        });
+        console.log("hiiiii", data, json.picture.data.url);
+        login(data).then((res) => {
+          if (res) {
+            console.log("inform user", res.access_token);
+               setShowMessage('Login successfully');
+               setShowModal(false); //For Spinner Backdrop
+                console.log(res, 'LoginData is here');
+               dispatch(setToken(res.access_token));
+          }
+        });
+      })
+      .catch((e) => {
+        Promise.reject("ERROR GETTING DATA FROM FACEBOOK", e);
+      });
+  };
+  const _onhadleFacebook = () => {
+    LoginManager.logInWithPermissions(["public_profile", "email"])
+      .then((result) => {
+        if (result.isCancelled) {
+          return Promise.reject(new Error("The user cancelled the request"));
+        }
+        return AccessToken.getCurrentAccessToken();
+      })
+      .then((data) => {
+        initUser(data.accessToken);
+      })
+      .catch((error) => {
+        const { code, message } = error;
+        // console.log(JSON.stringify(error));
+        // alert(message);
+        console.log(`Facebook login fail with error: ${message} code: ${code}`);
+        if (code === "auth/account-exists-with-different-credential") {
+          Alert.alert(" Login Error! ", `${message}`, [{ text: "Ok" }], {
+            cancelable: false,
+          });
+        }
+      });
+  };
+
+async function _onhadleApple() {
+// Start the sign-in request
+  const appleAuthRequestResponse = await appleAuth.performRequest({
+    requestedOperation: appleAuth.Operation.LOGIN,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  });
+
+  // Ensure Apple returned a user identityToken
+  if (!appleAuthRequestResponse.identityToken) {
+    throw new Error('Apple Sign-In failed - no identify token returned');
+  }
+
+  // Create a Firebase credential from the response
+  const { identityToken, nonce } = appleAuthRequestResponse;
+
+  if(identityToken){
+let data = qs.stringify({
+          grant_type: "password",
+          username: appleAuthRequestResponse.email,
+          password: "",
+          ClientId: 5,
+          FirstName: "",
+          Role: 2,
+          User_Login_Type: 3,
+          User_Token_val: appleAuthRequestResponse.identityToken,
+          IMEI: fcmtoken,
+        });
+        console.log("hiiiii", data);
+        login(data).then((res) => {
+          if (res) {
+            console.log("inform user", res.access_token);
+               setShowMessage('Login successfully');
+               setShowModal(false); //For Spinner Backdrop
+                console.log(res, 'LoginData is here');
+               dispatch(setToken(res.access_token));
+          }}
+
+        )}
+}
 
   const loginUser = async () => {
     setShowModal(true); //For Spinner Backdrop
@@ -165,7 +334,7 @@ const LoginScreen = props => {
           onPress={() => {
             props.navigation.navigate('ForgotPasswordScreen');
           }}>
-          <Text style={{color: '#5B4025'}}>Forgot Password?</Text>
+          <Text style={{color: basecolor}}>Forgot Password?</Text>
         </TouchableOpacity>
         <View
           style={{
@@ -175,7 +344,7 @@ const LoginScreen = props => {
             onPress={loginUser}
             text="Login"
             disabled={!isFormValid}
-            backgroundColor={isFormValid ? '#5B4025' : '#826549'}
+            backgroundColor={isFormValid ? basecolor : secondrycolor}
           />
         </View>
         <View style={styles.bar_container}>
@@ -185,7 +354,7 @@ const LoginScreen = props => {
           </View>
           <View style={styles.bar} />
         </View>
-        <SocialMedia containerStyle={{...props.containerStyle}} />
+        <SocialMedia _onhadleApple = {_onhadleApple} _onhadleGoogle = {_onhadleGoogle} _onhadleFacebook={_onhadleFacebook}containerStyle={{...props.containerStyle}} />
       </View>
     </ScrollView>
 </SafeAreaView>
@@ -196,7 +365,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: white,
     alignItems: 'center',
   },
   form_container: {
@@ -238,7 +407,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 60,
     height: 60,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: white,
     borderRadius: 500,
     // borderColor: 'red',
     elevation: 1,

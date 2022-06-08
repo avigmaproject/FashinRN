@@ -29,14 +29,15 @@ import {
 import { checkValidity } from "../../shared/utility"
 import { SafeAreaView } from "react-native-safe-area-context"
 // import DropDown from '../../../../components/DropDown';
+import {basecolor,secondrycolor,creamcolor,creamcolor1,black,white} from "../../services/constant"
 
 const options = [
   "Cancel",
   <View>
-    <Text style={{ color: "black" }}>Gallery</Text>
+    <Text style={{ color: {black} }}>Gallery</Text>
   </View>,
   <View>
-    <Text style={{ color: "black" }}>Camera</Text>
+    <Text style={{ color: {black} }}>Camera</Text>
   </View>
 ]
 
@@ -226,11 +227,11 @@ class AddProfilePage extends Component {
           },
           firstName: {
             ...previousState.firstName,
-            value: userData.User_Name.split(" ")[0]
+            value:userData.User_Name ?  userData.User_Name.split(" ")[0] : ""
           },
           lastName: {
             ...previousState.lastName,
-            value: userData.User_Name.split(" ")[1]
+            value: userData.User_Name ?  userData.User_Name.split(" ")[1] :""
           },
           password: {
             ...previousState.password,
@@ -328,7 +329,6 @@ class AddProfilePage extends Component {
           this.showerrorMessage("Email has already taken")
         } else {
           this.showMessage("Profile updated successfully!")
-          this.props.navigation.navigate("Profiles")
         }
         this.setState({
           loading: false
@@ -475,6 +475,7 @@ class AddProfilePage extends Component {
                 alignSelf: "center"
               }}
             >
+
               <Image
                 style={{
                   height: 200,
@@ -486,8 +487,7 @@ class AddProfilePage extends Component {
                   //   uri: this.state.imagepath ? this.state.imagepath : null,
                   uri: this.state.imagepath
                     ? this.state.imagepath
-                    : "https://www.unigreet.com/wp-content/uploads/2020/04/Dp-pic-download-833x1024.jpg"
-                }}
+                    : "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Unknown_person.jpg/1200px-Unknown_person.jpg"}}
               />
 
               <FAB

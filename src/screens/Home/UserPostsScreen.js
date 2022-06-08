@@ -6,7 +6,8 @@ import {
   Image,
   Text,
   ScrollView,
-  Dimensions
+  Dimensions,
+Platform
 } from "react-native"
 import { useSelector, useDispatch } from "react-redux"
 import {
@@ -18,7 +19,7 @@ import {
 import Selection from "../../components/Selection"
 import ProfileImages from "../../components/ProfileImages"
 import CollectionItemImg from "../../components/CollectionItemImg"
-import { BubblesLoader } from "react-native-indicator"
+import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Dropdown } from "react-native-element-dropdown"
 import AntDesign from "react-native-vector-icons/AntDesign"
@@ -26,6 +27,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import Modal from "../../components/UI/Modal"
+import {BubblesLoader} from 'react-native-indicator';
 
 const UserPostsScreen = (props) => {
  React.useLayoutEffect(() => {
@@ -36,18 +38,19 @@ const UserPostsScreen = (props) => {
   const token = useSelector((state) => state.auth.userToken)
 
   const [selectedItem, setSelectedItem] = useState({})
-  const [isAddingFav, setIsAddingFav] = useState(false)
   const [allPosts, setAllPosts] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setisLoading] = useState(false)
   const [userCollections, setUserCollections] = useState([])
   const [value, setValue] = useState(null)
   const [isFocus, setIsFocus] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [showModal1, setShowModal1] = useState(false)
+
   const [addItemValue, setAddItemValue] = useState("")
   const [showErrorMsg, setShowErrorMsg] = useState(null)
   const [Setbool, setSetbool] = useState(false)
   const [setId, setsetId] = useState(0)
- 
+
 
   useEffect(() => {
     setSelectedItem(props.route.params.collectionItem)
@@ -83,7 +86,7 @@ useFocusEffect(
     return null
   }
 const getUserCollectionItems = useCallback(async () => {
-    setIsLoading(true)
+    setShowModal(true)
     const data = {
       Type: 5
     }
@@ -92,7 +95,7 @@ const getUserCollectionItems = useCallback(async () => {
       .then((res) => {
         var collectionItems
 
-        setIsLoading(false)
+        setShowModal(false)
         console.log("getUserCollection with type 555", res)
         const fetchedUserCollection = res
         console.log(res, token, "ProfileScreen getUserCollection")
@@ -106,7 +109,7 @@ const getUserCollectionItems = useCallback(async () => {
         console.log("getUsercollectionItems", collectionItems)
       })
       .catch((error) => {
-        setIsLoading(false)
+        setShowModal(false)
         console.log(error, "getUserCollection")
       })
   })
@@ -115,7 +118,7 @@ const getUserCollectionItems = useCallback(async () => {
     setSetbool(!Setbool)
   }
   const getAllUserPost = useCallback(async () => {
-    setIsLoading(true)
+    setShowModal(true)
     let data
     if (!!selectedItem.value === true) {
     console.log("getAllUserPostid",selectedItem.value)
@@ -141,13 +144,13 @@ const getUserCollectionItems = useCallback(async () => {
             }
           })
           setAllPosts(postImages)
-          setIsLoading(false)
+          setShowModal(false)
         }
 
-        setIsLoading(false)
+        setShowModal(false)
       })
       .catch((error) => {
-        setIsLoading(false)
+        setShowModal(false)
         console.log(error, "getPost")
       })
     }else{
@@ -163,6 +166,7 @@ const getUserCollectionItems = useCallback(async () => {
     })
   }
   const addToUserCollection = (itemName) => {
+    setShowModal(true)
     if (validation()) {
       const data = {
         UC_Name: itemName,
@@ -192,10 +196,10 @@ const getUserCollectionItems = useCallback(async () => {
     setValue(item)
     setIsFocus(false)
     if (item.value === -1) {
-      setShowModal(true)
+      setShowModal1(true)
       return 0
     }
-    setIsAddingFav(true)
+    setShowModal(true)
     console.log("Aded to favorite", item)
     const favData = {
       UF_UC_PKeyID: item.value,
@@ -209,14 +213,14 @@ const getUserCollectionItems = useCallback(async () => {
     // return 0
     await createUpdateUserFavorite(favData, token)
       .then((res) => {
-        setIsAddingFav(false)
+        setShowModal(false)
         console.log(res, " fav res is hereeee")
         setSetbool(false)
         getUserCollectionItems()
 
       })
       .catch((error) => {
-        setIsAddingFav(false)
+        setShowModal(false)
         console.log(error, "createFav")
       })
   }
@@ -228,33 +232,12 @@ const getUserCollectionItems = useCallback(async () => {
       return () => console.log("close");
     }, [])
   );
-  // const onPressFavoriteHandler = async (postid, collectionid) => {
-  //   setIsAddingFav(true)
-  //   console.log("Aded to favorite", postid)
-  //   const favData = {
-  //     UF_UC_PKeyID: collectionid,
-  //     UF_UP_PKeyID: postid,
-  //     Type: 1,
-  //     UC_Name: props.route.params.collectionItem.label,
-  //     UF_IsDelete: 0
-  //   }
-  //   console.log(favData, "Data is here")
-  //   await createUpdateUserFavorite(favData, token)
-  //     .then((res) => {
-  //       setIsAddingFav(false)
-  //       console.log(res, " fav res is hereeee")
-  //     })
-  //     .catch((error) => {
-  //       setIsAddingFav(false)
-  //       console.log(error, "createFav")
-  //     })
-  // }
  const itemValueInputChangeHandler = (text) => {
     setShowErrorMsg(null)
     setAddItemValue(text)
   }
 const RenderModal =() => {
-return( <Modal isVisible={showModal}>
+return( <Modal isVisible={showModal1}>
         <View
           style={{
             backgroundColor: "#ffffff",
@@ -275,7 +258,6 @@ return( <Modal isVisible={showModal}>
               errorMsg={showErrorMsg}
             />
           </View>
-
           <View
             style={{
               display: "flex",
@@ -288,7 +270,7 @@ return( <Modal isVisible={showModal}>
               style={{ width: 75, height: 50 }}
               text="Cancel"
               textColor="#593714"
-              onPress={() => setShowModal(false)}
+              onPress={() => setShowModal1(false)}
             />
             <Button
               style={{ width: 75, height: 50 }}
@@ -305,9 +287,10 @@ return( <Modal isVisible={showModal}>
         flex: 1,
         alignItems: "center",
         backgroundColor: "white",
-        marginTop:-30
+        marginTop:Platform.OS='android' ? 0 :-30
       }}
     >
+      {allPosts.length === 0 && !showModal &&(<View><Text style={{ color: "rgb(89, 55, 20)", fontWeight: "bold" ,fontSize:20}}>Collection Coming Soon....</Text></View>)}
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -319,6 +302,7 @@ return( <Modal isVisible={showModal}>
           // marginBottom: 100,
         }}
       >
+
         <View
           style={{
             width: "100%",
@@ -327,16 +311,16 @@ return( <Modal isVisible={showModal}>
             flexWrap: "wrap"
           }}
         >
-          {isLoading ? (
-            <View
+         
+          {showModal ? (
+           <View
               style={{
                 width: "100%",
-                display: "flex",
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",height:"100%"
               }}
             >
-              <BubblesLoader size={50} color="black" dotRadius={10} />
+              <BubblesLoader size={50} color={"rgb(89, 55, 20)"} dotRadius={10} />
             </View>
           ) : (
             allPosts?.map((img) => {
@@ -387,6 +371,7 @@ return( <Modal isVisible={showModal}>
                     // />
                   )}
                 </View>
+                
                 <CollectionItemImg
                   key={img.id}
                   onPressImage={() =>

@@ -1,21 +1,31 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, StyleSheet,Platform} from 'react-native';
 
 import Facebook from './../assets/social_media/facebook.svg';
 import Google from './../assets/social_media/google.svg';
 import Apple from './../assets/social_media/apple.svg';
+
 const SocialMedia = props => {
+const [show, setshow] = React.useState(false)
+React.useEffect(() => { 
+  let Version =parseInt(Platform.Version,10)
+      console.log("Version",Platform.constants,Version)
+      if(Version >13 ){
+          setshow(true)
+        }
+  }, [])
   return (
     <View style={{...styles.socialmedia_container, ...props.containerStyle}}>
-      <TouchableOpacity activeOpacity={0.8} style={styles.socialButton}>
+      <TouchableOpacity onPress={props._onhadleFacebook} activeOpacity={0.8} style={styles.socialButton}>
         <Facebook width={50} height={50} />
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} style={styles.socialButton}>
+      <TouchableOpacity onPress={props._onhadleGoogle} activeOpacity={0.8} style={styles.socialButton}>
         <Google width={38} height={38} />
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} style={styles.socialButton}>
+      {Platform.OS === 'android'  && show? (null) : (<TouchableOpacity onPress={props._onhadleApple} activeOpacity={0.8} style={styles.socialButton}>
         <Apple width={40} height={40} />
-      </TouchableOpacity>
+      </TouchableOpacity>)}
+      
     </View>
   );
 };

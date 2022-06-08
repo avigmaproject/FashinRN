@@ -16,6 +16,7 @@ import {Toast} from 'native-base';
 import InputText from '../../components/UI/InputText';
 import Button from '../../components/UI/Button';
 import {forgotpassword} from '../../services/api.fuctions';
+import {basecolor,secondrycolor,creamcolor,creamcolor1,black,white} from "../../services/constant"
 
 export default class ForgotPassword extends Component {
   constructor() {
@@ -42,11 +43,11 @@ export default class ForgotPassword extends Component {
     const link = await dynamicLinks().buildShortLink({
       link: `https://fashin.page.link/forgetpassword/${this.state.email}`,
       domainUriPrefix: 'https://fashin.page.link',
-      // ios: {
-      //   bundleId: "com.avigma.communv",
-      //   appStoreId: "1579823021",
-      //   fallbackUrl: "https://apps.apple.com/us/app/com.houseplant/id1535962213",
-      // },
+      ios: {
+        bundleId: "com.FashinRN",
+        appStoreId: "1621843840",
+        fallbackUrl: "https://apps.apple.com/us/app/com.houseplant/id1621843840",
+      },
       android: {
         packageName: 'com.fashin',
         fallbackUrl: 'https://play.google.com/store/apps/details?id=com.fashin',
@@ -55,7 +56,7 @@ export default class ForgotPassword extends Component {
         forcedRedirectEnabled: true,
       },
     });
-    // console.log(link);
+    console.log(link);
     this.setState({link});
   };
   onHandleForgotPassword = async () => {
@@ -124,7 +125,7 @@ export default class ForgotPassword extends Component {
         placement: 'bottom',
         status: 'error',
         duration: 5000,
-        backgroundColor: '#5B4025',
+        backgroundColor: secondrycolor,
       });
     }
   };
@@ -136,7 +137,7 @@ export default class ForgotPassword extends Component {
         placement: 'bottom',
         status: 'success',
         duration: 5000,
-        backgroundColor: '#5B4025',
+        backgroundColor: secondrycolor,
       });
     }
   };
@@ -148,7 +149,7 @@ export default class ForgotPassword extends Component {
         placement: 'bottom',
         status: 'warning',
         duration: 5000,
-        backgroundColor: '#5B4025',
+        backgroundColor: secondrycolor,
       });
     }
   };
@@ -156,12 +157,8 @@ export default class ForgotPassword extends Component {
   render() {
     const {email} = this.state;
     return (
-      <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+      <SafeAreaView style={{backgroundColor: white, flex: 1}}>
         <SpinnerBackdrop showModal={this.state.isLoading} />
-        {/* <Header
-          text="Forgot Password"
-          onPress={() => this.props.navigation.goBack()}
-        /> */}
         <View style={{marginTop: 30, width: '80%', alignSelf: 'center'}}>
           <Text style={{color: 'black', fontSize: 26}}>Reset Password</Text>
           <InputText
@@ -177,7 +174,7 @@ export default class ForgotPassword extends Component {
         <View style={{marginTop: 30, width: '80%', alignSelf: 'center'}}>
           <Button
             text="Send Link"
-            backgroundColor="#5B4025"
+            backgroundColor={secondrycolor}
             onPress={() => this.onHandleForgotPassword()}
           />
         </View>

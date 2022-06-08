@@ -102,7 +102,8 @@ const validation = () => {
         console.log("setAllPosts",posts)
 
         const postImages = posts.map((item) => {
-          return { url: item.UP_ImagePath, id: item.UP_PKeyID }
+          console.log("item",item)
+          return { url: item.UP_ImagePath, id: item.UP_PKeyID,name: item.UC_Name}
         })
         setAllPosts(postImages)
       })
@@ -262,7 +263,9 @@ return(
         onChange={(item) => getAllUserPost(item)}
       />
       {!!selectedItem.value ? (
-        <ProfileImages allImages={allPosts} />
+        <ProfileImages 
+        navigation={props.navigation}
+       allImages={allPosts} />
       ) : (
         <Text style={{ color: "black", fontSize: 15 }}>
           Please select a collection from dropdown!

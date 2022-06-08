@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
 import {resetpassword} from '../../services/api.fuctions';
 import {verifyPassword} from '../../shared/miscellaneous';
+import {basecolor,secondrycolor,creamcolor,creamcolor1,black,white} from "../../services/constant"
 
 export default class ResetPassword extends Component {
   constructor() {
@@ -96,7 +97,7 @@ export default class ResetPassword extends Component {
         placement: 'bottom',
         status: 'error',
         duration: 5000,
-        backgroundColor: '#CDAF90',
+        backgroundColor: creamcolor,
       });
     }
   };
@@ -108,7 +109,7 @@ export default class ResetPassword extends Component {
         placement: 'bottom',
         status: 'success',
         duration: 5000,
-        backgroundColor: '#CDAF90',
+        backgroundColor: creamcolor,
       });
     }
   };
@@ -120,7 +121,7 @@ export default class ResetPassword extends Component {
         placement: 'bottom',
         status: 'warning',
         duration: 5000,
-        backgroundColor: '#CDAF90',
+        backgroundColor: '{creamcolor}',
       });
     }
   };

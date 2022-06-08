@@ -20,6 +20,8 @@ target 'Fashin' do
 
   pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
 
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
   target 'FashinTests' do
     inherit! :complete
     # Pods for testing

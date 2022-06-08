@@ -3,6 +3,14 @@ import {View, Text, Image} from 'react-native';
 import Icon from './UI/Icon';
 import User from '../assets/svgs/user.svg';
 const ProfileAdd = props => {
+const [isLoading, setisLoading] = React.useState(false)
+const _onLoadEnd = () => {
+   setisLoading(false)
+  }
+const _onLoadStart = () => {
+setisLoading(true)
+   
+  }
   return (
 <>
     <View
@@ -24,7 +32,12 @@ const ProfileAdd = props => {
           height: '100%',
           backgroundColor: '#593714',justifyContent:"center",alignItems:"center"
         }}>
+          {/* {isLoading &&  <View style={{ position:"absolute",height: 300,width:"100%",zIndex:111}}>
+          <View style={{ height: 300,width:"100%",justifyContent:"center",alignItems:"center"}}><ActivityIndicator color={"#593714"} /></View>
+         </View> } */}
         <Image
+            onLoadStart={() =>_onLoadStart()}
+            onLoadEnd={() => _onLoadEnd()}
           style={{
             width: '80%',
             height: '80%',            
@@ -37,7 +50,7 @@ const ProfileAdd = props => {
       </View>
        <View style={{backgroundColor:"#AB8560", width: '70%',justifyContent:"center",alignItems:"center",
           height: '60%',}}><Text style={{alignSelf: 'center', color: '#D7C7B6',textTransform:"capitalize",fontSize:25}}>
-          {"Profile"}
+          {props.name}
         </Text></View>
 
       {/* <View
@@ -60,10 +73,7 @@ const ProfileAdd = props => {
         </View> */}
       {/* </View> */}
     </View>
-    <View style={{justifyContent:"center",alignItems:"center", marginLeft:"20%"}}>
-      <Text style={{alignSelf: 'center', color: '#AB8560',textTransform:"capitalize",fontSize:25}}>
-      {props.name}</Text>
-    </View>
+    
 </>
   );
 };

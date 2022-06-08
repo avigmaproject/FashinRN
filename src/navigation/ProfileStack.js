@@ -20,7 +20,7 @@ function ProfileStack() {
           headerTitleAlign: 'center',
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => console.log(navigation.navigate('Setting'))}>
+              onPress={() => navigation.navigate('Setting')}>
               <Ionicons name="settings-outline" size={25} color="#593714" />
             </TouchableOpacity>
           ),

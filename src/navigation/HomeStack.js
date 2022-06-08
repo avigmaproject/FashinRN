@@ -27,9 +27,6 @@ function HomeStack() {
         name="Home"
         component={HomeScreen}
         options={({navigation}) => ({
-          // headerTitle: props => <FashionLogoLight height={100} width={100} />,
-          // headerTitleAlign: 'center',
-          // headerShadowVisible: false,
           headerShown: false,
         })}
       />

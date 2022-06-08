@@ -1,6 +1,7 @@
 import axios from "axios"
 import { API } from "./api.types"
-
+import firebase from "@react-native-firebase/app";
+import messaging from "@react-native-firebase/messaging";
 export const register = async (data) => {
   console.log("datatatat", data)
   return axios(API.REGISTRATION_API, {
@@ -213,3 +214,21 @@ export const getuserfavorite = async (data, access_token) => {
       throw error
     })
 }
+export const requestUserPermission = async () => {
+  let authStatus = await firebase.messaging().hasPermission();
+  if (
+    authStatus !== firebase.messaging.AuthorizationStatus.AUTHORIZED ||
+    messaging.AuthorizationStatus.PROVISIONAL
+  ) {
+    authStatus = await firebase.messaging().requestPermission();
+  }
+  if (authStatus === firebase.messaging.AuthorizationStatus.AUTHORIZED) {
+    return authStatus;
+  }
+};
+
+export const getFcmToken = async () => {
+  const fcmToken = await messaging().getToken();
+  console.log("hiiii", fcmToken);
+  return fcmToken;
+};

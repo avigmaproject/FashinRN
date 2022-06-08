@@ -31,6 +31,7 @@ import CheckBox from "@react-native-community/checkbox"
 import { setUserCollectionItems } from "../../store/actions/profileActions"
 import Modal from "../../components/UI/Modal"
 import { Dropdown } from "react-native-element-dropdown"
+import {basecolor,secondrycolor,creamcolor,creamcolor1,black,creamcolor2} from "../../services/constant"
 
 const options = [
   "Cancel",
@@ -437,14 +438,14 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
     setTimeout(
       function () {
         ImagePicker.openPicker({
-          width: 300,
-          height: 400,
+          width: 500,
+          height: 500,
           cropping: true,
           includeBase64: true,
           multiple: false,
-          compressImageQuality: 0.5
+          compressImageQuality: 0.7
         }).then((image) => {
-          // console.log(image.data);
+          console.log(image);
           this.setState(
             {
               base64: image.data,
@@ -467,14 +468,13 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
     setTimeout(
       function () {
         ImagePicker.openCamera({
-          width: 300,
-          height: 400,
+          width: 500,
+          height: 500,
           cropping: true,
           includeBase64: true,
           multiple: false,
-          compressImageQuality: 0.5
+          compressImageQuality: 0.7
         }).then((image) => {
-          // console.log(image);
           this.setState(
             {
               base64: image.data,
@@ -544,7 +544,7 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
           }}
         >
           <View style={{ alignSelf: "center", marginTop: 30 }}>
-            <Image
+{this.state.imagepath ? (<Image
               style={{
                 width: Dimensions.get("window").width / 1.16,
                 height: Dimensions.get("window").width / 1.16,
@@ -552,12 +552,19 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
               }}
               resizeMode="cover"
               source={{
-                //   uri: imagepath ? imagepath : null,
                 uri: this.state.imagepath
-                  ? this.state.imagepath
-                  : "https://www.unigreet.com/wp-content/uploads/2020/04/Dp-pic-download-833x1024.jpg"
               }}
-            />
+            />) : ( <Image
+              style={{
+                width: Dimensions.get("window").width / 1.16,
+                height: Dimensions.get("window").width / 1.16,
+                borderRadius: 10,borderColor:"#D7C7B6",borderWidth:1
+              }}
+              resizeMode="contain"
+              source={require('../../assets/users/fashINLogoLIght.png')}
+              alt="logo"
+      />)}
+            
             <FAB
               icon="camera"
               style={{
@@ -596,7 +603,7 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
           <View style={styles.form_container}>
             <View style={styles.checkboxContainer}>
               <CheckBox
-                tintColors={{ true: "#CDAF90", false: "gray" }}
+                tintColors={{ true: {creamcolor}, false: "gray" }}
                 value={this.state.isSpotlight}
                 boxType="square"
                 onCheckColor="#CDAF90"
@@ -754,7 +761,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     backgroundColor: "#EBD4BD",
-    width:"100%",marginTop: 20
+    width:"100%",marginTop: 23
   },
   icon: {
     marginRight: 5,

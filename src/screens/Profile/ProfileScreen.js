@@ -32,6 +32,7 @@ const ProfileScreen = (props) => {
   const [userCollections, setUserCollections] = useState([])
   const [name, setname] = useState("")
   const [photo, setphoto] = useState("")
+  const [lebal, setlebal] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const getUserData = async () => {
      setIsLoading(true);
@@ -71,8 +72,10 @@ const addToUserCollection = (itemName) => {
 
     if (validation()) {
       const data = {
-        UC_Name: itemName,
-        Type: 1
+       UC_Name: itemName,
+        Type: 1,
+        UC_Closet_Spotlight:2,
+        UC_Show:true
       }
       console.log(data, "AddUserData")
       if (addItemValue.trim() != "") {
@@ -82,7 +85,7 @@ const addToUserCollection = (itemName) => {
             setShowModal(false)
             getUserCollectionItems()
             setAddItemValue("")
-        setIsLoading(false);
+          setIsLoading(false);
 
           })
           .catch((err) => {
@@ -172,16 +175,16 @@ useFocusEffect(
     }, [])
   );
 
-  const getAllUserPost = useCallback(async (item) => {
-     setIsLoading(true);
+  const getAllUserPost = useCallback(async (item) => { 
+setlebal(item.label)   
      setValue(item.value)
      setSelectedItem(item)
      setIsFocus(false)
     if (item.value === -1) {
       setShowModal(true)
-      return
-    }
-    setSelectedItem(item)
+      return 0
+    }else{
+ setIsLoading(true);
     const data = {
       UF_UC_PKeyID: item.value,
       Type: 4
@@ -191,12 +194,12 @@ useFocusEffect(
       .then((res) => {
        
         const posts = res.data[0]
-      
+      console.log("minallllposts",posts)
         const postImages = posts.map((item) => {
           return { 
             url: item.UP_ImagePath, 
             id: item.UP_PKeyID,
-            description:item.UP_Coll_Desc,
+            name:item.UP_Coll_Desc,
             product_url:item.UP_Product_URL
              }
         })
@@ -207,6 +210,8 @@ useFocusEffect(
       .catch((error) => {
         console.log(error, "getPost")
       })
+      }
+    
   })
  const itemValueInputChangeHandler = (text) => {
     setShowErrorMsg(null)
@@ -321,10 +326,10 @@ return (<View>
         onChange={(item) => getAllUserPost(item)}
       />
       </View>
-      {value !== -1 && (  <Text style={{ alignSelf: "center", color: "#264653", fontSize: 25 }}>
+      {/* {value !== -1 && (  <Text style={{ alignSelf: "center", color: "#264653", fontSize: 25 }}>
       {selectedItem.label}
-        </Text>) }
-      <ProfileImages navigation={props.navigation} allImages={allPosts} />
+        </Text>) } */}
+      <ProfileImages navigation={props.navigation} name={lebal} allImages={allPosts} />
       {renderModal()}
     </View>
   )

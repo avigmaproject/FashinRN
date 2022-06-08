@@ -28,7 +28,7 @@ import { setUserCollectionItems } from "../../store/actions/profileActions"
 import { BubblesLoader } from "react-native-indicator"
 import FashionLogoDark from "../../assets/svgs/FashionLogoLight.svg"
 import { useFocusEffect } from "@react-navigation/native";
-
+import {basecolor,secondrycolor,creamcolor,creamcolor1,black,creamcolor2} from "../../services/constant"
 const HomeScreen = (props) => {
   const [userCollections, setUserCollections] = useState([])
   const [searchtext, setsearchtext] = useState(null)
@@ -153,7 +153,7 @@ useFocusEffect(
   }
   const mapCollectionsToColors = (userCollections) => {
     if (userCollections.length > 0) {
-      let colors = ["#99795B", "#AB8560", "#593714"]
+      let colors = [creamcolor1, creamcolor2, basecolor]
       var matrix = listToMatrix(userCollections, 3)
       let i = 0
       let allData
@@ -225,8 +225,8 @@ useFocusEffect(
 //                 value={audienceValue}
 //               >
 //                 <View style={{ display: "flex", flexDirection: "row" }}>
-//                   <RadioButton color="#5B4025" value="followers" />
-//                   <Text style={{ color: "#5B4025", marginTop: 5 }}>
+//                   <RadioButton color={secondrycolor} value="followers" />
+//                   <Text style={{ color: {secondrycolor}, marginTop: 5 }}>
 //                     Followers
 //                   </Text>
 //                 </View>
@@ -237,8 +237,8 @@ useFocusEffect(
 //                     color: "red"
 //                   }}
 //                 >
-//                   <RadioButton color="#5B4025" value="public" />
-//                   <Text style={{ color: "#5B4025", marginTop: 5 }}>Public</Text>
+//                   <RadioButton color={secondrycolor} value="public" />
+//                   <Text style={{ color: {secondrycolor}, marginTop: 5 }}>Public</Text>
 //                 </View>
 //               </RadioButton.Group>
 //             </View>
@@ -255,13 +255,13 @@ useFocusEffect(
 //             <Button
 //               style={{ width: 75, height: 50 }}
 //               text="Cancel"
-//               textColor="#593714"
+//               textColor={basecolor}
 //               onPress={() => setShowModal(false)}
 //             />
 //             <Button
 //               style={{ width: 75, height: 50 }}
 //               text="Add"
-//               backgroundColor="#5B4025"
+//               backgroundColor="{secondrycolor}"
 //               onPress={() => addToUserCollection(addItemValue)}
 //             />
 //           </View>
@@ -286,24 +286,24 @@ useFocusEffect(
         <TextInput
           style={{
             flex: 1,
-            color: "#5B4025",
-            backgroundColor: "#CDAF90",
+            color:secondrycolor,
+            backgroundColor: creamcolor,
             height: 50,
             borderRadius: 10,
-            margin: 10
+            margin: 10,
           }}
-          selectionColor="#5B4025"
+          selectionColor={secondrycolor}
           placeholder="Search Here"
-          placeholderTextColor="#5B4025"
+          placeholderTextColor={secondrycolor}
           underlineColorAndroid="transparent"
           onChangeText={(search)=>searchText(search)}
           value={searchtext}
         />
-        <View style={{ backgroundColor: "#CDAF90", marginRight: 10 }}>
-          <Ionicons name="search" size={25} color="#593714" />
+        <View style={{ backgroundColor: creamcolor, marginRight: 10 }}>
+          <Ionicons name="search" size={25} color={basecolor} />
         </View>
       </View>
-      <Text style={{ color: "#264653", fontSize: 22, marginVertical: 10 }}>
+      <Text style={{ color: {basecolor}, fontSize: 22, marginVertical: 10 }}>
         Collections
       </Text>
 
@@ -337,7 +337,7 @@ useFocusEffect(
                 alignItems: "center"
               }}
             >
-              <BubblesLoader size={50} color="black" dotRadius={10} />
+              <BubblesLoader size={50} color={basecolor} dotRadius={10} />
             </View>
           )}
           <View style={{ width: "90%", alignSelf: "center" }}>
@@ -355,8 +355,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#CDAF90",
-    borderColor: "#000",
+    backgroundColor: creamcolor,
+    borderColor: black,
     height: 55,
     borderRadius: 10,
     margin: 10,

@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "467243516590-jlp11gpsp0hfch2tk22rdsa3pr2bt9mq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fashin",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "467243516590-ua932dr9dsm2acqk4dhlpfmk4eu8a3c2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fashin",
+            "certificate_hash": "fb0182b90efcb6cf5e6907043c8b85fae47e7506"
+          }
+        },
+        {
           "client_id": "467243516590-tegq5pssuasme450fg0opiv2iq75q9b6.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -35,8 +51,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "467243516590-tegq5pssuasme450fg0opiv2iq75q9b6.apps.googleusercontent.com",
+              "client_id": "467243516590-732dip6275lasqrds0ms3ufdgv4f39qu.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "467243516590-5nj1no9k2vobi8tlkev2vg57pou9l39b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.Fashin"
+              }
             }
           ]
         }

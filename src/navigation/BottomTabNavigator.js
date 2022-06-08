@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, Image} from 'react-native';
+import {Text, View, TouchableOpacity, Image,StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Hanger from '../assets/svgs/hanger_outline.svg';
 import HangerDark from '../assets/svgs/hangerDark.svg';
@@ -11,6 +11,7 @@ import HomeStack from './HomeStack';
 import UsersStack from './UsersStack';
 import ClosetStack from './ClosetStack';
 import NewCollectionStack from './NewCollectionStack';
+import {basecolor,white,creamcolor,creamcolor1,black,creamcolor2,basecolortraspaernt} from "../services/constant"
 
 export function ButtonAdd(props) {
   return (
@@ -18,7 +19,7 @@ export function ButtonAdd(props) {
       style={{
         width: 80,
         height: 80,
-        backgroundColor: 'white',
+        backgroundColor: white,
 
         top: -42,
         alignItems: 'center',
@@ -34,7 +35,7 @@ export function ButtonAdd(props) {
           position: 'relative',
           width: 70,
           height: 70,
-          backgroundColor: '#99795B',
+          backgroundColor: creamcolor1,
           top: 0,
           alignItems: 'center',
           justifyContent: 'center',
@@ -54,7 +55,7 @@ function MyTabs() {
         tabBarStyle: {
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
-          backgroundColor: '#CDAF90',
+          backgroundColor: creamcolor,
           height: 70,
           position: 'absolute',
           elevation: 0,
@@ -70,9 +71,9 @@ function MyTabs() {
           tabBarItemStyle: {borderRadius: 40},
           tabBarIcon: ({focused}) =>
             focused ? (
-             <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><Ionicons name="home" size={25} color="#593714" /></View>
+             <View style={styles.sectionStyle}><Ionicons name="home" size={25} color={basecolor} /></View>
             ) : (
-              <Ionicons name="home-outline" size={25} color="#593714" style={{  paddingTop:15}} />
+              <Ionicons name="home-outline" size={25} color={basecolor} style={{  paddingTop:15}} />
             ),
         }}
       />
@@ -84,9 +85,9 @@ function MyTabs() {
           tabBarIconStyle: {width: 35},
           tabBarIcon: ({focused}) =>
             focused ? (
-              <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><Ionicons name="people" size={28} color="#593714"/></View>
+              <View style={styles.sectionStyle}><Ionicons name="people" size={28} color={basecolor}/></View>
             ) : (
-              <Ionicons name="people-outline" size={28} color="#593714"  style={{  paddingTop:15}}/>
+              <Ionicons name="people-outline" size={28} color={basecolor}  style={{  paddingTop:15}}/>
             ),
         }}
       />
@@ -95,7 +96,7 @@ function MyTabs() {
         component={NewCollectionStack}
         options={{
           tabBarItemStyle: {
-            backgroundColor: 'white',
+            backgroundColor: white,
             height: 50,
             position: 'relative',
             top: -25,
@@ -104,7 +105,7 @@ function MyTabs() {
           },
           tabBarButton: props => <ButtonAdd {...props} />,
           tabBarIcon: ({focused}) => (
-            <FeatherIcon name="plus" size={35} color="white" />
+            <FeatherIcon name="plus" size={35} color={white} />
           ),
         }}
       />
@@ -114,7 +115,7 @@ function MyTabs() {
         options={{
           tabBarItemStyle: {borderRadius: 40, width: 40,},
           tabBarIcon: ({focused}) =>
-            focused ? <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><HangerDark width="27" /></View>:<View style={{paddingTop:20}}><Hanger width="30" /></View>,
+            focused ? <View style={styles.sectionStyle}><HangerDark width="27" /></View>:<View style={{paddingTop:20}}><Hanger width="30" /></View>,
         }}
       />
       <Tab.Screen
@@ -123,13 +124,18 @@ function MyTabs() {
         options={{
           tabBarIcon: ({focused}) =>
             focused ? (
-               <View style={{backgroundColor:"rgba(89, 55, 20,0.3)",marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50}}><FontAwesome name="user" size={30} color="#593714" /></View>
+               <View style={styles.sectionStyle}><FontAwesome name="user" size={30} color={basecolor} /></View>
             ) : (
-            <FontAwesome name="user-o" size={25} color="#593714"  style={{ paddingTop:15}}/>
+            <FontAwesome name="user-o" size={25} color={basecolor}  style={{ paddingTop:15}}/>
             ),
         }}
       />
     </Tab.Navigator>
   );
 }
+const styles = StyleSheet.create({
+  sectionStyle: {backgroundColor:basecolortraspaernt,marginTop:20,height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:50},
+  
+})
+
 export default MyTabs;
