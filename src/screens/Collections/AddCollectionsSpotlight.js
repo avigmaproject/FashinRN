@@ -32,6 +32,7 @@ import { setUserCollectionItems } from "../../store/actions/profileActions"
 import Modal from "../../components/UI/Modal"
 import { Dropdown } from "react-native-element-dropdown"
 import {basecolor,secondrycolor,creamcolor,creamcolor1,black,creamcolor2} from "../../services/constant"
+import AntDesign from "react-native-vector-icons/AntDesign"
 
 const options = [
   "Cancel",
@@ -129,7 +130,7 @@ class AddCollectionSpotlight extends Component {
         })
         collectionItems?.push({ label: "Add +", value: -1 })
 
-        this.setState({userCollections:collectionItems})
+        this.setState({userCollections:collectionItems.reverse()})
         console.log("getUsercollectionItems", collectionItems)
       })
       .catch((error) => {
@@ -394,6 +395,43 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
       }
     }
   }
+ renderItem = (item) => {
+      return (
+        <View style={styles.item}>
+          <Text style={styles.textItem}>{item.label}</Text>
+          {item.value !== -1 && (
+            <TouchableOpacity onPress={()=>this.DeleteCollection(item.value )}>
+            <AntDesign
+              style={styles.icon}
+              color="red"
+              name="delete"
+              size={20}     
+            />
+        </TouchableOpacity>
+           )} 
+        </View>
+      );
+    };
+   DeleteCollection = (id) => {
+    const {token} =this.props
+
+      const data = {
+        UC_PKeyID: id,
+        Type: 4,
+       
+      }
+      console.log("data", data)
+        addUserCollection(data, token)
+          .then((res) => {
+            console.log(res.data)
+            this.getUserCollectionItems()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      
+    
+  }
 
   showerrorMessage = (message) => {
     if (message !== "" && message !== null && message !== undefined) {
@@ -544,7 +582,7 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
           }}
         >
           <View style={{ alignSelf: "center", marginTop: 30 }}>
-{this.state.imagepath ? (<Image
+            {this.state.imagepath ? (<Image
               style={{
                 width: Dimensions.get("window").width / 1.16,
                 height: Dimensions.get("window").width / 1.16,
@@ -662,6 +700,8 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
               onFocus={() => this.setState({isFocus:true})}
               onBlur={() => this.setState({isFocus:false})}
               onChange={(item) => this.getAllUserPost(item)}
+              renderItem={this.renderItem}
+
             /></>
             ) : null}
             {/* <InputText
@@ -794,7 +834,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: "#593714",
     color: "#593714"
-  }
+  },
+item: {
+      padding: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+textItem: {
+      fontSize: 16,
+    color: "#593714"
+
+    },
+    
 })
 
 const mapStateToProps = (state, ownProps) => ({

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react"
-import { View, Text, Platform,StyleSheet } from "react-native"
+import { View, Text, Platform,StyleSheet, TouchableOpacity } from "react-native"
 import { useSelector, useDispatch } from "react-redux"
 import {
   getUserCollection,
@@ -7,10 +7,8 @@ import {
   addUserCollection,
   userprofile
 } from "../../services/api.fuctions"
-import Selection from "../../components/Selection"
 import ProfileImages from "../../components/ProfileImages"
 import ProfileAdd from "../../components/ProfileAdd"
-// import { setUserCollectionItems } from "../../store/actions/profileActions"
 import { Dropdown } from "react-native-element-dropdown"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Modal from "../../components/UI/Modal"
@@ -18,6 +16,7 @@ import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import SpinnerBackdrop from "../../components/UI/SpinnerBackdrop"
 import { useFocusEffect } from "@react-navigation/native";
+const browan = "#593714"
 
 const ProfileScreen = (props) => {
   const token = useSelector((state) => state.auth.userToken)
@@ -96,32 +95,43 @@ const addToUserCollection = (itemName) => {
       }
     }
   }
-  // const addToUserFav = (itemName) => {
-  //   console.log("addToUserFav", itemName, props.sid)
-  //   if (validation()) {
-  //     const data = {
-  //       UF_UC_PKeyID: 0,
-  //       UF_UP_PKeyID: props.sid,
-  //       Type: 1,
-  //       UC_Name: itemName,
-  //       UF_IsDelete: 0,
-  //       UF_Closet_Spotlight: props.spotlight ? 2 : 1
-  //     }
-  //     console.log("data", data)
-  //     if (addItemValue.trim() != "") {
-  //       addUserCollection(data, token)
-  //         .then((res) => {
-  //           console.log(res.data)
-  //           setShowModal(false)
-  //         })
-  //         .catch((err) => {
-  //           setShowModal(false)
-  //           console.log(err)
-  //           setAddItemValue("")
-  //         })
-  //     }
-  //   }
-  // }
+const renderItem = (item) => {
+      return (
+        <View style={styles.item}>
+          <Text style={styles.textItem}>{item.label}</Text>
+          {item.value !== -1 && (
+            <TouchableOpacity onPress={()=>DeleteCollection(item.value )}>
+            <AntDesign
+              style={styles.icon}
+              color="red"
+              name="delete"
+              size={20}     
+            />
+        </TouchableOpacity>
+           )} 
+        </View>
+      );
+    };
+  const DeleteCollection = (id) => {
+      const data = {
+        UC_PKeyID: id,
+        Type: 4,
+       
+      }
+      console.log("data", data)
+        addUserCollection(data, token)
+          .then((res) => {
+            console.log(res.data)
+            getUserCollectionItems()
+          })
+          .catch((err) => {
+            setShowModal(false)
+            console.log(err)
+            setAddItemValue("")
+          })
+      
+    
+  }
 
   const renderLabel = () => {
     if (value || isFocus) {
@@ -252,7 +262,7 @@ return (<View>
             <Button
               style={{ width: 75, height: 50 }}
               text="Cancel"
-              textColor="#593714"
+              textColor={browan}
               onPress={() => setShowModal(false)}
             />
             <Button
@@ -267,6 +277,9 @@ return (<View>
         </View>
       </Modal></View>)
 }
+
+
+
   return (
     <View
       style={{
@@ -310,7 +323,7 @@ return (<View>
         containerStyle={{ backgroundColor: "#EBD4BD" }}
         activeColor="#AB8560"
         showsVerticalScrollIndicator={false}
-        iconColor="#593714"
+        iconColor={browan}
         data={userCollections}
         autoScroll
         dropdownPosition="bottom"
@@ -324,6 +337,8 @@ return (<View>
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => getAllUserPost(item)}
+        renderItem={renderItem}
+
       />
       </View>
       {/* {value !== -1 && (  <Text style={{ alignSelf: "center", color: "#264653", fontSize: 25 }}>
@@ -342,7 +357,7 @@ const styles = StyleSheet.create({
     width: "86%",
     margin: 16,
     borderRadius: 8,
-    color: "#593714"
+    color: browan
   },
   dropdown: {
     height: 50,
@@ -355,7 +370,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
-    color: "#593714"
+    color: browan
   },
   label: {
     position: "absolute",
@@ -369,11 +384,11 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    color: "#593714"
+    color: browan
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: "#593714"
+    color: browan
   },
   iconStyle: {
     width: 20,
@@ -382,7 +397,19 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    borderColor: "#593714",
-    color: "#593714"
-  }
+    borderColor: browan,
+    color: browan
+  },
+item: {
+      padding: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+ textItem: {
+      fontSize: 16,
+    color: browan
+
+    },
+    
 })

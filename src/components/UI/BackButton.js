@@ -5,6 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const BackButton = props => {
   return (
     <TouchableOpacity
+onPress={props.onPress}
       activeOpacity={0.9}
       {...props}
       style={{
@@ -16,7 +17,6 @@ const BackButton = props => {
         borderRadius: 5,
         alignItems: 'center',
         // justifyContent: 'center',
-        ...props.style,
       }}>
       <View style={{marginBottom: 1}}>
         <FontAwesome

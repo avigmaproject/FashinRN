@@ -12,7 +12,7 @@ const Auth = createNativeStackNavigator();
 function AuthStack() {
   return (
     <Auth.Navigator>
-      <Auth.Screen
+      {/* <Auth.Screen
         name="SplashScreen"
         component={SplashScreen}
         options={({navigation}) => ({
@@ -20,12 +20,11 @@ function AuthStack() {
           headerShown: false,
           headerShadowVisible: false,
         })}
-      />
+      /> */}
       <Auth.Screen
         name="LoginScreen"
         component={LoginScreen}
         options={({navigation}) => ({
-          headerTitleAlign: 'center',
           headerShown: false,
           headerShadowVisible: false,
         })}
@@ -34,7 +33,6 @@ function AuthStack() {
         name="ForgotPasswordScreen"
         component={ForgotPasswordScreen}
         options={({navigation}) => ({
-          headerTitleAlign: 'center',
           headerShown: false,
           headerShadowVisible: false,
         })}
@@ -43,7 +41,6 @@ function AuthStack() {
         name="ResetPasswordScreen"
         component={ResetPasswordScreen}
         options={({navigation}) => ({
-          headerTitleAlign: 'center',
           headerShown: false,
           headerShadowVisible: false,
         })}
@@ -53,7 +50,6 @@ function AuthStack() {
         name="SuccessScreen"
         component={SuccessScreen}
         options={({navigation}) => ({
-          headerTitleAlign: 'center',
           headerShown: false,
           headerShadowVisible: false,
         })}

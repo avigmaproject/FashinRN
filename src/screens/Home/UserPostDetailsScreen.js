@@ -1,14 +1,11 @@
 import React from 'react'
-import { View, Text, Dimensions, Image ,SafeAreaView,Linking,ActivityIndicator} from 'react-native'
-import UserCard from '../../components/UserCard'
+import { View, Image ,Linking} from 'react-native'
 import Button from '../../components/UI/Button'
 import {BubblesLoader} from 'react-native-indicator';
-const windowHeight = Dimensions.get('window').height;
 
 
-const UserPostDetailsScreen = (props,{navigation}) => {
+const UserPostDetailsScreen = (props) => {
 const [isLoading, setisLoading] = React.useState(false)
-  console.log("UserPostDetailsScreen",props.route.params)
   React.useLayoutEffect(() => {
     props.navigation.setOptions({
       title:props.route.params.name.toUpperCase(),
@@ -32,17 +29,13 @@ setisLoading(true)
    
   }
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#593714' }}>
-      <View
-        contentContainerStyle={{
-          marginTop: 5,
-        }}
-      >
-        <View style={{ width:"100%",   height: windowHeight * 60/100,marginTop:10,justifyContent:"center",alignItems:"center"}}>
+    <View style={{ flex: 1, backgroundColor: '#593714' }}>
+        <View style={{ width:"100%",   height: 300,marginTop:10,justifyContent:"center",alignItems:"center"}}>
           {isLoading &&  <View style={{ position:"absolute",height: 300,width:"100%"}}>
           <View style={{ height: 300,width:"100%",justifyContent:"center",alignItems:"center"}}><BubblesLoader size={50} color={"rgb(89, 55, 20)"} dotRadius={10} /></View>
          </View> }
-          <Image
+          {props.route.params.imageUri && ( 
+            <Image
             resizeMode="stretch"
             onLoadStart={() =>_onLoadStart()}
             onLoadEnd={() => _onLoadEnd()}
@@ -53,7 +46,8 @@ setisLoading(true)
             
             }}
             source={{ uri: props.route.params.imageUri }}
-          />
+          />)}
+         
         </View>
         {props.route.params.productUrl &&(<View>
           <Button
@@ -64,9 +58,7 @@ setisLoading(true)
             style={{  width: "90%",marginTop: 20, marginBottom: 150, height: 60 }}
           />
         </View>)}
-        
       </View>
-    </SafeAreaView>
   )
 }
 

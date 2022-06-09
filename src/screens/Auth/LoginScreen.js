@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   ScrollView,
+AppState
 } from 'react-native';
 import qs from 'qs';
 import InputText from '../../components/UI/InputText';
@@ -25,9 +26,12 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import { AppleButton ,appleAuth} from '@invertase/react-native-apple-authentication';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 const LoginScreen = props => {
   const dispatch = useDispatch();
+  const [appState, setappState] = useState("active")
+  const [linkdata, setlinkdata] = useState("")
   const [showModal, setShowModal] = useState(false);
   const [inputValues, setInputValues] = useState({
     email: {
@@ -53,17 +57,21 @@ const [fcmtoken, setfcmtoken] = useState("")
   const [showMessage, setShowMessage] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
+  
+
+
+
   useEffect(() => {
-FcmMessage()
-GoogleSignin.configure({
-        scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-        webClientId:
-          "467243516590-tegq5pssuasme450fg0opiv2iq75q9b6.apps.googleusercontent.com",
-        
-      });    return () => {
-      console.log("GoogleSignin",GoogleSignin)
-    }
+    FcmMessage()
+    GoogleSignin.configure({
+            scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+            webClientId:
+              "467243516590-tegq5pssuasme450fg0opiv2iq75q9b6.apps.googleusercontent.com",
+            
+          });    return () => {
+        }
   }, [])
+
   const  FcmMessage = async () => {
     const authStatus = await requestUserPermission();
     if (authStatus) {
@@ -75,6 +83,56 @@ GoogleSignin.configure({
     alert("Something went wrong!!!!")  
   };
 }
+
+
+const _getInitialUrl = async () => {
+    const url = dynamicLinks().onLink(handleDynamicLink);
+  setlinkdata(url)
+  };
+ 
+
+  const _getInitialLink =  async () =>{
+ await dynamicLinks()
+      .getInitialLink()
+      .then(link => {
+        if (link) {
+          console.log('Loginlink', link);
+          this.props.navigation.navigate('ResetPasswordScreen', {
+            link: link.url,
+          });
+        }
+        console.log('Loginlinklink', link);
+      });
+}
+useEffect(() => {
+  _getInitialUrl();
+    AppState.addEventListener('change', _handleAppStateChange);
+   _getInitialLink()
+
+  return () => {
+       AppState.removeEventListener('change', _handleAppStateChange);
+
+  }
+}, [])
+
+
+
+  const _handleAppStateChange = async nextAppState => {
+    if (
+      appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      _getInitialUrl();
+    }
+  };
+  const handleDynamicLink = link => {
+    props.navigation.navigate('ResetPasswordScreen', {link: link.url});
+  };
+
+ 
+
+
+
  const _onhadleGoogle = async () => {
     console.log("GoogleSignin", GoogleSignin);
     // await GoogleSignin.signOut();
@@ -291,7 +349,6 @@ let data = qs.stringify({
   };
 
   return (
-<SafeAreaView>
     <ScrollView contentContainerStyle={styles.container}>
       <SpinnerBackdrop showModal={showModal} />
       <View style={styles.form_container}>
@@ -357,22 +414,18 @@ let data = qs.stringify({
         <SocialMedia _onhadleApple = {_onhadleApple} _onhadleGoogle = {_onhadleGoogle} _onhadleFacebook={_onhadleFacebook}containerStyle={{...props.containerStyle}} />
       </View>
     </ScrollView>
-</SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     width: '100%',
     backgroundColor: white,
     alignItems: 'center',
+    height:"100%"
   },
   form_container: {
-    flex: 1,
-    marginHorizontal: 'auto',
     width: '80%',
-    marginHorizontal: 'auto',
     marginTop: 20,
   },
   login_header: {

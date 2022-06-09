@@ -288,6 +288,43 @@ return( <Modal isVisible={showModal}>
           </View>
         </View>
       </Modal>)}
+const renderItem = (item) => {
+      return (
+        <View style={styles.item}>
+          <Text style={styles.textItem}>{item.label}</Text>
+          {item.value !== -1 && (
+            <TouchableOpacity onPress={()=>DeleteCollection(item.value )}>
+            <AntDesign
+              style={styles.icon}
+              color="red"
+              name="delete"
+              size={20}     
+            />
+        </TouchableOpacity>
+           )} 
+        </View>
+      );
+    };
+  const DeleteCollection = (id) => {
+      const data = {
+        UC_PKeyID: id,
+        Type: 4,
+       
+      }
+      console.log("data", data)
+        addUserCollection(data, token)
+          .then((res) => {
+            console.log(res.data)
+            getUserCollectionItems()
+          })
+          .catch((err) => {
+            setShowModal(false)
+            console.log(err)
+            setAddItemValue("")
+          })
+      
+    
+  }
   return (
     <SafeAreaView
       style={{
@@ -392,14 +429,10 @@ return( <Modal isVisible={showModal}>
                       onFocus={() => setIsFocus(true)}
                       onBlur={() => setIsFocus(false)}
                       onChange={(item) => dropDownSelectHandler(item)}
+                      renderItem={renderItem}
+
                     /></>
-                    // <Selection
-                    //   changeHandler={dropDownSelectHandler}
-                    //   value={selectedItem?.value}
-                    //   sid={post.id}
-                    //   spotlight={true}
-                    //   data={userCollections}
-                    // />
+                   
                   )}
                 </View>
                 <UserCard
@@ -506,7 +539,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: "#593714",
     color: "#593714"
-  }
+  },
+item: {
+      padding: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+ textItem: {
+      fontSize: 16,
+    color: "#593714"
+
+    },
 })
 
 export default UsersScreen

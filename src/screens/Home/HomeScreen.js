@@ -50,7 +50,7 @@ const HomeScreen = (props) => {
       .then((res) => {
         setIsLoading(false)
         const fetchedUserCollection = res
-        console.log(res, token, "ProfileScreen getUserCollection")
+        // console.log(res, token, "ProfileScreen getUserCollection")
         const collectionItems = fetchedUserCollection?.map((item) => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
@@ -137,11 +137,9 @@ const searchText = (e) => {
 useFocusEffect(
     React.useCallback(() => {
     getUserCollectionItems()
-      return () => console.log("close");
     }, [])
   );
   const onCollectionItemPressHandler = (item) => {
-    console.log("presses234234")
     console.log(item)
     if (item.value === -1) {
       setShowModal(true)

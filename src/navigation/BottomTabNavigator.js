@@ -20,7 +20,6 @@ export function ButtonAdd(props) {
         width: 80,
         height: 80,
         backgroundColor: white,
-
         top: -42,
         alignItems: 'center',
         justifyContent: 'center',

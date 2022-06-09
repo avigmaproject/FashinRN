@@ -19,7 +19,6 @@ import {
 import Selection from "../../components/Selection"
 import ProfileImages from "../../components/ProfileImages"
 import CollectionItemImg from "../../components/CollectionItemImg"
-import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Dropdown } from "react-native-element-dropdown"
 import AntDesign from "react-native-vector-icons/AntDesign"
@@ -28,7 +27,8 @@ import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import Modal from "../../components/UI/Modal"
 import {BubblesLoader} from 'react-native-indicator';
-
+import { TextInput } from "react-native-paper"
+const browan = "#593714"
 const UserPostsScreen = (props) => {
  React.useLayoutEffect(() => {
     props.navigation.setOptions({
@@ -60,7 +60,6 @@ getAllUserPost(props.route.params.collectionIte)
 useFocusEffect(
     React.useCallback(() => {
     getUserCollectionItems()
-      return () => console.log("close");
     }, [])
   );
     const validation = () => {
@@ -90,15 +89,12 @@ const getUserCollectionItems = useCallback(async () => {
     const data = {
       Type: 5
     }
-    console.log(data, token)
     await getUserCollection(data, token)
       .then((res) => {
         var collectionItems
 
         setShowModal(false)
-        console.log("getUserCollection with type 555", res)
         const fetchedUserCollection = res
-        console.log(res, token, "ProfileScreen getUserCollection")
         collectionItems = fetchedUserCollection?.map((item) => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
@@ -106,7 +102,6 @@ const getUserCollectionItems = useCallback(async () => {
 
         setUserCollections(collectionItems)
         // dispatch(setUserCollectionItems(collectionItems))
-        console.log("getUsercollectionItems", collectionItems)
       })
       .catch((error) => {
         setShowModal(false)
@@ -121,18 +116,14 @@ const getUserCollectionItems = useCallback(async () => {
     setShowModal(true)
     let data
     if (!!selectedItem.value === true) {
-    console.log("getAllUserPostid",selectedItem.value)
-
       data = {
         UP_COLL_PKeyID: selectedItem.value,
         Type: 5
       }
-    console.log("getAllUserPostdata",data)
     await getUserPost(data, token)
       .then((res) => {
         if (res) {
           const posts = res.data[0]
-          console.log("user post",posts)
           const postImages = posts.map((item) => {
             return {
               uri: item.UP_ImagePath,
@@ -153,12 +144,30 @@ const getUserCollectionItems = useCallback(async () => {
         setShowModal(false)
         console.log(error, "getPost")
       })
-    }else{
-      console.log("id not founddddd")
-}
+    }
    
   })
 
+  const DeleteCollection = (id) => {
+      const data = {
+        UC_PKeyID: id,
+        Type: 4,
+       
+      }
+      console.log("data", data)
+        addUserCollection(data, token)
+          .then((res) => {
+            console.log(res.data)
+            getUserCollectionItems()
+          })
+          .catch((err) => {
+            setShowModal(false)
+            console.log(err)
+            setAddItemValue("")
+          })
+      
+    
+  }
   const onPressImgHandler = (image, productUrl,description,name) => {
     props.navigation.navigate("UserPostDetailsScreen", {
       imageUri: image,
@@ -170,13 +179,13 @@ const getUserCollectionItems = useCallback(async () => {
     if (validation()) {
       const data = {
         UC_Name: itemName,
-        Type: 1
+        Type: 1,
+        UC_Closet_Spotlight:2,
+        UC_Show:true
       }
-      console.log(data, "AddUserData")
       if (addItemValue.trim() != "") {
         addUserCollection(data, token)
           .then((res) => {
-            console.log(res.data, "response is here")
             setShowModal(false)
             getUserCollectionItems()
             setAddItemValue("")
@@ -200,7 +209,6 @@ const getUserCollectionItems = useCallback(async () => {
       return 0
     }
     setShowModal(true)
-    console.log("Aded to favorite", item)
     const favData = {
       UF_UC_PKeyID: item.value,
       UF_UP_PKeyID: setId,
@@ -209,12 +217,10 @@ const getUserCollectionItems = useCallback(async () => {
       UF_IsDelete: 0,
       UF_Closet_Spotlight:1
     }
-    console.log(favData, "Data")
     // return 0
     await createUpdateUserFavorite(favData, token)
       .then((res) => {
         setShowModal(false)
-        console.log(res, " fav res is hereeee")
         setSetbool(false)
         getUserCollectionItems()
 
@@ -229,7 +235,6 @@ const getUserCollectionItems = useCallback(async () => {
     React.useCallback(() => {
      getAllUserPost()
     getUserCollectionItems()
-      return () => console.log("close");
     }, [])
   );
  const itemValueInputChangeHandler = (text) => {
@@ -258,6 +263,7 @@ return( <Modal isVisible={showModal1}>
               errorMsg={showErrorMsg}
             />
           </View>
+
           <View
             style={{
               display: "flex",
@@ -281,6 +287,23 @@ return( <Modal isVisible={showModal1}>
           </View>
         </View>
       </Modal>)}
+    const renderItem = (item) => {
+      console.log(item)
+      return (
+        <View style={styles.item}>
+          <Text style={styles.textItem}>{item.label}</Text>
+          {item.value !== -1 && (
+            <TouchableOpacity onPress={()=>DeleteCollection(item.value)}>
+            <AntDesign
+              style={styles.icon}
+              color="red"
+              name="delete"
+              size={20}     
+            /></TouchableOpacity>
+           )} 
+        </View>
+      );
+    };
   return (
     <SafeAreaView
       style={{
@@ -339,7 +362,7 @@ return( <Modal isVisible={showModal1}>
                     <> 
                      {renderLabel()}  
                     <Dropdown
-                      style={[styles.dropdown, isFocus && { borderColor: "#593714" }]}
+                      style={[styles.dropdown, isFocus && { borderColor: browan }]}
                       placeholderStyle={styles.placeholderStyle}
                       selectedTextStyle={styles.selectedTextStyle}
                       inputSearchStyle={styles.inputSearchStyle}
@@ -347,7 +370,7 @@ return( <Modal isVisible={showModal1}>
                       containerStyle={{ backgroundColor: "#EBD4BD" }}
                       activeColor="#AB8560"
                       showsVerticalScrollIndicator={false}
-                      iconColor="#593714"
+                      iconColor={browan}
                       data={userCollections}
                       autoScroll
                       dropdownPosition="bottom"
@@ -361,14 +384,12 @@ return( <Modal isVisible={showModal1}>
                       onFocus={() => setIsFocus(true)}
                       onBlur={() => setIsFocus(false)}
                       onChange={(item) => dropDownSelectHandler(item)}
-                    /></>
-                    // <Selection
-                    //   changeHandler={dropDownSelectHandler}
-                    //   value={selectedItem?.value}
-                    //   sid={post.id}
-                    //   spotlight={true}
-                    //   data={userCollections}
-                    // />
+                      renderItem={renderItem}
+
+                    />
+
+                  </>
+                  
                   )}
                 </View>
                 
@@ -387,8 +408,7 @@ return( <Modal isVisible={showModal1}>
             })
           )}
         </View>
-{RenderModal()}
-
+      {RenderModal()}
       </ScrollView>
     </SafeAreaView>
   )
@@ -408,7 +428,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
-    color: "#593714"
+    color: browan
   },
   label: {
     position: "absolute",
@@ -422,11 +442,11 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    color: "#593714"
+    color: browan
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: "#593714"
+    color: browan
   },
   iconStyle: {
     width: 20,
@@ -435,8 +455,19 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    borderColor: "#593714",
-    color: "#593714"
-  }
+    borderColor: browan,
+    color: browan
+  },
+item: {
+      padding: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+ textItem: {
+      fontSize: 16,
+    color: browan
+
+    },
 })
 export default UserPostsScreen

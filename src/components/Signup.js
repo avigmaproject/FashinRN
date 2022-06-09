@@ -174,7 +174,6 @@ const Signup = props => {
   };
 
   return (
-<SafeAreaView>
     <ScrollView contentContainerStyle={styles.container}>
       <SpinnerBackdrop showModal={showModal} />
       <View style={styles.form_container}>
@@ -275,13 +274,12 @@ const Signup = props => {
         <SocialMedia containerStyle={{...props.containerStyle}} />
       </View>
     </ScrollView>
-</SafeAreaView>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     width: '100%',
     backgroundColor: 'white',
     alignItems: 'center',

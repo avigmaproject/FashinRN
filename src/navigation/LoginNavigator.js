@@ -18,14 +18,13 @@ const LoginNavigation = () => {
         },
         tabBarStyle: {
           backgroundColor: '#CDAF90',
-          elevation: 0,
-          marginTop:Platform.OS === "ios" ?  50 :0
         },
         tabBarActiveTintColor: '#ffffff',
         tabBarInactiveTintColor: '#5B4025',
         tabBarContentContainerStyle: {
-          justifyContent: 'center',
-          alignItems: 'center',
+
+          // justifyContent: 'center',
+          // alignItems: 'center',
 // marginTop:40
         },
         tabBarIndicatorStyle: {
@@ -33,8 +32,9 @@ const LoginNavigation = () => {
           height: '100%',
         },
         tabBarIndicatorContainerStyle: {
-          justifyContent: 'center',
-          alignItems: 'center',
+
+          // justifyContent: 'center',
+          // alignItems: 'center',
         },
       }}>
       <Tab.Screen name="Login" component={AuthStack} />

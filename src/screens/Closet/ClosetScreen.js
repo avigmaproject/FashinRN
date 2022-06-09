@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react"
-import { View, Text ,StyleSheet,Image,SafeAreaView} from "react-native"
+import { View, Text ,StyleSheet,Image,SafeAreaView,TouchableOpacity} from "react-native"
 import { useSelector } from "react-redux"
 import { getUserPost ,addUserCollection,getUserCollection,getuserfavorite} from "../../services/api.fuctions"
 import Selection from "../../components/Selection"
@@ -140,6 +140,43 @@ const getUserCollectionItems = useCallback(async () => {
         console.log(error, "getUserCollection")
       })
   })
+const renderItem = (item) => {
+      return (
+        <View style={styles.item}>
+          <Text style={styles.textItem}>{item.label}</Text>
+          {item.value !== -1 && (
+            <TouchableOpacity onPress={()=>DeleteCollection(item.value )}>
+            <AntDesign
+              style={styles.icon}
+              color="red"
+              name="delete"
+              size={20}     
+            />
+        </TouchableOpacity>
+           )} 
+        </View>
+      );
+    };
+  const DeleteCollection = (id) => {
+      const data = {
+        UC_PKeyID: id,
+        Type: 4,
+       
+      }
+      console.log("data", data)
+        addUserCollection(data, token)
+          .then((res) => {
+            console.log(res.data)
+            getUserCollectionItems()
+          })
+          .catch((err) => {
+            setShowModal(false)
+            console.log(err)
+            setAddItemValue("")
+          })
+      
+    
+  }
 
 const addToUserCollection = (itemName) => {
     if (validation()) {
@@ -261,6 +298,8 @@ return(
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => getAllUserPost(item)}
+        renderItem={renderItem}
+
       />
       {!!selectedItem.value ? (
         <ProfileImages 
@@ -325,5 +364,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: "#593714",
     color: "#593714"
-  }
+  },
+item: {
+      padding: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+textItem: {
+      fontSize: 16,
+    color: "#593714"
+    },
+    
 })

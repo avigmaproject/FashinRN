@@ -34,17 +34,15 @@ const App = () => {
       {/* <SafeAreaView> */}
         <NativeBaseProvider>
           <StatusBar animated={true} backgroundColor='#593714' />
-          {/* <View
+          <View
             style={{
               alignSelf: 'center',
-              backgroundColor: 'white',
-              width: '100%',
-              display: 'flex',
+              backgroundColor: '#fff',
               alignItems: 'center'
             }}
           >
-            {isSignOut && <AppLogo />}
-          </View> */}
+            {isSignOut &&<SafeAreaView><AppLogo /></SafeAreaView>}
+          </View>
 
           {!isSignOut ? <MyTabs /> : <AuthNavigation />}
           {/* <AuthNavigation /> */}
