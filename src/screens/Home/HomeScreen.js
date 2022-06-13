@@ -145,7 +145,8 @@ useFocusEffect(
       setShowModal(true)
     } else {
       props.navigation.navigate("UserPostsScreen", {
-        collectionItem: item
+        collectionItem: item,
+        home:true
       })
     }
   }

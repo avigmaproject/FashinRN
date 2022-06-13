@@ -1,16 +1,7 @@
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React from 'react';
+import {Text, View,} from 'react-native';
 import {TextInput} from 'react-native-paper';
-
 const InputText = props => {
-  // console.log(props.errorMsg, 'Inside');
   return (
     <View style={{marginTop: 20}}>
       <TextInput

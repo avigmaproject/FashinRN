@@ -32,6 +32,9 @@ const LoginScreen = props => {
   const dispatch = useDispatch();
   const [appState, setappState] = useState("active")
   const [linkdata, setlinkdata] = useState("")
+  const [fcmtoken, setfcmtoken] = useState("")
+  const [showMessage, setShowMessage] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [inputValues, setInputValues] = useState({
     email: {
@@ -53,9 +56,7 @@ const LoginScreen = props => {
       validationErrorMsg: '',
     },
   });
-const [fcmtoken, setfcmtoken] = useState("")
-  const [showMessage, setShowMessage] = useState('');
-  const [isFormValid, setIsFormValid] = useState(false);
+
 
   
 
@@ -147,13 +148,14 @@ useEffect(() => {
         username: userInfo.user.email,
         password: "",
         ClientId: 5,
-        FirstName: userInfo.user.givenName + userInfo.user.familyName,
+        FirstName: `${userInfo.user.givenName} ${userInfo.user.familyName}`,
         Role: 2,
         User_Login_Type: 2,
-        User_Token_val: userInfo.idToken,
-        IMEI: fcmtoken,
+     User_FB_GM_Token_val   : userInfo.idToken,
+        User_Token_val: fcmtoken,
       });
       console.log("hiiiii", data);
+      
       login(data).then((res) => {
         console.log("res: ", JSON.stringify(res));
         if (res) {
@@ -215,7 +217,6 @@ useEffect(() => {
   };
 const initUser = async (token) => {
     console.log("initUser", token);
-               setShowModal(true); //For Spinner Backdrop
 
     fetch(
       "https://graph.facebook.com/v2.5/me?fields=email,name,picture&access_token=" +
@@ -232,8 +233,8 @@ const initUser = async (token) => {
           FirstName: json.name,
           Role: 2,
           User_Login_Type: 3,
-          User_Token_val: token,
-          IMEI: fcmtoken,
+          User_FB_GM_Token_val: token,
+          User_Token_val: fcmtoken,
         });
         console.log("hiiiii", data, json.picture.data.url);
         login(data).then((res) => {
@@ -251,6 +252,8 @@ const initUser = async (token) => {
       });
   };
   const _onhadleFacebook = () => {
+               setShowModal(true); //For Spinner Backdrop
+
     LoginManager.logInWithPermissions(["public_profile", "email"])
       .then((result) => {
         if (result.isCancelled) {
@@ -275,6 +278,8 @@ const initUser = async (token) => {
   };
 
 async function _onhadleApple() {
+               setShowModal(true); //For Spinner Backdrop
+
 // Start the sign-in request
   const appleAuthRequestResponse = await appleAuth.performRequest({
     requestedOperation: appleAuth.Operation.LOGIN,
@@ -298,8 +303,8 @@ let data = qs.stringify({
           FirstName: "",
           Role: 2,
           User_Login_Type: 3,
-          User_Token_val: appleAuthRequestResponse.identityToken,
-          IMEI: fcmtoken,
+          User_FB_GM_Token_val: appleAuthRequestResponse.identityToken,
+          User_Token_val: fcmtoken,
         });
         console.log("hiiiii", data);
         login(data).then((res) => {

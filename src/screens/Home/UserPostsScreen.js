@@ -6,7 +6,7 @@ import {
   Image,
   Text,
   ScrollView,
-  Dimensions,
+  TextInput,
 Platform
 } from "react-native"
 import { useSelector, useDispatch } from "react-redux"
@@ -27,7 +27,6 @@ import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import Modal from "../../components/UI/Modal"
 import {BubblesLoader} from 'react-native-indicator';
-import { TextInput } from "react-native-paper"
 const browan = "#593714"
 const UserPostsScreen = (props) => {
  React.useLayoutEffect(() => {
@@ -44,22 +43,32 @@ const UserPostsScreen = (props) => {
   const [value, setValue] = useState(null)
   const [isFocus, setIsFocus] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const [showModal1, setShowModal1] = useState(false)
+  const [showModalRENDER, setShowModalRENDER] = useState(false)
 
   const [addItemValue, setAddItemValue] = useState("")
   const [showErrorMsg, setShowErrorMsg] = useState(null)
   const [Setbool, setSetbool] = useState(false)
   const [setId, setsetId] = useState(0)
+const [home, sethome] = useState(false)
 
 
   useEffect(() => {
     setSelectedItem(props.route.params.collectionItem)
 getAllUserPost(props.route.params.collectionIte)
+sethome(props.route.params.home)
+console.log("showModal",home)
+
   }, [selectedItem])
 
 useFocusEffect(
     React.useCallback(() => {
+console.log("showModal",home)
+
+      if(home){
+      console.log("inside usefocus effect",home)
+     getAllUserPost()
     getUserCollectionItems()
+      }
     }, [])
   );
     const validation = () => {
@@ -169,14 +178,16 @@ const getUserCollectionItems = useCallback(async () => {
     
   }
   const onPressImgHandler = (image, productUrl,description,name) => {
+sethome(false)
     props.navigation.navigate("UserPostDetailsScreen", {
       imageUri: image,
       productUrl,description,name
     })
   }
   const addToUserCollection = (itemName) => {
-    setShowModal(true)
     if (validation()) {
+    setShowModal(true)
+
       const data = {
         UC_Name: itemName,
         Type: 1,
@@ -205,7 +216,7 @@ const getUserCollectionItems = useCallback(async () => {
     setValue(item)
     setIsFocus(false)
     if (item.value === -1) {
-      setShowModal1(true)
+      setShowModalRENDER(true)
       return 0
     }
     setShowModal(true)
@@ -230,64 +241,7 @@ const getUserCollectionItems = useCallback(async () => {
         console.log(error, "createFav")
       })
   }
- 
- useFocusEffect(
-    React.useCallback(() => {
-     getAllUserPost()
-    getUserCollectionItems()
-    }, [])
-  );
- const itemValueInputChangeHandler = (text) => {
-    setShowErrorMsg(null)
-    setAddItemValue(text)
-  }
-const RenderModal =() => {
-return( <Modal isVisible={showModal1}>
-        <View
-          style={{
-            backgroundColor: "#ffffff",
-            width: "92%",
-            borderRadius: 10,
-            minHeight: 220
-          }}
-        >
-          <View style={{ height: 20, alignSelf: "center", marginTop: 18 }}>
-            <Text style={{ color: "black", fontWeight: "bold" }}>Add Item</Text>
-          </View>
-          <View style={{ alignSelf: "center", width: "90%" }}>
-            <InputText
-              style={{ marginBottom: 10, width: "100%" }}
-              label="Add Item"
-              value={addItemValue}
-              onChangeText={(text) => itemValueInputChangeHandler(text)}
-              errorMsg={showErrorMsg}
-            />
-          </View>
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              margin: 15
-            }}
-          >
-            <Button
-              style={{ width: 75, height: 50 }}
-              text="Cancel"
-              textColor="#593714"
-              onPress={() => setShowModal1(false)}
-            />
-            <Button
-              style={{ width: 75, height: 50 }}
-              text="Add"
-              backgroundColor="#5B4025"
-              onPress={() => addToUserCollection(addItemValue)}
-            />
-          </View>
-        </View>
-      </Modal>)}
-    const renderItem = (item) => {
+  const renderItem = (item) => {
       console.log(item)
       return (
         <View style={styles.item}>
@@ -304,16 +258,54 @@ return( <Modal isVisible={showModal1}>
         </View>
       );
     };
+ 
+ const itemValueInputChangeHandler = (text) => {
+    setShowErrorMsg(null)
+    setAddItemValue(text)
+  }
+const RenderModal =() => {
+return( <Modal isVisible={showModalRENDER}>
+        <View
+          style={{  backgroundColor: "#ffffff", width: "92%",borderRadius: 10, minHeight: 220 }} >
+
+          <View style={{ height: 20, alignSelf: "center", marginTop: 18 }}>
+            <Text style={{ color: "black", fontWeight: "bold" }}>Add Item</Text>
+          </View>
+          <View style={{ alignSelf: "center", width: "90%" }}>
+           <InputText
+              style={{ marginBottom: 10, width: "100%", }}
+              label="Add Item"
+              value={addItemValue}
+              onChangeText={(text) => itemValueInputChangeHandler(text)}
+              errorMsg={showErrorMsg}/>
+          </View>
+          <View
+            style={{ display: "flex",flexDirection: "row",justifyContent: "flex-end",margin: 15  }}>
+            <Button
+              style={{ width: 75, height: 50 }}
+              text="Cancel"
+              textColor="#593714"
+              onPress={() => setShowModalRENDER(false)}
+            />
+            <Button
+              style={{ width: 75, height: 50 }}
+              text="Add"
+              backgroundColor="#5B4025"
+              onPress={() => addToUserCollection(addItemValue)}
+            />
+          </View>
+ 
+        </View>
+      </Modal>)}
+   
   return (
     <SafeAreaView
       style={{
         flex: 1,
         alignItems: "center",
         backgroundColor: "white",
-        marginTop:Platform.OS='android' ? 0 :-30
       }}
     >
-      {allPosts.length === 0 && !showModal &&(<View><Text style={{ color: "rgb(89, 55, 20)", fontWeight: "bold" ,fontSize:20}}>Collection Coming Soon....</Text></View>)}
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -326,6 +318,10 @@ return( <Modal isVisible={showModal1}>
         }}
       >
 
+      {allPosts.length === 0 && !showModal &&(<View><Text style={{ color: "rgb(89, 55, 20)", fontWeight: "bold" ,fontSize:20}}>Collection Coming Soon....</Text></View>)}
+
+
+           
         <View
           style={{
             width: "100%",
@@ -334,7 +330,8 @@ return( <Modal isVisible={showModal1}>
             flexWrap: "wrap"
           }}
         >
-         
+
+
           {showModal ? (
            <View
               style={{
@@ -392,8 +389,7 @@ return( <Modal isVisible={showModal1}>
                   
                   )}
                 </View>
-                
-                <CollectionItemImg
+                   <CollectionItemImg
                   key={img.id}
                   onPressImage={() =>
                     onPressImgHandler(img.uri, img.productUrl,img.description,img.name)
@@ -407,8 +403,9 @@ return( <Modal isVisible={showModal1}>
               )
             })
           )}
-        </View>
       {RenderModal()}
+
+        </View>
       </ScrollView>
     </SafeAreaView>
   )

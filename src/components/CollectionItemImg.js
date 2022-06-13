@@ -11,7 +11,7 @@ const width = Dimensions.get("window").width / 2.6
 const CollectionItemImg = (props) => {
   const token = useSelector((state) => state.auth.userToken)
 
- const [showModal, setshowModal] = React.useState(false)
+ const [showModal3, setshowModal3] = React.useState(false)
  const [url, seturl] = React.useState('')
 
 React.useEffect(() => {
@@ -19,21 +19,21 @@ React.useEffect(() => {
 }, [url])
 
 const _onLoadEnd = () => {
-   setshowModal(false)
+   setshowModal3(false)
   }
 const _onLoadStart = () => {
-setshowModal(true)
+setshowModal3(true)
    
   }
   return (
     <View>
-      {/* {showModal &&  <View style={{ position:"absolute",  width: width +10,
+      {showModal3 &&  <View style={{ position:"absolute",  width: width +10,
             height: height +10,zIndex:111}}>
         <View style={{  width: width +10,
             height:  height +10,justifyContent:"center",alignItems:"center"}}><BubblesLoader size={20} color="rgb(89, 55, 20)" dotRadius={5} /></View>
-         </View> } */}
-      <TouchableOpacity style={{  }} activeOpacity={0.8} onPress={props.onPressImage}>
-        <FastImage
+         </View> }
+      <TouchableOpacity  activeOpacity={0.8} onPress={props.onPressImage}>
+        <Image
           onLoadStart={() =>_onLoadStart()}
           onLoadEnd={() => _onLoadEnd()}
           style={{
@@ -45,10 +45,10 @@ setshowModal(true)
           }}
           source={{
           uri: url.uri,
-          headers: {Authorization: token},
-          priority: FastImage.priority.high,
+          // headers: {Authorization: token},
+          // priority: FastImage.priority.low,
         }}
-        resizeMode={FastImage.resizeMode.stretch}          
+        // resizeMode={FastImage.resizeMode.stretch}          
         />
       </TouchableOpacity>
       <TouchableOpacity
@@ -65,14 +65,6 @@ setshowModal(true)
           top: 160,
           left: 110,
           borderRadius: 20,
-          shadowOffset: {
-                width: Platform.OS === 'ios' ? 2 : 0,
-                height: Platform.OS === 'ios' ? 2 : 2,
-              },
-          shadowOpacity: Platform.OS === 'ios' ? 1 : 0.1,
-          shadowRadius: Platform.OS === 'ios' ? null : 40,
-          elevation: Platform.OS === 'ios' ? null : 4,
-          shadowColor:"#593714"
         }}
       >
         <FeatherIcon name="plus" size={20} color="#264653" />
