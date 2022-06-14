@@ -49,23 +49,20 @@ const UserPostsScreen = (props) => {
   const [showErrorMsg, setShowErrorMsg] = useState(null)
   const [Setbool, setSetbool] = useState(false)
   const [setId, setsetId] = useState(0)
-const [home, sethome] = useState(false)
+  const [home, sethome] = useState(false)
 
 
   useEffect(() => {
     setSelectedItem(props.route.params.collectionItem)
-getAllUserPost(props.route.params.collectionIte)
-sethome(props.route.params.home)
-console.log("showModal",home)
-
+    getAllUserPost(props.route.params.collectionIte)
+    sethome(props.route.params.home)
+    getUserCollectionItems()  
   }, [selectedItem])
 
 useFocusEffect(
     React.useCallback(() => {
-console.log("showModal",home)
-
+        console.log(home)
       if(home){
-      console.log("inside usefocus effect",home)
      getAllUserPost()
     getUserCollectionItems()
       }
@@ -108,9 +105,7 @@ const getUserCollectionItems = useCallback(async () => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
         collectionItems?.push({ label: "Add +", value: -1 })
-
         setUserCollections(collectionItems)
-        // dispatch(setUserCollectionItems(collectionItems))
       })
       .catch((error) => {
         setShowModal(false)
@@ -181,7 +176,10 @@ const getUserCollectionItems = useCallback(async () => {
 sethome(false)
     props.navigation.navigate("UserPostDetailsScreen", {
       imageUri: image,
-      productUrl,description,name
+      productUrl,description,name,
+      screenname:"UserPostsScreen",
+      stackname:"HomeStack"
+
     })
   }
   const addToUserCollection = (itemName) => {

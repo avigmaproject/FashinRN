@@ -13,7 +13,7 @@ function ProfileStack() {
   return (
     <Profile.Navigator>
       <Profile.Screen
-        name="Profile"
+        name="ProfileScreen"
         component={ProfileScreen}
         options={({navigation}) => ({
           title: 'Profile',

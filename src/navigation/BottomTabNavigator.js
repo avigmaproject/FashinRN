@@ -66,6 +66,14 @@ function MyTabs() {
       <Tab.Screen
         name="HomeStack"
         component={HomeStack}
+        listeners={({ navigation, route }) => ({
+          tabPress: async (e) => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            });
+          },
+        })}
         options={{
           tabBarItemStyle: {borderRadius: 40},
           tabBarIcon: ({focused}) =>
@@ -118,7 +126,7 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="ProfileScreen"
+        name="ProfileStack"
         component={ProfileStack}
         options={{
           tabBarIcon: ({focused}) =>

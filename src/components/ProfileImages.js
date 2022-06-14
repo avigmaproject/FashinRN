@@ -14,7 +14,7 @@ import {
 
 const ProfileImages = props => {
   // const imagesPaths = useSelector(state => state.profile.imagesPath);
-  console.log(props.allImages);
+  console.log("props.screenname",props.screenname);
   return (
     <ScrollView
       contentContainerStyle={{
@@ -42,7 +42,9 @@ const ProfileImages = props => {
            onPress={()=>{ props.navigation.navigate("UserPostDetailsScreen", {
             imageUri: item.url,
             productUrl:item.product_url,
-            name:props.name ? props.name : item.name
+            name:props.name ? props.name : item.name,
+            screenname:props.screenname,
+            stackname:props.stackname
              })}}
               style={styles.imageStyle} key={item.id}>
               <Image

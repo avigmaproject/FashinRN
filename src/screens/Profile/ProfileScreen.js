@@ -344,7 +344,12 @@ return (<View>
       {/* {value !== -1 && (  <Text style={{ alignSelf: "center", color: "#264653", fontSize: 25 }}>
       {selectedItem.label}
         </Text>) } */}
-      <ProfileImages navigation={props.navigation} name={lebal} allImages={allPosts} />
+      <ProfileImages   
+        stackname="ProfileStack"      
+        screenname="ProfileScreen"
+        navigation={props.navigation} 
+        name={lebal} 
+        allImages={allPosts} />
       {renderModal()}
     </View>
   )

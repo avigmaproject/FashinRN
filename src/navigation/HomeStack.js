@@ -26,9 +26,9 @@ function HomeStack() {
       <Home.Screen
         name="Home"
         component={HomeScreen}
-        options={({navigation}) => ({
+        options={{
           headerShown: false,
-        })}
+        }}
       />
   <Home.Screen
         name="UserPostsScreen"
@@ -47,16 +47,19 @@ function HomeStack() {
       <Home.Screen
         name="UserPostDetailsScreen"
         component={UserPostDetailsScreen}
-        options={({navigation,props}) => ({
-          headerStyle: {backgroundColor: '#593714'},
-          headerTitle: null,
-          headerTitleAlign: 'center',  
-          headerShadowVisible: false,
-          headerTitleStyle:{color:"#AB8560",fontSize:20,fontWeight:"bold"},
-          headerLeft: () => (
-            <BackButton {...props} backgroundColor={"#AB8560"} onPress={() => navigation.goBack()} />
-          ),
-        })}
+ options={{
+          headerShown: false,
+        }}
+        // options={({navigation,props}) => ({
+        //   headerStyle: {backgroundColor: '#593714'},
+        //   headerTitle: null,
+        //   headerTitleAlign: 'center',  
+        //   headerShadowVisible: false,
+        //   headerTitleStyle:{color:"#AB8560",fontSize:20,fontWeight:"bold"},
+        //   headerLeft: () => (
+        //     <BackButton {...props} backgroundColor={"#AB8560"} onPress={() => navigation.goBack()} />
+        //   ),
+        // })}
       />
     
     </Home.Navigator>
@@ -64,23 +67,3 @@ function HomeStack() {
 }
 
 export default HomeStack;
-  // <Home.Screen
-  //       name="UserPostsScreen"
-  //       component={UserPostsScreen}
-  //       options={({navigation}) => ({
-  //         headerTitle: props => <AppLogo />,
-  //         headerTitleAlign: 'center',
-  //         headerShadowVisible: false,
-  //       })}
-  //     />
-  //     <Home.Screen
-  //       name="UserPostDetailsScreen"
-  //       component={UserPostDetailsScreen}
-  //       options={props => ({
-  //         headerTitleAlign: 'center',
-  //         headerShadowVisible: false,
-  //         headerLeft: () => (
-  //           <BackButton {...props} onPress={() => props.navigation.goBack()} />
-  //         ),
-  //       })}
-  //     />

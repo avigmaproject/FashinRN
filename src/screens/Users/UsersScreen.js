@@ -176,17 +176,15 @@ const addToUserCollection = (itemName) => {
     setSetbool(!Setbool)
   }
 const _OpenPost = (item) => {
-//  uri: item.UP_ImagePath,
-//             // label: item.UP_Coll_Desc,
-//             label: item.Name,
-//             id: item.UP_PKeyID,
-//             description:item.UP_Coll_Desc,
-//             product_url:item.UP_Product_URL
-    props.navigation.navigate("UserPostDetailsScreen", {
-            imageUri: item.uri,
-            productUrl:item.product_url,description:item.description,
-            name:item.label
-             })
+  props.navigation.navigate("UserPostDetailsScreen", {
+    imageUri: item.uri,
+    productUrl:item.product_url,
+    description:item.description,
+    name:item.label,
+    screenname:"UsersScreen",
+    stackname:"UsersStack"
+
+  })
 
   }
   const getUserCollectionItems = useCallback(async () => {

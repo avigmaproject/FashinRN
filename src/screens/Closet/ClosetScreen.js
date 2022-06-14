@@ -303,8 +303,10 @@ return(
       />
       {!!selectedItem.value ? (
         <ProfileImages 
+        stackname="ClosetStack"
+        screenname="ClosetScreen"
         navigation={props.navigation}
-       allImages={allPosts} />
+        allImages={allPosts} />
       ) : (
         <Text style={{ color: "black", fontSize: 15 }}>
           Please select a collection from dropdown!
