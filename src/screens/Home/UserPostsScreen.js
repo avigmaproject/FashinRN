@@ -3,21 +3,16 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Text,
   ScrollView,
-  TextInput,
-Platform
 } from "react-native"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import {
   createUpdateUserFavorite,
   getUserPost,
   getUserCollection,
   addUserCollection
 } from "../../services/api.fuctions"
-import Selection from "../../components/Selection"
-import ProfileImages from "../../components/ProfileImages"
 import CollectionItemImg from "../../components/CollectionItemImg"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Dropdown } from "react-native-element-dropdown"
@@ -38,13 +33,11 @@ const UserPostsScreen = (props) => {
 
   const [selectedItem, setSelectedItem] = useState({})
   const [allPosts, setAllPosts] = useState([])
-  const [isLoading, setisLoading] = useState(false)
   const [userCollections, setUserCollections] = useState([])
   const [value, setValue] = useState(null)
   const [isFocus, setIsFocus] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [showModalRENDER, setShowModalRENDER] = useState(false)
-
   const [addItemValue, setAddItemValue] = useState("")
   const [showErrorMsg, setShowErrorMsg] = useState(null)
   const [Setbool, setSetbool] = useState(false)

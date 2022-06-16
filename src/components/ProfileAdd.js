@@ -1,7 +1,5 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
-import Icon from './UI/Icon';
-import User from '../assets/svgs/user.svg';
 const ProfileAdd = props => {
 const [isLoading, setisLoading] = React.useState(false)
 const _onLoadEnd = () => {
@@ -52,26 +50,6 @@ setisLoading(true)
           height: '60%',}}><Text style={{alignSelf: 'center', color: '#D7C7B6',textTransform:"capitalize",fontSize:25}}>
           {props.name}
         </Text></View>
-
-      {/* <View
-        style={{
-          width: '12%',
-          backgroundColor: '#EBD4BD',
-          height: '60%',
-          borderRadius: 5,
-          marginRight: 5,
-        }}> */}
-        {/* <View
-          style={{
-            marginTop: 8,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Icon style={{margin: 0}}>
-            <User />
-          </Icon>
-        </View> */}
-      {/* </View> */}
     </View>
     
 </>

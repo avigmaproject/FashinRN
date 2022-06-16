@@ -50,7 +50,7 @@ const ProfileScreen = (props) => {
       setphoto(userData.User_Image_Path)
     } catch (error) {
       console.log(error)
-      console.log("hihihihihihih", { e: error.response.data.error })
+      console.log("error", { e: error.response.data.error })
     }
   }
 const validation = () => {

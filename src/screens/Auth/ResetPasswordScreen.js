@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
-// import Header from './components/Header';
 import {Toast} from 'native-base';
 import InputText from '../../components/UI/InputText';
 import Button from '../../components/UI/Button';
@@ -17,7 +12,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
 import {resetpassword} from '../../services/api.fuctions';
 import {verifyPassword} from '../../shared/miscellaneous';
-import {basecolor,secondrycolor,creamcolor,creamcolor1,black,white} from "../../services/constant"
+import {creamcolor,creamcolor1,black,white} from "../../services/constant"
 
 export default class ResetPassword extends Component {
   constructor() {
@@ -121,7 +116,7 @@ export default class ResetPassword extends Component {
         placement: 'bottom',
         status: 'warning',
         duration: 5000,
-        backgroundColor: '{creamcolor}',
+        backgroundColor: creamcolor,
       });
     }
   };

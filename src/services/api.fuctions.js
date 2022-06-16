@@ -3,14 +3,13 @@ import { API } from "./api.types"
 import firebase from "@react-native-firebase/app";
 import messaging from "@react-native-firebase/messaging";
 export const register = async (data) => {
-  console.log("datatatat", data)
   return axios(API.REGISTRATION_API, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Accept: "application/json"
     },
-    data: data
+    data
   })
     .then((response) => {
       console.log("responseresponse", response)

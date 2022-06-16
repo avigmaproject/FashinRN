@@ -1,8 +1,9 @@
-export const BASE_URL = "http://apifashion.ikaart.org/"
+// export const BASE_URL = "http://apifashion.ikaart.org/"
+export const BASE_URL = "https://api.fashin.us/"
 
 export const API = {
-  REGISTRATION_API: "http://apifashion.ikaart.org/token",
-  //LOGIN_API: 'http://apifashion.ikaart.org/token',
+  REGISTRATION_API: "https://api.fashin.us//token",
+  // REGISTRATION_API: 'http://apifashion.ikaart.org/token',
   RESET_PASSWORD: BASE_URL + "/api/Fashion/ChangePasswordByEmail",
   FORGOT_PASSWORD: BASE_URL + "/api/Fashion/ForGotPassword",
   LOGIN_API: BASE_URL + "/token",

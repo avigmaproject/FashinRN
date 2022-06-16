@@ -16,7 +16,6 @@ import {
   getUserCollection,
 addUserCollection
 } from "../../services/api.fuctions"
-import { setUserCollectionItems } from "../../store/actions/profileActions"
 import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import Modal from "../../components/UI/Modal"
@@ -34,13 +33,11 @@ const UsersScreen = (props) => {
   const [allPosts, setAllPosts] = useState()
   const [Setbool, setSetbool] = useState(false)
   const [setId, setsetId] = useState(0)
-  const [selectedItem, setSelectedItem] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [userCollections, setUserCollections] = useState([])
   const [searchtext, setsearchtext] = useState(null)
   const [initaldata, setinitaldata] = useState([])
   const [filterdata, setfilterdata] = useState([])
-  const [isAddingFav, setIsAddingFav] = useState(false)
   const [value, setValue] = useState(null)
   const [isFocus, setIsFocus] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -105,7 +102,6 @@ const addToUserCollection = (itemName) => {
       return 0
     }
   else{
-  setIsAddingFav(true)
     console.log("Aded to favorite", item)
     const favData = {
       UF_UC_PKeyID: item.value,
@@ -119,14 +115,12 @@ const addToUserCollection = (itemName) => {
     // return 0
     await createUpdateUserFavorite(favData, token)
       .then((res) => {
-        setIsAddingFav(false)
         console.log(res, " fav res is hereeee")
         setSetbool(false)
         getUserCollectionItems()
 
       })
       .catch((error) => {
-        setIsAddingFav(false)
         console.log(error, "createFav")
       })
 }
@@ -205,9 +199,7 @@ const _OpenPost = (item) => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
         collectionItems?.push({ label: "Add +", value: -1 })
-
         setUserCollections(collectionItems)
-        // dispatch(setUserCollectionItems(collectionItems))
         console.log("getUsercollectionItems", collectionItems)
       })
       .catch((error) => {

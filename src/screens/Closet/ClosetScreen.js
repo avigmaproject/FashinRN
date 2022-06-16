@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react"
 import { View, Text ,StyleSheet,Image,SafeAreaView,TouchableOpacity} from "react-native"
 import { useSelector } from "react-redux"
 import { getUserPost ,addUserCollection,getUserCollection,getuserfavorite} from "../../services/api.fuctions"
-import Selection from "../../components/Selection"
 import ProfileImages from "../../components/ProfileImages"
 import { Dropdown } from "react-native-element-dropdown"
 import AntDesign from "react-native-vector-icons/AntDesign"
@@ -45,34 +44,7 @@ const validation = () => {
     }
   }
 
-  // const addToUserFav = (itemName) => {
-  //   console.log("addToUserFav", itemName, props.sid)
-  //   if (validation()) {
-  //     const data = {
-  //       UF_UC_PKeyID: 0,
-  //       UF_UP_PKeyID: props.sid,
-  //       Type: 1,
-  //       UC_Name: itemName,
-  //       UF_IsDelete: 0,
-  //       UF_Closet_Spotlight: props.spotlight ? 2 : 1
-  //     }
-  //     console.log("data", data)
-  //     if (addItemValue.trim() != "") {
-  //       addUserCollection(data, token)
-  //         .then((res) => {
-  //           // console.log(res.data)
-  //           getUserCollectionItems()
-  //           setShowModal(false)
-  //         })
-  //         .catch((err) => {
-  //           setShowModal(false)
-  //           console.log(err)
-  //           setAddItemValue("")
-  //         })
-  //     }
-  //   }
-  // }
-
+  
   const renderLabel = () => {
     if (value || isFocus) {
       return (

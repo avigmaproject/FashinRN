@@ -27,11 +27,12 @@ import {
 } from "@react-native-google-signin/google-signin";
 import { AppleButton ,appleAuth} from '@invertase/react-native-apple-authentication';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import { useFocusEffect } from "@react-navigation/native";
 
 const LoginScreen = props => {
   const dispatch = useDispatch();
   const [appState, setappState] = useState("active")
-  const [linkdata, setlinkdata] = useState("")
+  const [linkdata, setlinkdata] = useState(null)
   const [fcmtoken, setfcmtoken] = useState("")
   const [showMessage, setShowMessage] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
@@ -86,54 +87,31 @@ const LoginScreen = props => {
 }
 
 
-const _getInitialUrl = async () => {
-    const url = dynamicLinks().onLink(handleDynamicLink);
-  setlinkdata(url)
-  };
- 
 
-  const _getInitialLink =  async () =>{
- await dynamicLinks()
+ const handleDynamicLink = link => {
+console.log("===> link",link)
+    // Handle dynamic link inside your own application
+     props.navigation.navigate('ResetPasswordScreen', {link: link.url});
+
+  };
+
+  useEffect(() => {
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+    // When the component is unmounted, remove the listener
+    return () => unsubscribe();
+  }, []);
+ useEffect(() => {
+    dynamicLinks()
       .getInitialLink()
       .then(link => {
-        if (link) {
-          console.log('Loginlink', link);
-          this.props.navigation.navigate('ResetPasswordScreen', {
-            link: link.url,
-          });
+        if (link.url) {
+console.log("getInitialLink",link.url)
+     props.navigation.navigate('ResetPasswordScreen', {link: link.url});
+
+          // ...set initial route as offers screen
         }
-        console.log('Loginlinklink', link);
       });
-}
-useEffect(() => {
-  _getInitialUrl();
-    AppState.addEventListener('change', _handleAppStateChange);
-   _getInitialLink()
-
-  return () => {
-       AppState.removeEventListener('change', _handleAppStateChange);
-
-  }
-}, [])
-
-
-
-  const _handleAppStateChange = async nextAppState => {
-    if (
-      appState.match(/inactive|background/) &&
-      nextAppState === 'active'
-    ) {
-      _getInitialUrl();
-    }
-  };
-  const handleDynamicLink = link => {
-    props.navigation.navigate('ResetPasswordScreen', {link: link.url});
-  };
-
- 
-
-
-
+  }, []);
  const _onhadleGoogle = async () => {
     console.log("GoogleSignin", GoogleSignin);
     // await GoogleSignin.signOut();

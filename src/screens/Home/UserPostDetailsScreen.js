@@ -22,11 +22,6 @@ useFocusEffect(
 
     })
   );
-  // React.useLayoutEffect(() => {
-  //   props.navigation.setOptions({
-  //     title:props.route.params.name.toUpperCase(),
-  //   });
-  // }, []);
 const OpenURLButton = async( url ) => {
 Linking.canOpenURL(url).then(supported => {
   if (!supported) {

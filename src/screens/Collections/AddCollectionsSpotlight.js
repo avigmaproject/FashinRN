@@ -13,22 +13,15 @@ import {
 SafeAreaView
 } from "react-native"
 import { FAB } from "react-native-paper"
-import { Select, Toast, Box } from "native-base"
+import { Toast } from "native-base"
 import SpinnerBackdrop from "../../components/UI/SpinnerBackdrop"
 import { ActionSheetCustom as ActionSheet } from "react-native-actionsheet"
 import ImagePicker from "react-native-image-crop-picker"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
-import { verifyEmail } from "../../shared/miscellaneous"
-import HeaderBack from "../../components/UI/BackButton"
 import InputText from "../../components/UI/InputText"
 import Button from "../../components/UI/Button"
 import { uploadimage, createUpdateUserPost,getUserCollection,addUserCollection } from "../../services/api.fuctions"
 import { checkValidity } from "../../shared/utility"
-// import DropDown from '../../../../components/DropDown';
-import Selection from "../../components/Selection"
 import CheckBox from "@react-native-community/checkbox"
-import { setUserCollectionItems } from "../../store/actions/profileActions"
 import Modal from "../../components/UI/Modal"
 import { Dropdown } from "react-native-element-dropdown"
 import {basecolor,secondrycolor,creamcolor,creamcolor1,black,creamcolor2} from "../../services/constant"
@@ -171,24 +164,6 @@ class AddCollectionSpotlight extends Component {
   componentWillUnmount() {
     console.log("in WillUnmount")
   }
-
-  // Validation = () => {
-  //   let cancel = false
-  //   const { name, email, imagepath } = this.state
-  //   if (name.length === 0) {
-  //     cancel = true
-  //   }
-  //   if (email.length === 0) {
-  //     cancel = true
-  //   }
-
-  //   if (cancel) {
-  //     this.showerrorMessage("Fields can not be empty")
-  //     return false
-  //   } else {
-  //     return true
-  //   }
-  // }
 
   ImageValidation = () => {
     let cancel = false
@@ -704,22 +679,6 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
 
             /></>
             ) : null}
-            {/* <InputText
-              label="Post name"
-              onChangeText={(text) =>
-                this.inputChangeHandler("collectionName", text)
-              }
-              placeholder="Enter your post name"
-              value={this.state.collectionName.value}
-              errorMsg={this.state.collectionName.validationErrorMsg}
-              onBlur={() => {
-                this.checkValidityHandler(
-                  this.state.collectionName.value,
-                  this.state.collectionName.rules,
-                  "collectionName"
-                )
-              }}
-            /> */}
             {this.state.isSpotlight ? (
               <InputText
                 label="From Where to Purchase"
@@ -854,7 +813,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  setUserCollectionItems
+  
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddCollectionSpotlight);
  

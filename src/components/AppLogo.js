@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Dimensions, Image} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 const TopLogo = props => {
   return (
     <View>
@@ -7,7 +7,7 @@ const TopLogo = props => {
         style={{width: 350, height: 100,marginBottom:Platform.OS === "ios" ?  20 :0
 }}
         resizeMode="cover"
-        source={require('../assets/fashIN.png')}
+        source={require('../assets/users/fashIN.png')}
         alt="logo"
       />
     </View>

@@ -9,7 +9,6 @@ const SocialMedia = props => {
 const [show, setshow] = React.useState(false)
 React.useEffect(() => { 
   let Version =parseInt(Platform.Version,10)
-      console.log("Version",Platform.constants,Version)
       if(Version >13 ){
           setshow(true)
         }

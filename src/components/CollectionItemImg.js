@@ -33,11 +33,10 @@ setshowModal3(true)
             height:  height +10,justifyContent:"center",alignItems:"center"}}><BubblesLoader size={20} color="rgb(89, 55, 20)" dotRadius={5} /></View>
          </View> }
       <TouchableOpacity  activeOpacity={0.8} onPress={props.onPressImage}>
-        <Image
+        <FastImage
           onLoadStart={() =>_onLoadStart()}
           onLoadEnd={() => _onLoadEnd()}
           style={{
-
             width: width,
             height: height,
             margin: 10,
@@ -45,10 +44,10 @@ setshowModal3(true)
           }}
           source={{
           uri: url.uri,
-          // headers: {Authorization: token},
-          // priority: FastImage.priority.low,
+          headers: {Authorization: token},
+          priority: FastImage.priority.low,
         }}
-        // resizeMode={FastImage.resizeMode.stretch}          
+        resizeMode={FastImage.resizeMode.stretch}          
         />
       </TouchableOpacity>
       <TouchableOpacity
