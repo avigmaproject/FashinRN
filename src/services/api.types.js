@@ -4,9 +4,9 @@ export const BASE_URL = "https://api.fashin.us/"
 export const API = {
   REGISTRATION_API: "https://api.fashin.us//token",
   // REGISTRATION_API: 'http://apifashion.ikaart.org/token',
+  LOGIN_API: BASE_URL + "/token",
   RESET_PASSWORD: BASE_URL + "/api/Fashion/ChangePasswordByEmail",
   FORGOT_PASSWORD: BASE_URL + "/api/Fashion/ForGotPassword",
-  LOGIN_API: BASE_URL + "/token",
   GET_USER_POST: BASE_URL + "api/Fashion/GetUserPost",
   GET_USER_COLLECTION: BASE_URL + "/api/Fashion/GetUserCollection",
   ADD_USER_COLLECTION: BASE_URL + "api/Fashion/CreateUpdateUserCollection",

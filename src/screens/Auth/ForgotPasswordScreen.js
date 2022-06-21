@@ -8,6 +8,7 @@ import {
   View,
   TouchableOpacity,
   Platform,
+  // Clipboard
 } from 'react-native';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
@@ -56,6 +57,7 @@ export default class ForgotPassword extends Component {
         forcedRedirectEnabled: true,
       },
     });
+    // Clipboard.setString(link)
     console.log(link);
     this.setState({link});
   };
