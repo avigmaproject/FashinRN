@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity, Image,StyleSheet} from 'react-native';
+import {Text, View, TouchableOpacity, Alert,StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Hanger from '../assets/svgs/hanger_outline.svg';
 import HangerDark from '../assets/svgs/hangerDark.svg';
@@ -12,6 +12,8 @@ import UsersStack from './UsersStack';
 import ClosetStack from './ClosetStack';
 import NewCollectionStack from './NewCollectionStack';
 import {basecolor,white,creamcolor,creamcolor1,black,creamcolor2,basecolortraspaernt} from "../services/constant"
+import { useDispatch, useSelector } from "react-redux"
+import {signOut} from '../store/actions/authActions';
 
 export function ButtonAdd(props) {
   return (
@@ -48,6 +50,11 @@ export function ButtonAdd(props) {
 }
 const Tab = createBottomTabNavigator();
 function MyTabs() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.userToken)
+ const Back = () => {
+    dispatch(signOut());
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -80,13 +87,35 @@ function MyTabs() {
             focused ? (
              <View style={styles.sectionStyle}><Ionicons name="home" size={25} color={basecolor} /></View>
             ) : (
-              <Ionicons name="home-outline" size={25} color={basecolor} style={{  paddingTop:15}} />
+              <Ionicons name="home-outline" size={25} color={basecolor} style={{paddingTop:15}} />
             ),
         }}
       />
       <Tab.Screen
         name="UsersStack"
         component={UsersStack}
+     listeners={({ navigation, route }) => ({
+          tabPress: async (e) => {
+            if (!token) {
+              e.preventDefault();
+              Alert.alert(
+                "Please Login / Sign Up",
+                "To use this functionality please Login / Sign Up first.",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () =>Back(),
+                  },
+                ]
+              );
+            }
+          },
+        })}
         options={{
           tabBarItemStyle: {borderRadius: 50, width: 40},
           tabBarIconStyle: {width: 35},
@@ -101,6 +130,28 @@ function MyTabs() {
       <Tab.Screen
         name="create"
         component={NewCollectionStack}
+         listeners={({ navigation, route }) => ({
+          tabPress: async (e) => {
+            if (!token) {
+              e.preventDefault();
+              Alert.alert(
+                "Please Login / Sign Up",
+                "To use this functionality please Login / Sign Up first.",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () =>Back(),
+                  },
+                ]
+              );
+            }
+          },
+        })}
         options={{
           tabBarItemStyle: {
             backgroundColor: white,
@@ -119,6 +170,28 @@ function MyTabs() {
       <Tab.Screen
         name="ClosetStack"
         component={ClosetStack}
+         listeners={({ navigation, route }) => ({
+          tabPress: async (e) => {
+            if (!token) {
+              e.preventDefault();
+              Alert.alert(
+                "Please Login / Sign Up",
+                "To use this functionality please Login / Sign Up first.",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () =>Back(),
+                  },
+                ]
+              );
+            }
+          },
+        })}
         options={{
           tabBarItemStyle: {borderRadius: 40, width: 40,},
           tabBarIcon: ({focused}) =>
@@ -128,6 +201,28 @@ function MyTabs() {
       <Tab.Screen
         name="ProfileStack"
         component={ProfileStack}
+         listeners={({ navigation, route }) => ({
+          tabPress: async (e) => {
+            if (!token) {
+              e.preventDefault();
+              Alert.alert(
+                "Please Login / Sign Up",
+                "To use this functionality please Login / Sign Up first.",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () =>Back(),
+                  },
+                ]
+              );
+            }
+          },
+        })}
         options={{
           tabBarIcon: ({focused}) =>
             focused ? (

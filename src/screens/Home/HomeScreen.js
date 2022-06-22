@@ -179,9 +179,9 @@ useFocusEffect(
               <BubblesLoader size={50} color={basecolor} dotRadius={10} />
             </View>
           )}
-          <View style={{ width: "90%", alignSelf: "center" }}>
+          {/* <View > */}
             <Logout />
-          </View>
+          {/* </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>

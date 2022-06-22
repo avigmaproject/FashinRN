@@ -25,7 +25,6 @@ import {
 } from "@react-native-google-signin/google-signin";
 import { AppleButton ,appleAuth} from '@invertase/react-native-apple-authentication';
 const Signup = props => {
- 
   const dispatch = useDispatch();
   const [fcmtoken, setfcmtoken] = useState("")
   const [showModal, setShowModal] = useState(false);

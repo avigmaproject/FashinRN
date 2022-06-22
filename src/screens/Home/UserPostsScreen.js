@@ -24,6 +24,7 @@ import Modal from "../../components/UI/Modal"
 import {BubblesLoader} from 'react-native-indicator';
 const browan = "#593714"
 const UserPostsScreen = (props) => {
+
  React.useLayoutEffect(() => {
     props.navigation.setOptions({
       title:props.route.params.collectionItem.label,
@@ -47,17 +48,20 @@ const UserPostsScreen = (props) => {
 
   useEffect(() => {
     setSelectedItem(props.route.params.collectionItem)
-    getAllUserPost(props.route.params.collectionIte)
+      getAllUserPost()
+
+    if(token){
+      getAllUserPost()
+      getUserCollectionItems()  
+    }
     sethome(props.route.params.home)
-    getUserCollectionItems()  
   }, [selectedItem])
 
 useFocusEffect(
     React.useCallback(() => {
-        console.log(home)
-      if(home){
-     getAllUserPost()
-    getUserCollectionItems()
+      if(home && token){
+        getAllUserPost()
+        getUserCollectionItems()
       }
     }, [])
   );
@@ -346,7 +350,7 @@ return( <Modal isVisible={showModalRENDER}>
                     bottom: 60
                   }}
                 >
-                  {Setbool && setId === img.id && (
+                  {Setbool && setId === img.id && token &&(
                     <> 
                      {renderLabel()}  
                     <Dropdown

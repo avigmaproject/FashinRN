@@ -13,7 +13,7 @@ import InputText from '../../components/UI/InputText';
 import Button from '../../components/UI/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
-import {setToken} from '../../store/actions/authActions';
+import {setToken,signIN} from '../../store/actions/authActions';
 import { login, requestUserPermission, getFcmToken }  from '../../services/api.fuctions';
 import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
 import {checkValidity} from '../../shared/utility';
@@ -313,6 +313,7 @@ let data = qs.stringify({
         setShowModal(false); //For Spinner Backdrop
         console.log(res, 'LoginData is here');
         dispatch(setToken(res.access_token));
+
       })
       .catch(error => {
         console.log(error, 'login');
@@ -376,6 +377,7 @@ let data = qs.stringify({
           }}>
           <Text style={{color: basecolor}}>Forgot Password?</Text>
         </TouchableOpacity>
+       
         <View
           style={{
             marginTop: 15,
@@ -387,6 +389,15 @@ let data = qs.stringify({
             backgroundColor={isFormValid ? basecolor : secondrycolor}
           />
         </View>
+          <TouchableOpacity
+          style={{marginTop: 20, alignSelf: 'flex-end'}}
+          onPress={() => {
+                   dispatch(signIN());
+
+          }}>
+          <Text style={{color: basecolor}}>
+         Skip for now</Text>
+        </TouchableOpacity>
         <View style={styles.bar_container}>
           <View style={styles.bar} />
           <View>

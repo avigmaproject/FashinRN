@@ -6,8 +6,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {creamcolor} from "../../services/constant"
 import { useFocusEffect } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux"
 
 const UserPostDetailsScreen = (props) => {
+  const token = useSelector((state) => state.auth.userToken)
+
 const [isLoading, setisLoading] = React.useState(false)
 const [screenname, setscreenname] = React.useState("Home")
 const [stackname, setstackname] = React.useState("HomeStack")
@@ -15,10 +18,8 @@ const [title, settitle] = React.useState(props.route.params.name.toUpperCase())
 
 useFocusEffect(
     React.useCallback(() => {
-      console.log("before====>",props.route.params.screenname)
      setscreenname(props.route.params.screenname)
-    setstackname(props.route.params.stackname)
-      console.log("after===>",props.route.params.screenname)
+     setstackname(props.route.params.stackname)
 
     })
   );

@@ -10,14 +10,20 @@ export const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  // console.log("actionaction", action);
   switch (action.type) {
     case 'SIGN_IN': {
-      console.log('reduxxxxxxx', {action: action.token});
       return {
         ...state,
         isSignout: false,
         userToken: action.token,
+      };
+    }
+  case 'SIGN_IN_NO': {
+      return {
+        ...state,
+        isSignout: false,
+        userToken: '',
+
       };
     }
     case 'SIGN_OUT': {

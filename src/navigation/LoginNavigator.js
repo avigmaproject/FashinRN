@@ -22,19 +22,10 @@ const LoginNavigation = () => {
         tabBarActiveTintColor: '#ffffff',
         tabBarInactiveTintColor: '#5B4025',
         tabBarContentContainerStyle: {
-
-          // justifyContent: 'center',
-          // alignItems: 'center',
-// marginTop:40
         },
         tabBarIndicatorStyle: {
           backgroundColor: '#5B4025',
           height: '100%',
-        },
-        tabBarIndicatorContainerStyle: {
-
-          // justifyContent: 'center',
-          // alignItems: 'center',
         },
       }}>
       <Tab.Screen name="Login" component={AuthStack} />
