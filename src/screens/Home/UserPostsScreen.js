@@ -22,6 +22,7 @@ import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import Modal from "../../components/UI/Modal"
 import {BubblesLoader} from 'react-native-indicator';
+
 const browan = "#593714"
 const UserPostsScreen = (props) => {
 
@@ -31,7 +32,6 @@ const UserPostsScreen = (props) => {
     });
   }, []);
   const token = useSelector((state) => state.auth.userToken)
-
   const [selectedItem, setSelectedItem] = useState({})
   const [allPosts, setAllPosts] = useState([])
   const [userCollections, setUserCollections] = useState([])
@@ -49,8 +49,7 @@ const UserPostsScreen = (props) => {
   useEffect(() => {
     setSelectedItem(props.route.params.collectionItem)
       getAllUserPost()
-
-    if(token){
+    if(token.length != 0 ){
       getAllUserPost()
       getUserCollectionItems()  
     }
@@ -59,7 +58,7 @@ const UserPostsScreen = (props) => {
 
 useFocusEffect(
     React.useCallback(() => {
-      if(home && token){
+      if(home && token.length != 0 ){
         getAllUserPost()
         getUserCollectionItems()
       }
@@ -110,6 +109,7 @@ const getUserCollectionItems = useCallback(async () => {
       })
   })
  const _Openselection = (id) => {
+
     setsetId(id)
     setSetbool(!Setbool)
   }
@@ -169,8 +169,8 @@ const getUserCollectionItems = useCallback(async () => {
       
     
   }
-  const onPressImgHandler = (image, productUrl,description,name) => {
-sethome(false)
+  const onPressImgHandler = (image, productUrl,description,name,id) => {
+    sethome(false)
     props.navigation.navigate("UserPostDetailsScreen", {
       imageUri: image,
       productUrl,description,name,
@@ -314,9 +314,6 @@ return( <Modal isVisible={showModalRENDER}>
       >
 
       {allPosts.length === 0 && !showModal &&(<View><Text style={{ color: "rgb(89, 55, 20)", fontWeight: "bold" ,fontSize:20}}>Collection Coming Soon....</Text></View>)}
-
-
-           
         <View
           style={{
             width: "100%",
@@ -325,8 +322,6 @@ return( <Modal isVisible={showModalRENDER}>
             flexWrap: "wrap"
           }}
         >
-
-
           {showModal ? (
            <View
               style={{
@@ -350,7 +345,7 @@ return( <Modal isVisible={showModalRENDER}>
                     bottom: 60
                   }}
                 >
-                  {Setbool && setId === img.id && token &&(
+                  {Setbool && setId === img.id   &&(
                     <> 
                      {renderLabel()}  
                     <Dropdown
@@ -377,17 +372,14 @@ return( <Modal isVisible={showModalRENDER}>
                       onBlur={() => setIsFocus(false)}
                       onChange={(item) => dropDownSelectHandler(item)}
                       renderItem={renderItem}
-
                     />
-
                   </>
-                  
                   )}
                 </View>
                    <CollectionItemImg
                   key={img.id}
                   onPressImage={() =>
-                    onPressImgHandler(img.uri, img.productUrl,img.description,img.name)
+                    onPressImgHandler(img.uri, img.productUrl,img.description,img.name,img.id)
                   }
                   onAddCick={() =>
                     _Openselection(img.id)

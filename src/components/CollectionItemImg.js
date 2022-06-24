@@ -45,12 +45,12 @@ setshowModal3(true)
           source={{
           uri: url.uri,
           headers: {Authorization: token},
-          priority: FastImage.priority.low,
+          priority: FastImage.priority.high,
         }}
         resizeMode={FastImage.resizeMode.stretch}          
         />
       </TouchableOpacity>
-      <TouchableOpacity
+      { token.length != 0 && (<TouchableOpacity
         onPress={props.onAddCick}
         activeOpacity={0.8}
         style={{
@@ -67,7 +67,8 @@ setshowModal3(true)
         }}
       >
         <FeatherIcon name="plus" size={20} color="#264653" />
-      </TouchableOpacity>
+      </TouchableOpacity>)}
+      
     </View>
   )
 }

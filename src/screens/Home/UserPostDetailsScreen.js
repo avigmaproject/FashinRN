@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {creamcolor} from "../../services/constant"
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux"
+import FastImage from 'react-native-fast-image';
 
 const UserPostDetailsScreen = (props) => {
   const token = useSelector((state) => state.auth.userToken)
@@ -24,6 +25,7 @@ useFocusEffect(
     })
   );
 const OpenURLButton = async( url ) => {
+console.log(props.route.params.productUrl.startsWith("http"))
 Linking.canOpenURL(url).then(supported => {
   if (!supported) {
     alert("Check url")
@@ -44,24 +46,24 @@ setisLoading(true)
     <SafeAreaView style={{ flex: 1, backgroundColor: '#593714' }}>
         <View style= {{ flexDirection:"row",height:30,justifyContent:"center",alignItems:"center",marginBottom:20}}>
     <View style={{width:"20%"}}>
-  <TouchableOpacity onPress={()=>props.navigation.navigate(stackname,
-    { screen :screenname })}
-      style={{
-        width: 30,
-        height: 30,
-        backgroundColor:creamcolor,
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent:"center"
-      }}>
-      <View>
-        <FontAwesome
-          name="angle-left"
-          size={22}
-          color={'#ffffff'}
-        />
-      </View>
-    </TouchableOpacity>  
+      <TouchableOpacity onPress={()=>props.navigation.navigate(stackname,
+        { screen :screenname })}
+          style={{
+            width: 30,
+            height: 30,
+            backgroundColor:creamcolor,
+            borderRadius: 5,
+            alignItems: 'center',
+            justifyContent:"center"
+          }}>
+          <View>
+            <FontAwesome
+              name="angle-left"
+              size={22}
+              color={'#ffffff'}
+            />
+          </View>
+        </TouchableOpacity>  
   </View>
     <View style={{width:"70%",paddingLeft:"10%"}}><Text style={{color:"#fff",fontSize:20,fontWeight:"bold"}}>{title}</Text></View>
 
@@ -71,21 +73,38 @@ setisLoading(true)
           <View style={{ height: 300,width:"100%",justifyContent:"center",alignItems:"center"}}><BubblesLoader size={50} color={"rgb(89, 55, 20)"} dotRadius={10} /></View>
          </View> }
           {props.route.params.imageUri && ( 
-            <Image
-            resizeMode="stretch"
-            onLoadStart={() =>_onLoadStart()}
-            onLoadEnd={() => _onLoadEnd()}
-            style={{
-              width: "90%",
+              <FastImage
+          onLoadStart={() =>_onLoadStart()}
+          onLoadEnd={() => _onLoadEnd()}
+          style={{
+             width: "90%",
               height: "100%",
-              borderRadius: 10 
+            margin: 10,
+            borderRadius: 10
+          }}
+          source={{
+          uri: props.route.params.imageUri,
+          headers: {Authorization: token},
+          priority: FastImage.priority.high,
+        }}
+        resizeMode={FastImage.resizeMode.stretch}          
+        />
+          //   <Image
+          //   resizeMode="stretch"
+          //   onLoadStart={() =>_onLoadStart()}
+          //   onLoadEnd={() => _onLoadEnd()}
+          //   style={{
+          //     width: "90%",
+          //     height: "100%",
+          //     borderRadius: 10 
             
-            }}
-            source={{ uri: props.route.params.imageUri }}
-          />)}
+          //   }}
+          //   source={{ uri: props.route.params.imageUri }}
+          // />
+)}
          
         </View>
-        {props.route.params.productUrl &&(<View>
+        {props.route.params.productUrl &&   props.route.params.productUrl.startsWith("http")&& (<View>
           <Button
           onPress={()=>OpenURLButton(props.route.params.productUrl )}
             text='Go to product'
