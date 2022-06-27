@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image ,Linking,TouchableOpacity,Text} from 'react-native'
+import { View, Image ,Linking,TouchableOpacity,Text,Dimensions} from 'react-native'
 import Button from '../../components/UI/Button'
 import {BubblesLoader} from 'react-native-indicator';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,10 +8,11 @@ import {creamcolor} from "../../services/constant"
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux"
 import FastImage from 'react-native-fast-image';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const UserPostDetailsScreen = (props) => {
-  const token = useSelector((state) => state.auth.userToken)
-
+const token = useSelector((state) => state.auth.userToken)
 const [isLoading, setisLoading] = React.useState(false)
 const [screenname, setscreenname] = React.useState("Home")
 const [stackname, setstackname] = React.useState("HomeStack")
@@ -68,9 +69,9 @@ setisLoading(true)
     <View style={{width:"70%",paddingLeft:"10%"}}><Text style={{color:"#fff",fontSize:20,fontWeight:"bold"}}>{title}</Text></View>
 
         </View>
-        <View style={{ width:"100%",   height: 300,marginTop:10,justifyContent:"center",alignItems:"center"}}>
-          {isLoading &&  <View style={{ position:"absolute",height: 300,width:"100%"}}>
-          <View style={{ height: 300,width:"100%",justifyContent:"center",alignItems:"center"}}><BubblesLoader size={50} color={"rgb(89, 55, 20)"} dotRadius={10} /></View>
+        <View style={{ width:"100%",   height: windowHeight -300,marginTop:10,justifyContent:"center",alignItems:"center"}}>
+          {isLoading &&  <View style={{ position:"absolute",height: windowHeight -300,width:"100%"}}>
+          <View style={{ height: windowHeight -300,width:"100%",justifyContent:"center",alignItems:"center"}}><BubblesLoader size={50} color={"rgb(89, 55, 20)"} dotRadius={10} /></View>
          </View> }
           {props.route.params.imageUri && ( 
               <FastImage
@@ -89,25 +90,13 @@ setisLoading(true)
         }}
         resizeMode={FastImage.resizeMode.stretch}          
         />
-          //   <Image
-          //   resizeMode="stretch"
-          //   onLoadStart={() =>_onLoadStart()}
-          //   onLoadEnd={() => _onLoadEnd()}
-          //   style={{
-          //     width: "90%",
-          //     height: "100%",
-          //     borderRadius: 10 
-            
-          //   }}
-          //   source={{ uri: props.route.params.imageUri }}
-          // />
 )}
          
         </View>
         {props.route.params.productUrl &&   props.route.params.productUrl.startsWith("http")&& (<View>
           <Button
           onPress={()=>OpenURLButton(props.route.params.productUrl )}
-            text='Go to product'
+            text='Go to Product'
             textColor='black'
             backgroundColor='white'
             style={{  width: "90%",marginTop: 20, marginBottom: 150, height: 60 }}

@@ -165,7 +165,7 @@ useFocusEffect(
             flexWrap: "wrap"
           }}
         >
-          {!isLoading && userCollections? (
+          {!isLoading && userCollections ? (
             mapCollectionsToColors(userCollections)
           ) : (
             <View
@@ -179,9 +179,7 @@ useFocusEffect(
               <BubblesLoader size={50} color={basecolor} dotRadius={10} />
             </View>
           )}
-          {/* <View > */}
-            <Logout />
-          {/* </View> */}
+          {!isLoading && ( <Logout />)}
         </View>
       </ScrollView>
     </SafeAreaView>

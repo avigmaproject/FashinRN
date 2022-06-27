@@ -80,10 +80,8 @@ const LoginScreen = props => {
       const fcmtoken = await getFcmToken();
       if (fcmtoken) {
           setfcmtoken(fcmtoken)
-      } else { alert("Something went wrong!!!!")  }
-    } else {
-    alert("Something went wrong!!!!")  
-  };
+      }
+    } 
 }
 
 
