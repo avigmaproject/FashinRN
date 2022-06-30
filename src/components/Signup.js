@@ -346,7 +346,9 @@ let data = qs.stringify({
 }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView           
+      keyboardShouldPersistTaps={"always"}
+      contentContainerStyle={styles.container}>
       <SpinnerBackdrop showModal={showModal} />
       <View style={styles.form_container}>
         <View>

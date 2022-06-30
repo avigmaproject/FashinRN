@@ -94,7 +94,7 @@ function MyTabs() {
       <Tab.Screen
         name="UsersStack"
         component={UsersStack}
-     listeners={({ navigation, route }) => ({
+         listeners={({ navigation, route }) => ({
           tabPress: async (e) => {
             if (!token) {
               e.preventDefault();
@@ -156,7 +156,7 @@ function MyTabs() {
           tabBarItemStyle: {
             backgroundColor: white,
             height: 50,
-            position: 'relative',
+            position: "absolute",
             top: -25,
             width: 50,
             borderRadius: 20,

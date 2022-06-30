@@ -12,6 +12,8 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const UserPostDetailsScreen = (props) => {
+  const collection = useSelector((state) => state.auth.collection)
+
 const token = useSelector((state) => state.auth.userToken)
 const [isLoading, setisLoading] = React.useState(false)
 const [screenname, setscreenname] = React.useState("Home")
@@ -45,10 +47,12 @@ setisLoading(true)
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#593714' }}>
-        <View style= {{ flexDirection:"row",height:30,justifyContent:"center",alignItems:"center",marginBottom:20}}>
-    <View style={{width:"20%"}}>
-      <TouchableOpacity onPress={()=>props.navigation.navigate(stackname,
-        { screen :screenname })}
+        <View style= {{ flexDirection:"row",height:30,justifyContent:"center",alignItems:"center",marginBottom:20,}}>
+    <View style={{position:"absolute",left :20}}>
+      <TouchableOpacity onPress={()=>
+        props.navigation.navigate(stackname,
+        { screen :screenname },
+        {label:title})}
           style={{
             width: 30,
             height: 30,
@@ -66,7 +70,7 @@ setisLoading(true)
           </View>
         </TouchableOpacity>  
   </View>
-    <View style={{width:"70%",paddingLeft:"10%"}}><Text style={{color:"#fff",fontSize:20,fontWeight:"bold"}}>{title}</Text></View>
+    <View><Text style={{color:"#fff",fontSize:20,fontWeight:"bold"}}>{title}</Text></View>
 
         </View>
         <View style={{ width:"100%",   height: windowHeight -300,marginTop:10,justifyContent:"center",alignItems:"center"}}>

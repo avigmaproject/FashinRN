@@ -38,15 +38,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   socialButton: {
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: 60,
     height: 60,
     backgroundColor: '#FFFFFF',
     borderRadius: 500,
-    // borderColor: 'red',
-    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
   },
 });
 

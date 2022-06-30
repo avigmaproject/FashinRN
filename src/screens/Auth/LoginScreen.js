@@ -18,21 +18,14 @@ import { login, requestUserPermission, getFcmToken }  from '../../services/api.f
 import SpinnerBackdrop from '../../components/UI/SpinnerBackdrop';
 import {checkValidity} from '../../shared/utility';
 import SocialMedia from '../../components/SocialMedia';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {basecolor,secondrycolor,creamcolor,creamcolor1,black,white} from "../../services/constant"
 import { LoginManager, AccessToken, LoginButton } from "react-native-fbsdk";
-import {
-  GoogleSignin,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
-import { AppleButton ,appleAuth} from '@invertase/react-native-apple-authentication';
+import { GoogleSignin, statusCodes} from "@react-native-google-signin/google-signin";
+import { appleAuth} from '@invertase/react-native-apple-authentication';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import { useFocusEffect } from "@react-navigation/native";
 
 const LoginScreen = props => {
   const dispatch = useDispatch();
-  const [appState, setappState] = useState("active")
-  const [linkdata, setlinkdata] = useState(null)
   const [fcmtoken, setfcmtoken] = useState("")
   const [showMessage, setShowMessage] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
@@ -331,7 +324,9 @@ let data = qs.stringify({
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView           
+      keyboardShouldPersistTaps={"always"}
+      contentContainerStyle={styles.container}>
       <SpinnerBackdrop showModal={showModal} />
       <View style={styles.form_container}>
         <View>

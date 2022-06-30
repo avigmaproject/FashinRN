@@ -14,3 +14,8 @@ export const signIN = () => {
     dispatch({type: 'SIGN_IN_NO'});
   };
 };
+export const CollectionSelect = (collection) => {
+  return dispatch => {
+    dispatch({type: 'COLLECTION',collection});
+  };
+};

@@ -15,7 +15,7 @@ setisLoading(true)
       style={{
         // display: 'flex',
         flexDirection: 'row',
-        width: '90%',
+        width: '100%',
         // borderColor: '#D7C7B6',
         // borderWidth: 1,
         height: 70,

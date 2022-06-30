@@ -130,6 +130,26 @@ class AddCollectionSpotlight extends Component {
         console.log(error, "getUserCollection")
       })
   }
+checkUrlformate = () => {
+ let invalid = false
+ let regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+ invalid = regex.test(this.state.link.value)
+  if (!invalid &&  !this.state.isCloset) {
+    this.showerrorMessage("Please check url formate.")
+      return false
+    } else {
+      return true
+    }
+  }
+
+checkDropdown = () => {
+    if (!this.state.targetCollectionItem.value && this.state.isCloset) {
+      this.showerrorMessage("Select collection.")
+      return false
+    } else {
+      return true
+    }
+  }
   checkValidityHandler = (value, rules, inputName) => {
     let { isValid, errorMsg } = checkValidity(value, rules)
     if (!isValid) {
@@ -290,28 +310,17 @@ return(
         </View>
       </Modal>
 )}
-checkUrlformate = () => {
- let invalid = false
-let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
-  invalid = regex.test(this.state.link.value)
-    if (!invalid &&  !this.state.isCloset) {
-      this.showerrorMessage("Please check url formate.")
-      return false
-    } else {
-      return true
-    }
-  }
+
   createUserPost = async () => {
     const { imagepath } = this.state
 
     if (
       this.ImageValidation() &&
-      this.checkboxValidation()  && this.checkUrlformate()
+      this.checkboxValidation()  && this.checkUrlformate() && this.checkDropdown()
     ) {
       this.setState({
-        // loading: true
+        loading: true
       })
-      console.log(this.state, "hereeeeee")
       let data = {
         UP_ImageName: this.state.filename,
         UP_ImagePath: this.state.imagepath,
@@ -547,6 +556,7 @@ let regex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:w
       />
       </View>
         <ScrollView
+          keyboardShouldPersistTaps={"always"}
           style={{
             width: "100%",
             flex: 1,

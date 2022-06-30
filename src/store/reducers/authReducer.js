@@ -7,6 +7,7 @@ export const initialState = {
   binidata: [],
   productdata: null,
   profileimage: '',
+collection:[]
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,6 +32,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         isSignout: true,
         userToken: null,
+      };
+    } 
+    case 'COLLECTION': {
+      return {
+        ...state,
+        collection: action.collection,
       };
     }
     default: {

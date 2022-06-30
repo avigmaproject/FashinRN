@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     backgroundColor: "#CDAF90",
-    width:"80%"
+    width:"90%"
   },
   icon: {
     marginRight: 5,

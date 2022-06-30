@@ -5,8 +5,8 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
+Image
 } from "react-native"
-import { useSelector } from "react-redux"
 import {
   createUpdateUserFavorite,
   getUserPost,
@@ -22,13 +22,17 @@ import Button from "../../components/UI/Button"
 import InputText from "../../components/UI/InputText"
 import Modal from "../../components/UI/Modal"
 import {BubblesLoader} from 'react-native-indicator';
+import {useSelector, useDispatch} from 'react-redux';
 
 const browan = "#593714"
 const UserPostsScreen = (props) => {
+  const collection = useSelector((state) => state.auth.collection)
+
+  const dispatch = useDispatch();
 
  React.useLayoutEffect(() => {
     props.navigation.setOptions({
-      title:props.route.params.collectionItem.label,
+      title:collection.label,
     });
   }, []);
   const token = useSelector((state) => state.auth.userToken)
@@ -47,14 +51,14 @@ const UserPostsScreen = (props) => {
 
 
   useEffect(() => {
-    setSelectedItem(props.route.params.collectionItem)
+    // setSelectedItem(props.route.params.collectionItem)
       getAllUserPost()
     if(token.length != 0 ){
-      getAllUserPost()
+      // getAllUserPost()
       getUserCollectionItems()  
     }
     sethome(props.route.params.home)
-  }, [selectedItem])
+  }, [])
 
 useFocusEffect(
     React.useCallback(() => {
@@ -86,7 +90,7 @@ useFocusEffect(
     }
     return null
   }
-const getUserCollectionItems = useCallback(async () => {
+const getUserCollectionItems = (async () => {
     setShowModal(true)
     const data = {
       Type: 5
@@ -113,12 +117,12 @@ const getUserCollectionItems = useCallback(async () => {
     setsetId(id)
     setSetbool(!Setbool)
   }
-  const getAllUserPost = useCallback(async () => {
+  const getAllUserPost = (async () => {
     setShowModal(true)
-    let data
-    if (!!selectedItem.value === true) {
-      data = {
-        UP_COLL_PKeyID: selectedItem.value,
+     
+    // if (!!collection.value === true) {
+    let  data = {
+        UP_COLL_PKeyID: collection.value,
         Type: 5
       }
     await getUserPost(data, token)
@@ -145,7 +149,7 @@ const getUserCollectionItems = useCallback(async () => {
         setShowModal(false)
         console.log(error, "getPost")
       })
-    }
+    // }
    
   })
 
@@ -196,10 +200,12 @@ const getUserCollectionItems = useCallback(async () => {
             getUserCollectionItems()
             setAddItemValue("")
             setSetbool(false)
-
+            setShowModalRENDER(false)
           })
           .catch((err) => {
             setShowModal(false)
+            setShowModalRENDER(false)
+
             console.log(err)
             setAddItemValue("")
           })
@@ -219,16 +225,18 @@ const getUserCollectionItems = useCallback(async () => {
       UF_UC_PKeyID: item.value,
       UF_UP_PKeyID: setId,
       Type: 1,
-      UC_Name: props.route.params.collectionItem.label,
+      UC_Name: collection.label,
       UF_IsDelete: 0,
       UF_Closet_Spotlight:1
     }
+console.log(favData)
     // return 0
     await createUpdateUserFavorite(favData, token)
       .then((res) => {
         setShowModal(false)
         setSetbool(false)
         getUserCollectionItems()
+      setShowModalRENDER(false)
 
       })
       .catch((error) => {
@@ -237,7 +245,6 @@ const getUserCollectionItems = useCallback(async () => {
       })
   }
   const renderItem = (item) => {
-      console.log(item)
       return (
         <View style={styles.item}>
           <Text style={styles.textItem}>{item.label}</Text>
@@ -262,7 +269,6 @@ const RenderModal =() => {
 return( <Modal isVisible={showModalRENDER}>
         <View
           style={{  backgroundColor: "#ffffff", width: "92%",borderRadius: 10, minHeight: 220 }} >
-
           <View style={{ height: 20, alignSelf: "center", marginTop: 18 }}>
             <Text style={{ color: "black", fontWeight: "bold" }}>Add Item</Text>
           </View>
@@ -298,21 +304,24 @@ return( <Modal isVisible={showModalRENDER}>
       style={{
         flex: 1,
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: "#fff",
+
       }}
     >
       <ScrollView
+        keyboardShouldPersistTaps={"always"}
         contentContainerStyle={{
-          flexGrow: 1,
+          // flexGrow: 1,
           width: "100%",
           backgroundColor: "white",
-          alignItems: "center",
-          flexGap: 20,
+          // alignItems: "center",
+          // flexGap: 20,
           paddingBottom: 110,
           // marginBottom: 100,
+
+
         }}
       >
-
       {allPosts.length === 0 && !showModal &&(<View><Text style={{ color: "rgb(89, 55, 20)", fontWeight: "bold" ,fontSize:20}}>Collection Coming Soon....</Text></View>)}
         <View
           style={{

@@ -13,10 +13,10 @@ import {
 } from 'react-native';
 
 const ProfileImages = props => {
-  // const imagesPaths = useSelector(state => state.profile.imagesPath);
   console.log("props.screenname",props.screenname);
   return (
     <ScrollView
+      keyboardShouldPersistTaps={"always"}
       contentContainerStyle={{
         flexGrow: 1,
         width: '100%',

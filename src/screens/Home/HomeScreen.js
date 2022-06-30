@@ -19,6 +19,8 @@ import { listToMatrix } from "../../shared/collectionColors"
 import { BubblesLoader } from "react-native-indicator"
 import { useFocusEffect } from "@react-navigation/native";
 import {basecolor,secondrycolor,creamcolor,creamcolor1,black,creamcolor2} from "../../services/constant"
+import {CollectionSelect} from '../../store/actions/authActions';
+
 const HomeScreen = (props) => {
   const [userCollections, setUserCollections] = useState([])
   const [searchtext, setsearchtext] = useState(null)
@@ -73,6 +75,8 @@ useFocusEffect(
     }, [])
   );
   const onCollectionItemPressHandler = (item) => {
+  dispatch(CollectionSelect(item));
+
       props.navigation.navigate("UserPostsScreen", {
         collectionItem: item,
         home:true
@@ -119,7 +123,6 @@ useFocusEffect(
         style={{width: 350, height: 100,marginTop:10}}
         resizeMode="cover"
         source={require('../../assets/users/fashINLogoLIght.png')}
-        alt="logo"
       />
       <View style={styles.sectionStyle}>
         <TextInput
@@ -147,6 +150,7 @@ useFocusEffect(
       </Text>
 
       <ScrollView
+        keyboardShouldPersistTaps={"always"}
         contentContainerStyle={{
           flexGrow: 1,
           width: "100%",
