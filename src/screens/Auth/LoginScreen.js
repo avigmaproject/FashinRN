@@ -105,13 +105,12 @@ console.log("getInitialLink",link.url)
   }, []);
  const _onhadleGoogle = async () => {
     console.log("GoogleSignin", GoogleSignin);
-    // await GoogleSignin.signOut();
+    await GoogleSignin.signOut();
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log("userInfoGoogleSignin", userInfo);
       console.log("idToken", userInfo.idToken);
-      // alert(userInfo.idToken);
       let data = qs.stringify({
         grant_type: "password",
         username: userInfo.user.email,
@@ -120,21 +119,20 @@ console.log("getInitialLink",link.url)
         FirstName: `${userInfo.user.givenName} ${userInfo.user.familyName}`,
         Role: 2,
         User_Login_Type: 2,
-     User_FB_GM_Token_val   : userInfo.idToken,
+        User_FB_GM_Token_val:userInfo.idToken,
         User_Token_val: fcmtoken,
-      });
-      console.log("hiiiii", data);
-      
+      });      
       login(data).then((res) => {
         console.log("res: ", JSON.stringify(res));
         if (res) {
            setShowMessage('Login successfully');
-               setShowModal(false); //For Spinner Backdrop
-                console.log(res, 'LoginData is here');
-               dispatch(setToken(res.access_token));
+           setShowModal(false); //For Spinner Backdrop
+           console.log(res, 'LoginData is here');
+           dispatch(setToken(res.access_token));
         }
       });
     } catch (error) {
+      setShowModal(false);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert("SIGN_IN_CANCELLED");
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -185,6 +183,7 @@ console.log("getInitialLink",link.url)
     setIsFormValid(overAllFormValidity);
   };
 const initUser = async (token) => {
+    setShowModal(false);
     console.log("initUser", token);
 
     fetch(
@@ -221,7 +220,7 @@ const initUser = async (token) => {
       });
   };
   const _onhadleFacebook = () => {
-               setShowModal(true); //For Spinner Backdrop
+  setShowModal(true); //For Spinner Backdrop
 
     LoginManager.logInWithPermissions(["public_profile", "email"])
       .then((result) => {
@@ -234,9 +233,8 @@ const initUser = async (token) => {
         initUser(data.accessToken);
       })
       .catch((error) => {
+        setShowModal(false);
         const { code, message } = error;
-        // console.log(JSON.stringify(error));
-        // alert(message);
         console.log(`Facebook login fail with error: ${message} code: ${code}`);
         if (code === "auth/account-exists-with-different-credential") {
           Alert.alert(" Login Error! ", `${message}`, [{ text: "Ok" }], {
@@ -247,7 +245,7 @@ const initUser = async (token) => {
   };
 
 async function _onhadleApple() {
-               setShowModal(true); //For Spinner Backdrop
+ setShowModal(true); //For Spinner Backdrop
 
 // Start the sign-in request
   const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -409,7 +407,8 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: white,
     alignItems: 'center',
-    height:"100%"
+    // height:"100%",
+    paddingBottom:50
   },
   form_container: {
     width: '80%',

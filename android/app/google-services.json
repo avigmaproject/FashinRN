@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "467243516590-n6tcae4lh8pb82c3h6hvcjko92r0n77f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fashin",
+            "certificate_hash": "af07ebedc5ec0b05f7a7eaf7553784c1e35ea47e"
+          }
+        },
+        {
           "client_id": "467243516590-ua932dr9dsm2acqk4dhlpfmk4eu8a3c2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

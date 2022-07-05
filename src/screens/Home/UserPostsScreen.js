@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
-Image
+Alert
 } from "react-native"
 import {
   createUpdateUserFavorite,
@@ -23,6 +23,7 @@ import InputText from "../../components/UI/InputText"
 import Modal from "../../components/UI/Modal"
 import {BubblesLoader} from 'react-native-indicator';
 import {useSelector, useDispatch} from 'react-redux';
+import { Toast } from "native-base"
 
 const browan = "#593714"
 const UserPostsScreen = (props) => {
@@ -91,7 +92,7 @@ useFocusEffect(
     return null
   }
 const getUserCollectionItems = (async () => {
-    setShowModal(true)
+    // setShowModal(true)
     const data = {
       Type: 5
     }
@@ -99,13 +100,13 @@ const getUserCollectionItems = (async () => {
       .then((res) => {
         var collectionItems
 
-        setShowModal(false)
+        // setShowModal(false)
         const fetchedUserCollection = res
         collectionItems = fetchedUserCollection?.map((item) => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
         collectionItems?.push({ label: "Add +", value: -1 })
-        setUserCollections(collectionItems)
+        setUserCollections(collectionItems.reverse())
       })
       .catch((error) => {
         setShowModal(false)
@@ -185,7 +186,7 @@ const getUserCollectionItems = (async () => {
   }
   const addToUserCollection = (itemName) => {
     if (validation()) {
-    setShowModal(true)
+    // setShowModal(true)
 
       const data = {
         UC_Name: itemName,
@@ -196,23 +197,20 @@ const getUserCollectionItems = (async () => {
       if (addItemValue.trim() != "") {
         addUserCollection(data, token)
           .then((res) => {
-            setShowModal(false)
             getUserCollectionItems()
             setAddItemValue("")
             setSetbool(false)
             setShowModalRENDER(false)
+            Alert.alert("Success","Collection added successfully!")
           })
           .catch((err) => {
-            setShowModal(false)
             setShowModalRENDER(false)
-
             console.log(err)
             setAddItemValue("")
           })
       }
     }
   }
-
   const dropDownSelectHandler = async (item) => {
     setValue(item)
     setIsFocus(false)
@@ -220,7 +218,7 @@ const getUserCollectionItems = (async () => {
       setShowModalRENDER(true)
       return 0
     }
-    setShowModal(true)
+    // setShowModal(true)
     const favData = {
       UF_UC_PKeyID: item.value,
       UF_UP_PKeyID: setId,
@@ -233,11 +231,11 @@ console.log(favData)
     // return 0
     await createUpdateUserFavorite(favData, token)
       .then((res) => {
-        setShowModal(false)
+        // setShowModal(false)
         setSetbool(false)
-        getUserCollectionItems()
+        // getUserCollectionItems()
       setShowModalRENDER(false)
-
+      Alert.alert("Success","Collection saved successfully!")
       })
       .catch((error) => {
         setShowModal(false)
@@ -247,14 +245,14 @@ console.log(favData)
   const renderItem = (item) => {
       return (
         <View style={styles.item}>
-          <Text style={styles.textItem}>{item.label}</Text>
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.textItem}>{item.label}</Text>
           {item.value !== -1 && (
             <TouchableOpacity onPress={()=>DeleteCollection(item.value)}>
             <AntDesign
               style={styles.icon}
               color="red"
               name="delete"
-              size={20}     
+              size={15}     
             /></TouchableOpacity>
            )} 
         </View>
@@ -458,9 +456,9 @@ item: {
       alignItems: 'center',
     },
  textItem: {
-      fontSize: 16,
-    color: browan
-
+    fontSize: 15,
+    color: browan,
+    width:"70%"
     },
 })
 export default UserPostsScreen

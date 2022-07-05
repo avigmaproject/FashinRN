@@ -135,7 +135,7 @@ checkUrlformate = () => {
  let regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
  invalid = regex.test(this.state.link.value)
   if (!invalid &&  !this.state.isCloset) {
-    this.showerrorMessage("Please check url formate.")
+    this.showerrorMessage("Please check url format.")
       return false
     } else {
       return true
@@ -369,7 +369,6 @@ return(
             isSpotlight: false,
             isClosetFalse: false
           }))
-          // this.props.navigation.navigate('Profiles');
         }
         this.setState({
           loading: false

@@ -4,6 +4,7 @@ import {View, TouchableOpacity, StyleSheet,Platform} from 'react-native';
 import Facebook from './../assets/social_media/facebook.svg';
 import Google from './../assets/social_media/google.svg';
 import Apple from './../assets/social_media/apple.svg';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const SocialMedia = props => {
 const [show, setshow] = React.useState(false)
@@ -22,7 +23,12 @@ React.useEffect(() => {
         <Google width={38} height={38} />
       </TouchableOpacity>
       {Platform.OS === 'android'  && show? (null) : (<TouchableOpacity onPress={props._onhadleApple} activeOpacity={0.8} style={styles.socialButton}>
-        <Apple width={40} height={40} />
+      <MaterialCommunityIcons
+              name={"apple"}
+              size={50}
+              color="black"
+            />
+        {/* <Apple width={40} height={40} /> */}
       </TouchableOpacity>)}
       
     </View>

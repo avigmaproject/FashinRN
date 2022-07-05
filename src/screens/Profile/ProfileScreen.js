@@ -162,7 +162,7 @@ const renderItem = (item) => {
         })
         if(collectionItems.length > 0 ){
         console.log("profile post ...",collectionItems[0])
-        getAllUserPost(collectionItems[0])
+        getAllUserPost(collectionItems[collectionItems.length])
         }
         collectionItems?.push({ label: "Add +", value: -1 })
         setUserCollections(collectionItems.reverse())
