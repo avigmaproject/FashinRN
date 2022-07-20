@@ -161,8 +161,8 @@ const renderItem = (item) => {
           return { label: item.UC_Name, value: item.UC_PKeyID }
         })
         if(collectionItems.length > 0 ){
-        console.log("profile post ...",collectionItems[0])
-        getAllUserPost(collectionItems[collectionItems.length])
+        console.log("profile post ...",collectionItems.length)
+        getAllUserPost(collectionItems[collectionItems.length -1])
         }
         collectionItems?.push({ label: "Add +", value: -1 })
         setUserCollections(collectionItems.reverse())
